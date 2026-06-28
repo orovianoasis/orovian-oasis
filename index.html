@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orovian Oasis | Property Intake</title>
+  <meta name="description" content="Submit your property information to Orovian Oasis for a private property review." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" aria-label="Site header">
+      <a class="brand" href="#top" aria-label="Orovian Oasis home">
+        <span class="brand-mark">OO</span>
+        <span class="brand-name">Orovian Oasis</span>
+      </a>
+      <a class="call-button" href="tel:+12050000000">Call / Text</a>
+    </header>
+
+    <main id="top" class="main-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="eyebrow"><span></span>Private Property Review<span></span></div>
+        <h1 id="hero-title">Submit Your Property With Ease</h1>
+        <p class="hero-copy">
+          Enter your property address and contact information below. We’ll review the details and follow up with the next step.
+        </p>
+      </section>
+
+      <section class="form-section" aria-label="Property intake form">
+        <div class="form-card">
+          <div class="ornament ornament-top"></div>
+          <p class="card-kicker">Orovian Oasis</p>
+          <h2>Property Intake</h2>
+          <p class="card-copy">Simple, direct, and no repairs required to submit.</p>
+
+          <form id="propertyForm" novalidate>
+            <div class="field full">
+              <label for="propertyAddress">Property Address <span>*</span></label>
+              <input id="propertyAddress" name="propertyAddress" type="text" autocomplete="street-address" placeholder="Start typing the property address" required />
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="firstName">First Name <span>*</span></label>
+                <input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="First name" required />
+              </div>
+
+              <div class="field">
+                <label for="lastName">Last Name <span>*</span></label>
+                <input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="Last name" required />
+              </div>
+
+              <div class="field">
+                <label for="phone">Phone Number <span>*</span></label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(205) 000-0000" required />
+              </div>
+
+              <div class="field">
+                <label for="email">Email Address <span>*</span></label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+              </div>
+
+              <div class="field">
+                <label for="ownerStatus">Are you the owner?</label>
+                <select id="ownerStatus" name="ownerStatus">
+                  <option value="">Select one</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="representing-owner">Representing the owner</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="timeline">Selling Timeline</label>
+                <select id="timeline" name="timeline">
+                  <option value="">Select one</option>
+                  <option value="asap">ASAP</option>
+                  <option value="30-days">Within 30 days</option>
+                  <option value="60-days">Within 60 days</option>
+                  <option value="exploring">Just exploring</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="checkbox-row" for="urgent">
+              <input id="urgent" name="urgent" type="checkbox" />
+              <span>I need a faster response.</span>
+            </label>
+
+            <button class="submit-button" type="submit">Submit Property</button>
+            <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-contact">
+        <a href="mailto:will@example.com">will@example.com</a>
+        <span aria-hidden="true">•</span>
+        <a href="tel:+12050000000">(205) 000-0000</a>
+      </div>
+
+      <div class="social-links" aria-label="Social media links">
+        <a href="#" aria-label="Facebook" title="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.2V5.1c-.4-.1-1.7-.2-3.2-.2-3.1 0-5.2 1.9-5.2 5.5v3.1H4.5v3.8h3.3V24h4.1v-6.7h3.2l.5-3.8h-3.7v-2.7c0-1.1.3-2.3 2.1-2.3Z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6a5.2 5.2 0 0 1-5.2 5.2H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm0 2A3.2 3.2 0 0 0 4 7.2v9.6A3.2 3.2 0 0 0 7.2 20h9.6a3.2 3.2 0 0 0 3.2-3.2V7.2A3.2 3.2 0 0 0 16.8 4H7.2ZM12 7.4A4.6 4.6 0 1 1 12 16.6 4.6 4.6 0 0 1 12 7.4Zm0 2A2.6 2.6 0 1 0 12 14.6 2.6 2.6 0 0 0 12 9.4Zm5-2.7a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok" title="TikTok">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.4 3 2.1 4.8 5 5v3.4c-1.8.2-3.4-.4-5-1.5v6.4c0 5.8-6.3 8.1-10.1 4.4-2.4-2.3-2.2-6.2.3-8.3 1.4-1.2 3.3-1.7 5.4-1.3v3.6c-.9-.3-1.7-.2-2.4.2-1.6.9-1.4 3.2.2 3.9 1.6.7 3.1-.4 3.1-2.4V2h3.5Z"/></svg>
+        </a>
+      </div>
+
+      <p class="footer-note">© <span id="year"></span> Orovian Oasis. Private property review.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
