@@ -3,6 +3,23 @@ const WEBHOOK_URL = "http://localhost:5678/webhook-test/orovian-oasis-lead";
 const form = document.getElementById("propertyForm");
 const formMessage = document.getElementById("formMessage");
 const year = document.getElementById("year");
+const phoneInput = document.getElementById("phone");
+
+if (phoneInput) {
+  phoneInput.addEventListener("input", function (event) {
+    let digits = event.target.value.replace(/\D/g, "").slice(0, 10);
+
+    if (digits.length > 6) {
+      event.target.value = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    } else if (digits.length > 3) {
+      event.target.value = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    } else if (digits.length > 0) {
+      event.target.value = `(${digits}`;
+    } else {
+      event.target.value = "";
+    }
+  });
+};
 const addressInput = document.getElementById("propertyAddress");
 const googlePlaceIdInput = document.getElementById("googlePlaceId");
 const googleFormattedAddressInput = document.getElementById("googleFormattedAddress");
