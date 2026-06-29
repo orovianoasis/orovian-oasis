@@ -20,6 +20,15 @@
       text-align: center;
       justify-content: center;
     }
+    
+    .thank-you-logo-badge {
+  display: block;
+  width: clamp(52px, 7vw, 82px);
+  height: auto;
+  margin: 8px auto 6px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.16));
+}
   </style>
 </head>
 <body>
@@ -43,9 +52,9 @@
 
     <main class="thank-you-main">
       <section class="thank-you-card" aria-labelledby="thank-you-title">
-        <p class="thank-you-kicker">PROPERTY RECEIVED</p>
-<img class="thank-you-logo-badge" src="thankyoulogo.webp" alt="Property received badge" />
-<h1>Thank You</h1>
+        <p class="thank-you-kicker">Property Received</p>
+<img class="thank-you-logo-badge" src="assets/thankyoulogo.webp" alt="" aria-hidden="true" />
+<h1 id="thank-you-title">Thank You</h1>
         <p>
           We've received your property information. We’ll review the details and contact you shortly about the next step.
         </p>
