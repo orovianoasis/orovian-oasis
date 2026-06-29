@@ -94,6 +94,8 @@ body::before {
   height: auto;
   display: block;
   object-fit: contain;
+  transform: scale(1.35);
+  transform-origin: center center;
 }
 
 .brand-fallback {
