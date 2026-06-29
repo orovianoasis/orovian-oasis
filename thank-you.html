@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Property Submitted | Orovian Oasis</title>
+  <meta name="description" content="Your property information has been submitted to Orovian Oasis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" aria-label="Site header">
+      <div class="header-actions header-actions-left" aria-label="Phone contact">
+        <a class="gold-button" href="tel:+12054339779">Call / Text</a>
+      </div>
+
+      <a class="brand" href="index.html" aria-label="Orovian Oasis home">
+        <span class="brand-mark">
+          <img class="brand-logo" src="assets/logo.webp" alt="" />
+          <span class="brand-fallback">OO</span>
+        </span>
+      </a>
+
+      <div class="header-actions header-actions-right" aria-label="Email contact">
+        <a class="gold-button outline" href="mailto:orovianoasis@gmail.com">Email</a>
+      </div>
+    </header>
+
+    <main class="thank-you-main">
+      <section class="thank-you-card" aria-labelledby="thank-you-title">
+        <p class="thank-you-kicker">Property Received</p>
+        <h1 id="thank-you-title">Thank You</h1>
+        <p>
+          We received your property information. We’ll review the details and contact you shortly about the next step.
+        </p>
+
+        <div class="thank-you-actions">
+          <a class="gold-button" href="index.html">Submit Another</a>
+          <a class="gold-button outline" href="tel:+12054339779">Call / Text</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-contact">
+        <a href="mailto:orovianoasis@gmail.com">orovianoasis@gmail.com</a>
+        <span aria-hidden="true">•</span>
+        <a href="tel:+12054339779">(205) 433-9779</a>
+      </div>
+
+      <div class="social-links" aria-label="Social media links">
+        <a href="https://facebook.com/orovianoasis" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener noreferrer">f</a>
+        <a href="https://instagram.com/orovianoasis" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener noreferrer">◎</a>
+        <a href="https://www.tiktok.com/@orovianoasis" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener noreferrer">♪</a>
+      </div>
+
+      <p class="footer-note">© <span id="year"></span> Orovian Oasis.</p>
+    </footer>
+  </div>
+
+  <script>
+    const year = document.getElementById("year");
+    if (year) year.textContent = new Date().getFullYear();
+  </script>
+  <script src="enhancements.js" defer></script>
+</body>
+</html>
