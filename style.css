@@ -348,7 +348,11 @@ input:focus, select:focus {
 
 @media (max-width: 760px) {
   .page-shell { width: min(100% - 22px, 560px); }
-  .site-header { align-items: flex-start; }
+  .site-header {
+  padding-top: 12px;
+  padding-bottom: 2px;
+  align-items: center;
+}
   
 
 .brand-fallback {
