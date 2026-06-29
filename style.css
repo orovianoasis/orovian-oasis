@@ -60,24 +60,17 @@ body::before {
 .brand { display: inline-flex; align-items: center; color: var(--cream-2); text-decoration: none; }
 
 .brand-mark {
-  width: clamp(44px, 5.4vw, 58px);
-  height: clamp(44px, 5.4vw, 58px);
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--gold);
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(18px, 2.2vw, 23px);
-  font-weight: 700;
-  letter-spacing: -0.08em;
-  overflow: hidden;
+  width: clamp(82px, 9vw, 120px);
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
 .brand-logo {
-  width: 130%;
-  height: 130%;
+  width: 100%;
+  height: auto;
   display: block;
   object-fit: contain;
 }
