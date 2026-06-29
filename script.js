@@ -31,6 +31,7 @@ const phoneInput = document.getElementById("phone");
 const addressInput = document.getElementById("propertyAddress");
 const googlePlaceIdInput = document.getElementById("googlePlaceId");
 const googleFormattedAddressInput = document.getElementById("googleFormattedAddress");
+const manualAddressModeInput = document.getElementById("manualAddressMode");
 
 if (year) {
   year.textContent = new Date().getFullYear();
@@ -65,6 +66,7 @@ function getFormData() {
     propertyAddress: data.get("propertyAddress")?.trim() || "",
     googlePlaceId: data.get("googlePlaceId") || "",
     googleFormattedAddress: data.get("googleFormattedAddress") || "",
+    manualAddressMode: manualAddressModeInput?.checked ? "yes" : "no",
     firstName: data.get("firstName")?.trim() || "",
     lastName: data.get("lastName")?.trim() || "",
     phone: data.get("phone")?.trim() || "",
