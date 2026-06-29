@@ -59,7 +59,7 @@ body::before {
 .site-header {
   position: relative;
   z-index: 2;
-  padding: 1px 0 0;
+  padding: 0px 0 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -94,7 +94,7 @@ body::before {
   height: auto;
   display: block;
   object-fit: contain;
-  transform: scale(1.35);
+  transform: scale(1.25);
   transform-origin: center center;
 }
 
