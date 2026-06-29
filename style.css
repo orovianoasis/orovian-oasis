@@ -348,12 +348,17 @@ input:focus, select:focus {
 
 @media (max-width: 760px) {
   .page-shell { width: min(100% - 22px, 560px); }
+
   .site-header {
-  padding-top: 12px;
-  padding-bottom: 2px;
-  align-items: center;
+    padding-top: 22px;
+    padding-bottom: 0;
+    align-items: center;
+  }
+
+  .hero {
+    margin-top: -12px;
+  }
 }
-  
 
 .brand-fallback {
   display: none;
