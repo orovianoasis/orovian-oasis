@@ -350,13 +350,13 @@ input:focus, select:focus {
   .page-shell { width: min(100% - 22px, 560px); }
 
   .site-header {
-    padding-top: 22px;
+    padding-top: 18px;
     padding-bottom: 0;
     align-items: center;
   }
 
   .hero {
-    margin-top: -12px;
+    margin-top: -10px;
   }
 }
 
