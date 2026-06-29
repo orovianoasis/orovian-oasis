@@ -374,7 +374,17 @@ input:focus, select:focus {
 }
 
 @media (max-height: 760px) and (min-width: 761px) {
-  .site-header { padding-top: 10px; padding-bottom: 4px; }
+  .site-header { padding-top: 0; padding-bottom: 0; }
+  .main-content { gap: 8px; }
+  h1 { font-size: clamp(2.35rem, 5.2vw, 3.85rem); margin: 3px 0 5px; }
+  .hero-copy { font-size: 0.95rem; line-height: 1.35; }
+  .form-card { padding: 18px 26px; width: min(660px, 100%); }
+  input, select { height: 41px; }
+  .form-grid { gap: 8px 14px; }
+  .field.full { margin-bottom: 8px; }
+  .submit-button { min-height: 42px; margin-top: 10px; }
+  .site-footer { padding-top: 2px; padding-bottom: 4px; }
+}
   .main-content { gap: 12px; }
   h1 { font-size: clamp(2.5rem, 5.6vw, 4.1rem); margin: 5px 0 7px; }
   .hero-copy { font-size: 0.98rem; line-height: 1.42; }
