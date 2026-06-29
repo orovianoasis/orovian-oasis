@@ -315,12 +315,6 @@ input:focus, select:focus {
   .page-shell { width: min(100% - 22px, 560px); }
   .site-header { align-items: flex-start; }
   
-.brand-logo {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-}
 
 .brand-fallback {
   display: none;
