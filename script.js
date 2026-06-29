@@ -1,5 +1,28 @@
-const WEBHOOK_URL = "http://localhost:5678/webhook/orovian-oasis-lead";
+/*
+  Orovian Oasis - Property Intake Logic
+  -------------------------------------
+  Switch testing/live mode by changing SUBMISSION_MODE only.
+
+  local:
+    Sends to your local n8n webhook on this computer.
+    If local n8n is offline, it can save a browser backup for testing.
+
+  production:
+    Sends to your public n8n production webhook.
+*/
+
+const SUBMISSION_MODE = "local"; // "local" or "production"
+
+const WEBHOOKS = {
+  local: "http://localhost:5678/webhook/orovian-oasis-lead",
+  production: "PASTE_YOUR_N8N_PRODUCTION_WEBHOOK_URL_HERE"
+};
+
+const SAVE_LOCAL_BACKUP_IF_LOCAL_WEBHOOK_FAILS = true;
 const THANK_YOU_URL = "thank-you.html";
+const LOCAL_BACKUP_KEY = "orovian_oasis_local_leads";
+
+const WEBHOOK_URL = WEBHOOKS[SUBMISSION_MODE] || "";
 
 const form = document.getElementById("propertyForm");
 const formMessage = document.getElementById("formMessage");
@@ -49,7 +72,8 @@ function getFormData() {
     ownerStatus: data.get("ownerStatus") || "",
     timeline: data.get("timeline") || "",
     submittedAt: new Date().toISOString(),
-    source: "Orovian Oasis Website"
+    source: "Orovian Oasis Website",
+    submissionMode: SUBMISSION_MODE
   };
 }
 
@@ -71,6 +95,46 @@ function validateLead(lead) {
   return "";
 }
 
+function getLocalBackups() {
+  try {
+    return JSON.parse(localStorage.getItem(LOCAL_BACKUP_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalBackup(lead) {
+  const backups = getLocalBackups();
+  const backupLead = {
+    ...lead,
+    localBackupId: `OO-${Date.now()}`,
+    localBackupCreatedAt: new Date().toISOString()
+  };
+
+  backups.push(backupLead);
+  localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(backups));
+  console.log("Lead saved to browser local backup:", backupLead);
+  return backupLead;
+}
+
+function downloadLocalBackups() {
+  const backups = getLocalBackups();
+  const blob = new Blob([JSON.stringify(backups, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = `orovian-oasis-local-leads-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function clearLocalBackups() {
+  localStorage.removeItem(LOCAL_BACKUP_KEY);
+}
+
 async function playSuccessAndRedirect(lead) {
   form.reset();
   setMessage("Thanks. We received your property information and will follow up shortly.", "success");
@@ -83,6 +147,20 @@ async function playSuccessAndRedirect(lead) {
   }
 
   window.location.href = THANK_YOU_URL;
+}
+
+async function submitToWebhook(lead) {
+  const response = await fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(lead)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Webhook failed with status ${response.status}`);
+  }
+
+  return response;
 }
 
 if (form) {
@@ -98,10 +176,15 @@ if (form) {
     }
 
     const submitButton = form.querySelector("button[type='submit']");
+    const originalButtonText = submitButton.textContent;
 
-    if (!WEBHOOK_URL || WEBHOOK_URL.includes("PASTE_YOUR_N8N")) {
-      console.log("Lead captured locally:", lead);
-      setMessage("Form is ready. Add your n8n production webhook URL inside script.js to activate live submissions.", "success");
+    const productionWebhookMissing =
+      SUBMISSION_MODE === "production" &&
+      (!WEBHOOK_URL || WEBHOOK_URL.includes("PASTE_YOUR_N8N_PRODUCTION_WEBHOOK_URL_HERE"));
+
+    if (productionWebhookMissing) {
+      setMessage("Production webhook is not connected yet. Add your n8n production URL in script.js.", "error");
+      console.warn("Missing production webhook URL. Lead was not submitted:", lead);
       return;
     }
 
@@ -110,30 +193,39 @@ if (form) {
     setMessage("");
 
     try {
-      const response = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lead)
-      });
-
-      if (!response.ok) {
-        throw new Error("Submission failed");
-      }
-
+      await submitToWebhook(lead);
       await playSuccessAndRedirect(lead);
     } catch (submissionError) {
       console.error(submissionError);
+
+      if (SUBMISSION_MODE === "local" && SAVE_LOCAL_BACKUP_IF_LOCAL_WEBHOOK_FAILS) {
+        saveLocalBackup(lead);
+        await playSuccessAndRedirect(lead);
+        return;
+      }
+
       setMessage("Something went wrong. Please call or email us directly.", "error");
     } finally {
       submitButton.disabled = false;
-      submitButton.textContent = "Submit Property";
+      submitButton.textContent = originalButtonText;
     }
   });
 }
 
+// Console helper for local testing.
+// Run these in DevTools if you use local backup mode:
+// OrovianLocalLeads.list()
+// OrovianLocalLeads.download()
+// OrovianLocalLeads.clear()
+window.OrovianLocalLeads = {
+  list: getLocalBackups,
+  download: downloadLocalBackups,
+  clear: clearLocalBackups,
+  mode: () => SUBMISSION_MODE,
+  webhook: () => WEBHOOK_URL
+};
+
 // Google Places Autocomplete
-// This function activates after you uncomment the Google script tag in index.html
-// and replace the API key placeholder with your real restricted API key.
 window.initAutocomplete = function initAutocomplete() {
   if (!addressInput || !window.google?.maps?.places) return;
 
