@@ -529,3 +529,12 @@ input:focus, select:focus {
 body.manual-address-active .pac-container {
   display: none !important;
 }
+
+.thank-you-logo-badge {
+  display: block;
+  width: clamp(54px, 7vw, 86px);
+  height: auto;
+  margin: 8px auto 10px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.14));
+}
