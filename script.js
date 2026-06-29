@@ -160,7 +160,6 @@ function clearLocalBackups() {
 }
 
 async function playSuccessAndRedirect(lead) {
-  form.reset();
   setMessage("Thanks. We received your property information and will follow up shortly.", "success");
 
   if (window.OrovianEnhancements?.playSubmitSuccess) {
