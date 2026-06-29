@@ -70,7 +70,7 @@ if (manualAddressModeInput && addressInput) {
     if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
 
     addressInput.placeholder = manualModeOn
-      ? "Enter address, city, state, ZIP"
+      ? "Enter Address, City, State, ZIP"
       : "Start typing the property address";
   });
 }
