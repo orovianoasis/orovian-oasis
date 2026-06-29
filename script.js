@@ -162,6 +162,13 @@ function clearLocalBackups() {
 async function playSuccessAndRedirect(lead) {
   setMessage("Thanks. We received your property information and will follow up shortly.", "success");
 
+  if (typeof gtag === "function") {
+    gtag("event", "lead_submit", {
+      event_category: "Lead",
+      event_label: lead.propertyAddress || "Unknown Property"
+    });
+  }
+
   if (window.OrovianEnhancements?.playSubmitSuccess) {
     await window.OrovianEnhancements.playSubmitSuccess({
       lead,
