@@ -94,7 +94,7 @@ body::before {
   height: auto;
   display: block;
   object-fit: contain;
-  transform: scale(1.25);
+  transform: scale(1.20);
   transform-origin: center center;
 }
 
