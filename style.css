@@ -313,7 +313,7 @@ input:focus, select:focus {
 
 .form-message {
   min-height: 18px;
-  margin: 5px 0 0;
+  margin: 3px 0 0;
   color: #24364d;
   font-size: 0.88rem;
   font-weight: 700;
