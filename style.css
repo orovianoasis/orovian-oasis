@@ -131,7 +131,12 @@ body::before {
 }
 
 .gold-button { padding: 13px 22px; font-size: 0.98rem; }
-.gold-button.outline { background: transparent; color: var(--gold); border: 1px solid var(--line); box-shadow: none; }
+.gold-button.outline {
+  background: linear-gradient(135deg, #f2dc73, #d3ac39);
+  color: #07111f;
+  border: 0;
+  box-shadow: 0 14px 36px rgba(217, 189, 85, 0.20);
+}
 .gold-button:hover,
 .submit-button:hover { transform: translateY(-2px); filter: brightness(1.03); }
 
