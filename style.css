@@ -195,7 +195,7 @@ body::before {
 }
 
 h1 {
-  margin: clamp(8px, 1.3vh, 16px) 0 clamp(8px, 1.3vh, 14px);
+  margin: clamp(4px, 0.8vh, 10px) 0 clamp(14px, 1.8vh, 20px);
   max-width: 900px;
   color: #fffdf4;
   font-family: "Cormorant Garamond", Georgia, serif;
@@ -436,7 +436,7 @@ input:focus, select:focus {
 @media (max-height: 760px) and (min-width: 761px) {
   .site-header { padding-top: 0; padding-bottom: 0; }
   .main-content { gap: 8px; }
-  h1 { font-size: clamp(2.35rem, 5.2vw, 3.85rem); margin: 3px 0 5px; }
+  h1 { font-size: clamp(2.35rem, 5.2vw, 3.85rem); margin: 1px 0 10px; }
   .hero-copy { font-size: 0.95rem; line-height: 1.35; }
   .form-card { padding: 18px 26px; width: min(660px, 100%); }
   input, select { height: 41px; }
