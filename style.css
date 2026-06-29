@@ -303,7 +303,7 @@ input:focus, select:focus {
 
 .submit-note {
   position: relative;
-  margin: 8px 0 0;
+  margin: 5px 0 0;
   color: rgba(36, 54, 77, 0.72);
   font-size: 0.78rem;
   font-weight: 700;
