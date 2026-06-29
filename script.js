@@ -1,4 +1,4 @@
-const WEBHOOK_URL = "PASTE_YOUR_N8N_PRODUCTION_WEBHOOK_URL_HERE";
+const WEBHOOK_URL = "http://localhost:5678/webhook/orovian-oasis-lead";
 
 const form = document.getElementById("propertyForm");
 const formMessage = document.getElementById("formMessage");
