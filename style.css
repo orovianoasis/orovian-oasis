@@ -532,9 +532,9 @@ body.manual-address-active .pac-container {
 
 .thank-you-logo-badge {
   display: block;
-  width: clamp(72px, 9vw, 112px);
+  width: clamp(85px, 9vw, 112px);
   height: auto;
-  margin: 2px auto -4px;
+  margin: 1px auto -4px;
   object-fit: contain;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.16));
 }
