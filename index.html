@@ -43,10 +43,18 @@
           <div class="ornament ornament-top"></div>
           <form id="propertyForm" novalidate>
             <div class="field full">
-              <label for="propertyAddress">🏡 Property Address <span>*</span></label>
-              <input id="propertyAddress" name="propertyAddress" type="text" autocomplete="new-password" inputmode="text" spellcheck="false" autocapitalize="words" placeholder="Start typing the property address" required />
-              <input id="googlePlaceId" name="googlePlaceId" type="hidden" />
-              <input id="googleFormattedAddress" name="googleFormattedAddress" type="hidden" />
+              <div class="address-label-row">
+  <label for="propertyAddress">🏡 Property Address <span>*</span></label>
+
+  <label class="manual-address-toggle">
+    <input id="manualAddressMode" name="manualAddressMode" type="checkbox" />
+    <span>Can’t find it?</span>
+  </label>
+</div>
+
+<input id="propertyAddress" name="propertyAddress" type="text" autocomplete="new-password" inputmode="text" spellcheck="false" autocapitalize="words" placeholder="Start typing the property address" required />
+<input id="googlePlaceId" name="googlePlaceId" type="hidden" />
+<input id="googleFormattedAddress" name="googleFormattedAddress" type="hidden" />
             </div>
 
             <div class="form-grid">
