@@ -44,8 +44,8 @@
     desktopOpacityMax: 0.58,
 
     // Mobile orbs: visible, but lighter so phones do not sweat like a laptop in July.
-    mobileParticleCount: 22,
-    mobileSpeed: 0.38,
+    mobileParticleCount: 48,
+    mobileSpeed: 0.48,
     mobileSizeMin: 1.8,
     mobileSizeMax: 5.8,
     mobileOpacityMin: 0.14,
