@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JSYNE84D7G"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-JSYNE84D7G');
-</script>
-  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JSYNE84D7G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JSYNE84D7G');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Property Submitted | Orovian Oasis</title>
@@ -45,10 +43,10 @@
   <div class="page-shell">
     <header class="site-header" aria-label="Site header">
       <div class="header-actions header-actions-left" aria-label="Phone contact">
-        <a class="gold-button" href="tel:+12054339779">Call / Text</a>
+        <a class="gold-button" href="tel:+12054339779" onclick="trackEvent('click_call', { event_category: 'Contact', contact_location: 'header_thank_you', contact_method: 'phone' });">Call / Text</a>
       </div>
 
-      <a class="brand" href="https://orovianoasis.github.io/orovian-oasis/" aria-label="Orovian Oasis home">
+      <a class="brand" href="/" aria-label="Orovian Oasis home">
         <span class="brand-mark">
           <img class="brand-logo" src="assets/logo.webp" alt="" />
           <span class="brand-fallback">OO</span>
@@ -56,7 +54,7 @@
       </a>
 
       <div class="header-actions header-actions-right" aria-label="Email contact">
-        <a class="gold-button outline" href="mailto:orovianoasis@gmail.com">Email</a>
+        <a class="gold-button outline" href="mailto:orovianoasis@gmail.com" onclick="trackEvent('click_email', { event_category: 'Contact', contact_location: 'header_thank_you', contact_method: 'email' });">Email</a>
       </div>
     </header>
 
@@ -70,32 +68,45 @@
         </p>
 
         <div class="thank-you-actions thank-you-actions-single">
-          <a class="gold-button thank-you-submit-another" href="https://orovianoasis.github.io/orovian-oasis/">Submit Another</a>
+          <a class="gold-button thank-you-submit-another" href="/" onclick="trackEvent('submit_another_click', { event_category: 'Lead', page_name: 'thank_you' });">Submit Another</a>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="footer-contact">
-        <a href="mailto:orovianoasis@gmail.com">orovianoasis@gmail.com</a>
+        <a href="mailto:orovianoasis@gmail.com" onclick="trackEvent('click_email', { event_category: 'Contact', contact_location: 'footer_thank_you', contact_method: 'email' });">orovianoasis@gmail.com</a>
         <span aria-hidden="true">•</span>
-        <a href="tel:+12054339779">(205) 433-9779</a>
+        <a href="tel:+12054339779" onclick="trackEvent('click_call', { event_category: 'Contact', contact_location: 'footer_thank_you', contact_method: 'phone' });">(205) 433-9779</a>
       </div>
 
       <div class="social-links" aria-label="Social media links">
-<a href="https://facebook.com/orovianoasis" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener noreferrer">
+<a href="https://facebook.com/orovianoasis" onclick="trackEvent('click_social', { event_category: 'Contact', platform: 'facebook', page_name: 'thank_you' });" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener noreferrer">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.2V5.1c-.4-.1-1.7-.2-3.2-.2-3.1 0-5.2 1.9-5.2 5.5v3.1H4.5v3.8h3.3V24h4.1v-6.7h3.2l.5-3.8h-3.7v-2.7c0-1.1.3-2.3 2.1-2.3Z"/></svg>
 </a>        
-<a href="https://instagram.com/orovianoasis" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener noreferrer">
+<a href="https://instagram.com/orovianoasis" onclick="trackEvent('click_social', { event_category: 'Contact', platform: 'instagram', page_name: 'thank_you' });" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener noreferrer">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6a5.2 5.2 0 0 1-5.2 5.2H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm0 2A3.2 3.2 0 0 0 4 7.2v9.6A3.2 3.2 0 0 0 7.2 20h9.6a3.2 3.2 0 0 0 3.2-3.2V7.2A3.2 3.2 0 0 0 16.8 4H7.2ZM12 7.4A4.6 4.6 0 1 1 12 16.6 4.6 4.6 0 0 1 12 7.4Zm0 2A2.6 2.6 0 1 0 12 14.6 2.6 2.6 0 0 0 12 9.4Zm5-2.7a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
 </a>        
-<a href="https://www.tiktok.com/@orovianoasis" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener noreferrer">
+<a href="https://www.tiktok.com/@orovianoasis" onclick="trackEvent('click_social', { event_category: 'Contact', platform: 'tiktok', page_name: 'thank_you' });" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener noreferrer">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.4 3 2.1 4.8 5 5v3.4c-1.8.2-3.4-.4-5-1.5v6.4c0 5.8-6.3 8.1-10.1 4.4-2.4-2.3-2.2-6.2.3-8.3 1.4-1.2 3.3-1.7 5.4-1.3v3.6c-.9-.3-1.7-.2-2.4.2-1.6.9-1.4 3.2.2 3.9 1.6.7 3.1-.4 3.1-2.4V2h3.5Z"/></svg>
 </a>      </div>
 
       <p class="footer-note">© <span id="year"></span> Orovian Oasis.</p>
     </footer>
   </div>
+
+  <script>
+    function trackEvent(eventName, eventParams = {}) {
+      if (typeof gtag === "function") {
+        gtag("event", eventName, eventParams);
+      }
+    }
+
+    trackEvent("thank_you_view", {
+      event_category: "Lead",
+      page_name: "thank_you"
+    });
+  </script>
 
   <script>
     const year = document.getElementById("year");

@@ -33,8 +33,51 @@ const googlePlaceIdInput = document.getElementById("googlePlaceId");
 const googleFormattedAddressInput = document.getElementById("googleFormattedAddress");
 const manualAddressModeInput = document.getElementById("manualAddressMode");
 
+let addressAutocomplete = null;
+let formStartTracked = false;
+
+function trackEvent(eventName, eventParams = {}) {
+  if (typeof gtag === "function") {
+    gtag("event", eventName, eventParams);
+  }
+}
+
 if (year) {
   year.textContent = new Date().getFullYear();
+}
+
+if (addressInput) {
+  addressInput.removeAttribute("readonly");
+  addressInput.removeAttribute("disabled");
+
+  addressInput.addEventListener("input", function () {
+    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
+    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
+  });
+}
+
+if (manualAddressModeInput && addressInput) {
+  manualAddressModeInput.addEventListener("change", function () {
+    const manualModeOn = manualAddressModeInput.checked;
+
+    document.body.classList.toggle("manual-address-active", manualModeOn);
+
+    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
+    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
+
+    addressInput.placeholder = manualModeOn
+      ? "Enter address, city, state, ZIP"
+      : "Start typing the property address";
+
+    addressInput.removeAttribute("readonly");
+    addressInput.removeAttribute("disabled");
+    addressInput.focus();
+
+    trackEvent("manual_address_toggle", {
+      event_category: "Lead",
+      manual_address_mode: manualModeOn ? "yes" : "no"
+    });
+  });
 }
 
 if (phoneInput) {
@@ -53,25 +96,16 @@ if (phoneInput) {
   });
 }
 
-if (addressInput) {
-  addressInput.addEventListener("input", function () {
-    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
-    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
-  });
-}
+if (form) {
+  form.addEventListener("input", function () {
+    if (formStartTracked) return;
 
-if (manualAddressModeInput && addressInput) {
-  manualAddressModeInput.addEventListener("change", function () {
-    const manualModeOn = manualAddressModeInput.checked;
+    formStartTracked = true;
 
-    document.body.classList.toggle("manual-address-active", manualModeOn);
-
-    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
-    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
-
-    addressInput.placeholder = manualModeOn
-      ? "Enter Address, City, State, ZIP"
-      : "Start typing the property address";
+    trackEvent("form_start", {
+      event_category: "Lead",
+      form_name: "property_intake"
+    });
   });
 }
 
@@ -162,12 +196,22 @@ function clearLocalBackups() {
 async function playSuccessAndRedirect(lead) {
   setMessage("Thanks. We received your property information and will follow up shortly.", "success");
 
-  if (typeof gtag === "function") {
-    gtag("event", "lead_submit", {
-      event_category: "Lead",
-      event_label: lead.propertyAddress || "Unknown Property"
-    });
-  }
+  trackEvent("lead_submit", {
+    event_category: "Lead",
+    property_address: lead.propertyAddress || "",
+    owner_status: lead.ownerStatus || "",
+    selling_timeline: lead.timeline || "",
+    submission_mode: lead.submissionMode || ""
+  });
+
+  trackEvent("generate_lead", {
+    currency: "USD",
+    value: 1,
+    property_address: lead.propertyAddress || "",
+    owner_status: lead.ownerStatus || "",
+    selling_timeline: lead.timeline || "",
+    submission_mode: lead.submissionMode || ""
+  });
 
   if (window.OrovianEnhancements?.playSubmitSuccess) {
     await window.OrovianEnhancements.playSubmitSuccess({
@@ -201,6 +245,11 @@ if (form) {
     const error = validateLead(lead);
 
     if (error) {
+      trackEvent("form_error", {
+        event_category: "Lead",
+        error_message: error
+      });
+
       setMessage(error, "error");
       return;
     }
@@ -213,6 +262,11 @@ if (form) {
       (!WEBHOOK_URL || WEBHOOK_URL.includes("PASTE_YOUR_N8N_PRODUCTION_WEBHOOK_URL_HERE"));
 
     if (productionWebhookMissing) {
+      trackEvent("form_error", {
+        event_category: "Lead",
+        error_message: "Production webhook missing"
+      });
+
       setMessage("Production webhook is not connected yet. Add your n8n production URL in script.js.", "error");
       console.warn("Missing production webhook URL. Lead was not submitted:", lead);
       return;
@@ -227,6 +281,11 @@ if (form) {
       await playSuccessAndRedirect(lead);
     } catch (submissionError) {
       console.error(submissionError);
+
+      trackEvent("form_error", {
+        event_category: "Lead",
+        error_message: "Webhook submission failed"
+      });
 
       if (SUBMISSION_MODE === "local" && SAVE_LOCAL_BACKUP_IF_LOCAL_WEBHOOK_FAILS) {
         saveLocalBackup(lead);
@@ -255,24 +314,62 @@ window.OrovianLocalLeads = {
   webhook: () => WEBHOOK_URL
 };
 
+// Google Maps API failure handler.
+// Google Places autocomplete stays enabled when it works.
+// If Google fails, the seller can still type the address manually.
+window.gm_authFailure = function gmAuthFailure() {
+  console.warn("Google Maps/Places failed to load. Manual address entry is still allowed.");
+
+  if (addressInput) {
+    addressInput.removeAttribute("readonly");
+    addressInput.removeAttribute("disabled");
+    addressInput.placeholder = "Enter address, city, state, ZIP";
+  }
+
+  if (manualAddressModeInput) {
+    manualAddressModeInput.checked = true;
+  }
+
+  document.body.classList.add("manual-address-active");
+
+  trackEvent("google_places_error", {
+    event_category: "Lead",
+    error_type: "auth_failure"
+  });
+};
+
 // Google Places Autocomplete
 window.initAutocomplete = function initAutocomplete() {
-  if (!addressInput || !window.google?.maps?.places) return;
+  if (!addressInput) return;
 
-  const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+  addressInput.removeAttribute("readonly");
+  addressInput.removeAttribute("disabled");
+
+  if (!window.google?.maps?.places) {
+    console.warn("Google Places is not available. Manual address entry is still allowed.");
+
+    trackEvent("google_places_error", {
+      event_category: "Lead",
+      error_type: "places_unavailable"
+    });
+
+    return;
+  }
+
+  addressAutocomplete = new google.maps.places.Autocomplete(addressInput, {
     types: ["address"],
     componentRestrictions: { country: "us" },
     fields: ["formatted_address", "place_id", "address_components", "geometry"]
   });
 
-  autocomplete.addListener("place_changed", () => {
+  addressAutocomplete.addListener("place_changed", () => {
     if (manualAddressModeInput?.checked) {
       if (googlePlaceIdInput) googlePlaceIdInput.value = "";
       if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
       return;
     }
 
-    const place = autocomplete.getPlace();
+    const place = addressAutocomplete.getPlace();
 
     if (place.formatted_address) {
       addressInput.value = place.formatted_address;
@@ -282,5 +379,13 @@ window.initAutocomplete = function initAutocomplete() {
     if (place.place_id && googlePlaceIdInput) {
       googlePlaceIdInput.value = place.place_id;
     }
+
+    trackEvent("address_autocomplete_selected", {
+      event_category: "Lead",
+      address_source: "google_places"
+    });
   });
 };
+
+// Expose tracking helper so inline HTML click events can use it.
+window.trackEvent = trackEvent;
