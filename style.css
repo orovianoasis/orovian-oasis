@@ -14,6 +14,10 @@
   --logo-min: 82px;
   --logo-fluid: 8vw;
   --logo-max: 125px;
+
+  /* Header button size controls: keeps Call/Text and Email visually balanced. */
+  --header-button-width: 132px;
+  --header-button-width-mobile: 104px;
 }
 
 * { box-sizing: border-box; }
@@ -130,7 +134,16 @@ body::before {
   transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
 }
 
-.gold-button { padding: 13px 22px; font-size: 0.98rem; }
+.gold-button {
+  min-width: var(--header-button-width);
+  padding: 13px 18px;
+  font-size: 0.98rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+}
 .gold-button.outline {
   background: linear-gradient(135deg, #f2dc73, #d3ac39);
   color: #07111f;
@@ -355,7 +368,11 @@ input:focus, select:focus {
 }
 
 .header-actions { gap: 8px; }
-  .gold-button { padding: 11px 14px; font-size: 0.88rem; }
+  .gold-button {
+    min-width: var(--header-button-width-mobile);
+    padding: 11px 12px;
+    font-size: 0.88rem;
+  }
   .main-content { justify-content: start; gap: 14px; }
   h1 { font-size: clamp(2.35rem, 10.5vw, 3.45rem); }
   .hero-copy { font-size: 0.94rem; line-height: 1.45; }
@@ -386,7 +403,11 @@ input:focus, select:focus {
     --logo-max: 92px;
   }
 
-  .gold-button { padding: 9px 10px; font-size: 0.8rem; }
+  .gold-button {
+    min-width: 96px;
+    padding: 9px 8px;
+    font-size: 0.8rem;
+  }
   .eyebrow { gap: 10px; letter-spacing: 0.16em; font-size: 0.9rem; }
   .eyebrow span { width: 34px; }
   .form-card { padding: 18px; }
