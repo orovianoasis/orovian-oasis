@@ -62,10 +62,14 @@ if (addressInput) {
 
 if (manualAddressModeInput && addressInput) {
   manualAddressModeInput.addEventListener("change", function () {
+    const manualModeOn = manualAddressModeInput.checked;
+
+    document.body.classList.toggle("manual-address-active", manualModeOn);
+
     if (googlePlaceIdInput) googlePlaceIdInput.value = "";
     if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
 
-    addressInput.placeholder = manualAddressModeInput.checked
+    addressInput.placeholder = manualModeOn
       ? "Enter address, city, state, ZIP"
       : "Start typing the property address";
   });
