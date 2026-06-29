@@ -50,6 +50,24 @@ if (phoneInput) {
     } else {
       event.target.value = "";
     }
+    
+    if (addressInput) {
+  addressInput.addEventListener("input", function () {
+    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
+    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
+  });
+}
+
+if (manualAddressModeInput && addressInput) {
+  manualAddressModeInput.addEventListener("change", function () {
+    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
+    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
+
+    addressInput.placeholder = manualAddressModeInput.checked
+      ? "Enter address, city, state, ZIP"
+      : "Start typing the property address";
+  });
+}
   });
 }
 
@@ -238,15 +256,20 @@ window.initAutocomplete = function initAutocomplete() {
   });
 
   autocomplete.addListener("place_changed", () => {
-    const place = autocomplete.getPlace();
+  if (manualAddressModeInput?.checked) {
+    if (googlePlaceIdInput) googlePlaceIdInput.value = "";
+    if (googleFormattedAddressInput) googleFormattedAddressInput.value = "";
+    return;
+  }
 
-    if (place.formatted_address) {
-      addressInput.value = place.formatted_address;
-      googleFormattedAddressInput.value = place.formatted_address;
-    }
+  const place = autocomplete.getPlace();
 
-    if (place.place_id) {
-      googlePlaceIdInput.value = place.place_id;
-    }
-  });
-};
+  if (place.formatted_address) {
+    addressInput.value = place.formatted_address;
+    if (googleFormattedAddressInput) googleFormattedAddressInput.value = place.formatted_address;
+  }
+
+  if (place.place_id && googlePlaceIdInput) {
+    googlePlaceIdInput.value = place.place_id;
+  }
+});
