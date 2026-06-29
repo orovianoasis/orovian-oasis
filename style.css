@@ -271,6 +271,40 @@ label {
 
 label span { color: #8b6d23; }
 
+.address-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 6px;
+}
+
+.address-label-row label {
+  margin: 0;
+}
+
+.manual-address-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  color: rgba(36, 54, 77, 0.72);
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.manual-address-toggle input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--gold-2);
+}
+
+label span { color: #8b6d23; }
+
 input, select {
   width: 100%;
   height: clamp(43px, 5.7vh, 54px);
