@@ -522,9 +522,15 @@ body.orovian-enhanced .form-card.oo-sheen-reverse::after {
     state.sheenTimer = window.setInterval(function () {
       if (!state.enabled) return;
 
-      card.classList.remove("oo-sheen");
-      void card.offsetWidth;
-      card.classList.add("oo-sheen");
+      card.classList.remove("oo-sheen", "oo-sheen-reverse");
+void card.offsetWidth;
+
+const nextClass = card.classList.contains("oo-last-sheen-normal")
+  ? "oo-sheen-reverse"
+  : "oo-sheen";
+
+card.classList.toggle("oo-last-sheen-normal", nextClass === "oo-sheen");
+card.classList.add(nextClass);
     }, delay);
   }
 
