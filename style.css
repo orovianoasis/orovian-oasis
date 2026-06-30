@@ -542,7 +542,7 @@ body.manual-address-active .pac-container {
 /* How It Works popup */
 .how-it-works-link {
   display: block;
-  margin: 4px auto 5px;
+  margin: 4px auto 4px;
   padding: 0;
   border: none;
   background: transparent;
