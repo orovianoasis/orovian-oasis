@@ -223,7 +223,7 @@ h1 {
   position: relative;
   width: min(720px, 100%);
   margin: 0 auto;
-  padding: clamp(12px, 2.2vw, 24px);
+  padding: clamp(10px, 1.8vw, 20px);
   color: var(--ink);
   background: linear-gradient(145deg, var(--cream-2), var(--cream));
   border: 2px solid rgba(217, 189, 85, 0.88);
@@ -235,7 +235,7 @@ h1 {
 .form-card::before {
   content: "";
   position: absolute;
-  inset: clamp(6px, 1.1vw, 10px);
+  inset: clamp(4px, 0.8vw, 8px);
   border: 1px solid rgba(217, 189, 85, 0.30);
   border-radius: clamp(15px, 2.3vw, 22px);
   pointer-events: none;
