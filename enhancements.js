@@ -358,6 +358,7 @@ body.orovian-enhanced .form-card.oo-sheen-reverse::after {
         body.orovian-enhanced.oo-entrance .form-card,
         body.orovian-enhanced.oo-entrance .site-footer,
         body.orovian-enhanced .form-card.oo-sheen::after,
+        body.orovian-enhanced .form-card.oo-sheen-reverse::after,
         .oo-ripple {
           animation: none !important;
         }
@@ -566,7 +567,7 @@ card.classList.add(nextClass);
     state.sheenTimer = null;
 
     const card = document.querySelector(".form-card");
-    if (card) card.classList.remove("oo-sheen");
+    if (card) card.classList.remove("oo-sheen", "oo-sheen-reverse", "oo-last-sheen-normal");
 
     root.style.removeProperty("--oo-glow-x");
     root.style.removeProperty("--oo-glow-y");
