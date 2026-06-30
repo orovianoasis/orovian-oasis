@@ -235,7 +235,7 @@ h1 {
 .form-card::before {
   content: "";
   position: absolute;
-  inset: clamp(10px, 1.8vw, 17px);
+  inset: clamp(6px, 1.1vw, 10px);
   border: 1px solid rgba(217, 189, 85, 0.30);
   border-radius: clamp(15px, 2.3vw, 22px);
   pointer-events: none;
