@@ -35,6 +35,11 @@
   const CONFIG = {
     enabledOnLoad: true,
 
+    // Background photo
+    backgroundPhoto: true,
+    backgroundPhotoUrl: "assets/background-house.jpg",
+    backgroundPhotoOpacity: 0.14,
+
     // Desktop orbs
     desktopParticleCount: 48,
     desktopSpeed: 0.62,
@@ -121,6 +126,22 @@
         --oo-glow-y: 42%;
         --oo-aura-gold: ${CONFIG.auraStrength};
         --oo-aura-blue: ${CONFIG.auraBlueStrength};
+        --oo-bg-photo: none;
+        --oo-bg-photo-opacity: 0;
+      }
+
+      body.orovian-enhanced::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: var(--oo-bg-photo);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: var(--oo-bg-photo-opacity);
+        filter: saturate(0.85) contrast(1.05);
       }
 
       .oo-aura {
@@ -539,6 +560,15 @@ card.classList.add(nextClass);
     if (state.enabled) return;
 
     state.enabled = true;
+
+    if (CONFIG.backgroundPhoto) {
+      root.style.setProperty("--oo-bg-photo", `url("${CONFIG.backgroundPhotoUrl}")`);
+      root.style.setProperty("--oo-bg-photo-opacity", CONFIG.backgroundPhotoOpacity);
+    } else {
+      root.style.setProperty("--oo-bg-photo", "none");
+      root.style.setProperty("--oo-bg-photo-opacity", "0");
+    }
+
     body.classList.add("orovian-enhanced");
     body.classList.toggle("oo-mobile", state.isMobile);
     body.classList.toggle("oo-entrance", CONFIG.entranceAnimations);
@@ -571,6 +601,8 @@ card.classList.add(nextClass);
 
     root.style.removeProperty("--oo-glow-x");
     root.style.removeProperty("--oo-glow-y");
+    root.style.removeProperty("--oo-bg-photo");
+    root.style.removeProperty("--oo-bg-photo-opacity");
   }
 
   function toggle() {
