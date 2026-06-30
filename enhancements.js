@@ -193,8 +193,12 @@
       }
 
       body.orovian-enhanced .form-card.oo-sheen::after {
-        animation: ooSheen 1180ms ease both;
-      }
+  animation: ooSheen 1180ms ease both;
+}
+
+body.orovian-enhanced .form-card.oo-sheen-reverse::after {
+  animation: ooSheenReverse 1180ms ease both;
+}
 
       body.orovian-enhanced:not(.oo-mobile) .brand-logo {
         transition: transform 220ms ease, filter 220ms ease;
@@ -224,10 +228,16 @@
       }
 
       @keyframes ooSheen {
-        0% { opacity: 0; transform: translateX(-62%) rotate(7deg); }
-        18% { opacity: 1; }
-        100% { opacity: 0; transform: translateX(64%) rotate(7deg); }
-      }
+  0% { opacity: 0; transform: translateX(-62%) rotate(7deg); }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(64%) rotate(7deg); }
+}
+
+      @keyframes ooSheenReverse {
+  0% { opacity: 0; transform: translateX(64%) rotate(-7deg); }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-62%) rotate(-7deg); }
+}
 
       @keyframes ooRipple {
         to { transform: translate(-50%, -50%) scale(22); opacity: 0; }
