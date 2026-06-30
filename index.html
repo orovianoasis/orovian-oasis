@@ -108,6 +108,8 @@
               </div>
             </div>
 
+            <button type="button" id="howItWorksBtn" class="how-it-works-link">How does this work?</button>
+
             <button class="submit-button" type="submit">Submit Property</button>
             <p class="submit-note">A fresh chapter can start with one simple step.</p>
             <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
@@ -137,6 +139,43 @@
 
       <p class="footer-note">© <span id="year"></span> Orovian Oasis.</p>
     </footer>
+  </div>
+
+  <div id="howItWorksModal" class="how-it-works-modal" aria-hidden="true">
+    <div class="how-it-works-overlay" data-close-how-it-works></div>
+
+    <div class="how-it-works-box" role="dialog" aria-modal="true" aria-labelledby="howItWorksTitle">
+      <button type="button" class="how-it-works-close" data-close-how-it-works aria-label="Close">×</button>
+
+      <h2 id="howItWorksTitle">How It Works</h2>
+
+      <div class="how-it-works-steps">
+        <div class="how-it-works-step">
+          <span>1</span>
+          <p><strong>Submit your property information.</strong><br>Tell us the property address and the best way to reach you.</p>
+        </div>
+
+        <div class="how-it-works-step">
+          <span>2</span>
+          <p><strong>We review the property details.</strong><br>We look over the information and may ask a few quick questions.</p>
+        </div>
+
+        <div class="how-it-works-step">
+          <span>3</span>
+          <p><strong>We schedule a walkthrough if needed.</strong><br>This helps us understand the property condition and your timeline.</p>
+        </div>
+
+        <div class="how-it-works-step">
+          <span>4</span>
+          <p><strong>You receive a cash offer.</strong><br>No repairs, no cleanup, and no pressure to accept.</p>
+        </div>
+
+        <div class="how-it-works-step">
+          <span>5</span>
+          <p><strong>If you accept, we coordinate closing.</strong><br>A title company helps handle the paperwork and closing process.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

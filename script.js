@@ -389,3 +389,43 @@ window.initAutocomplete = function initAutocomplete() {
 
 // Expose tracking helper so inline HTML click events can use it.
 window.trackEvent = trackEvent;
+
+// How It Works popup
+const howItWorksBtn = document.getElementById("howItWorksBtn");
+const howItWorksModal = document.getElementById("howItWorksModal");
+const howItWorksCloseButtons = document.querySelectorAll("[data-close-how-it-works]");
+
+function openHowItWorksModal() {
+  if (!howItWorksModal) return;
+
+  howItWorksModal.classList.add("active");
+  howItWorksModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  trackEvent("how_it_works_open", {
+    event_category: "Engagement",
+    event_label: "How It Works Popup"
+  });
+}
+
+function closeHowItWorksModal() {
+  if (!howItWorksModal) return;
+
+  howItWorksModal.classList.remove("active");
+  howItWorksModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+if (howItWorksBtn) {
+  howItWorksBtn.addEventListener("click", openHowItWorksModal);
+}
+
+howItWorksCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeHowItWorksModal);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && howItWorksModal?.classList.contains("active")) {
+    closeHowItWorksModal();
+  }
+});
