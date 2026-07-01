@@ -246,7 +246,7 @@ h1 {
   position: absolute;
   top: 18px;
   left: 38px;
-  width: 125px;
+  width: 100px;
   height: 1px;
   background: linear-gradient(90deg, rgba(217, 189, 85, 0.72), transparent);
 }
