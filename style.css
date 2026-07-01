@@ -330,7 +330,7 @@ input:focus, select:focus {
   position: relative;
   width: 100%;
   min-height: clamp(46px, 6vh, 56px);
-  margin-top: clamp(2px, 0.5vh, 6px);
+  margin-top: clamp(0px, 0.3vh, 3px);
   font-size: clamp(1rem, 1.4vw, 1.12rem);
 }
 
@@ -436,14 +436,14 @@ input:focus, select:focus {
 
 @media (max-height: 760px) and (min-width: 761px) {
   .site-header { padding-top: 0; padding-bottom: 0; }
-  .main-content { gap: 8px; }
+  .main-content { gap: 4px; }
   h1 { font-size: clamp(2.35rem, 5.2vw, 3.85rem); margin: 1px 0 10px; }
   .hero-copy { font-size: 0.95rem; line-height: 1.35; }
   .form-card { padding: 18px 26px; width: min(660px, 100%); }
   input, select { height: 41px; }
   .form-grid { gap: 8px 14px; }
   .field.full { margin-bottom: 8px; }
-  .submit-button { min-height: 42px; margin-top: 10px; }
+  .submit-button { min-height: 42px; margin-top: 2px; }
   .submit-note { margin-top: 6px; font-size: 0.74rem; }
   .site-footer { padding-top: 2px; padding-bottom: 4px; }
 }
@@ -543,15 +543,13 @@ body.manual-address-active .pac-container {
 /* How It Works popup */
 .how-it-works-link {
   display: block;
-  width: max-content;
-  margin: -6px auto 3px;
+  margin: -8px auto 0;
   padding: 0;
   border: none;
   background: transparent;
   color: #b8860b;
   font-size: 0.95rem;
   font-weight: 800;
-  text-align: center;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -642,7 +640,7 @@ body.manual-address-active .pac-container {
 
 .optional-details-block {
   position: relative;
-  margin: 8px 0 6px;
+  margin: 8px 0 0;
   text-align: center;
 }
 
