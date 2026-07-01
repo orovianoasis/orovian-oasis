@@ -29,7 +29,10 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 
   <script>
-  fbq('track', 'Lead');
+  if (sessionStorage.getItem("orovian_lead_submitted") === "true") {
+    fbq("track", "Lead");
+    sessionStorage.removeItem("orovian_lead_submitted");
+  }
 </script>
   
   <meta charset="UTF-8" />
