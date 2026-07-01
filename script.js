@@ -482,6 +482,12 @@ function closeAboutModal() {
   document.body.classList.remove("modal-open");
 }
 
+window.addEventListener("message", (event) => {
+  if (event.data === "closeAboutModal") {
+    closeAboutModal();
+  }
+});
+
 if (aboutLogoLink) {
   aboutLogoLink.addEventListener("click", openAboutModal);
 }
