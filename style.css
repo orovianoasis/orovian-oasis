@@ -532,16 +532,28 @@ body.manual-address-active .pac-container {
 
 /* How It Works popup */
 .how-it-works-link {
-  display: block;
-  margin: -8px auto 0;
+  width: min(560px, 100%);
+  margin: -8px auto 4px;
   padding: 0;
   border: none;
   background: transparent;
   color: #b8860b;
   font-size: 0.95rem;
   font-weight: 800;
+  text-align: center;
   text-decoration: underline;
   cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.how-it-works-link::before,
+.how-it-works-link::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(217, 189, 85, 0.72), transparent);
 }
 
 .how-it-works-link:hover {
@@ -1006,5 +1018,14 @@ body.modal-open {
     min-width: 220px;
     padding: 11px 18px;
     font-size: 0.88rem;
+  }
+}
+
+
+@media (max-width: 760px) {
+  .how-it-works-link {
+    margin: -12px auto 8px;
+    gap: 10px;
+    font-size: 0.9rem;
   }
 }
