@@ -455,7 +455,80 @@ document.addEventListener("keydown", (event) => {
     closeHowItWorksModal();
   }
 });
+// Legal pages popup
+const legalLinks = document.querySelectorAll("[data-legal-popup]");
+let legalModal = null;
+let legalFrame = null;
 
+function createLegalModal() {
+  if (legalModal) return legalModal;
+
+  legalModal = document.createElement("div");
+  legalModal.id = "legalModal";
+  legalModal.className = "about-modal legal-modal";
+  legalModal.setAttribute("aria-hidden", "true");
+
+  legalModal.innerHTML = `
+    <div class="about-modal-overlay" data-close-legal></div>
+    <div class="about-modal-box legal-modal-box" role="dialog" aria-modal="true" aria-label="Legal Information">
+      <button type="button" class="about-modal-close" data-close-legal aria-label="Close">×</button>
+      <iframe class="about-modal-frame legal-modal-frame" src="" title="Legal Information"></iframe>
+    </div>
+  `;
+
+  document.body.appendChild(legalModal);
+  legalFrame = legalModal.querySelector(".legal-modal-frame");
+
+  legalModal.querySelectorAll("[data-close-legal]").forEach((button) => {
+    button.addEventListener("click", closeLegalModal);
+  });
+
+  return legalModal;
+}
+
+function openLegalModal(event) {
+  event.preventDefault();
+
+  const url = event.currentTarget.getAttribute("data-legal-popup");
+  const modal = createLegalModal();
+
+  if (legalFrame && url) {
+    legalFrame.src = url;
+  }
+
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  trackEvent("legal_open", {
+    event_category: "Engagement",
+    legal_page: url || ""
+  });
+}
+
+function closeLegalModal() {
+  if (!legalModal) return;
+
+  legalModal.classList.remove("active");
+  legalModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+legalLinks.forEach((link) => {
+  link.addEventListener("click", openLegalModal);
+});
+
+window.addEventListener("message", (event) => {
+  if (event.data === "closeLegalModal") {
+    closeLegalModal();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && legalModal?.classList.contains("active")) {
+    closeLegalModal();
+  }
+});
 
 // About Orovian Oasis popup
 const aboutLogoLink = document.querySelector('.brand[href="about.html"]');
