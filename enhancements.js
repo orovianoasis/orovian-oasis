@@ -37,7 +37,7 @@
 
     // Background photo
     backgroundPhoto: true,
-    backgroundPhotoUrl: "assets/background-house.jpg",
+    backgroundPhotoUrl: "assets/background-house.webp",
     backgroundPhotoOpacity: 0.14,
 
     // Desktop orbs
