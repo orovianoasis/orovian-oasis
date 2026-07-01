@@ -429,3 +429,65 @@ document.addEventListener("keydown", (event) => {
     closeHowItWorksModal();
   }
 });
+
+
+// About Orovian Oasis popup
+const aboutLogoLink = document.querySelector('.brand[href="about.html"]');
+let aboutModal = null;
+
+function createAboutModal() {
+  if (aboutModal) return aboutModal;
+
+  aboutModal = document.createElement("div");
+  aboutModal.id = "aboutModal";
+  aboutModal.className = "about-modal";
+  aboutModal.setAttribute("aria-hidden", "true");
+
+  aboutModal.innerHTML = `
+    <div class="about-modal-overlay" data-close-about></div>
+    <div class="about-modal-box" role="dialog" aria-modal="true" aria-label="About Orovian Oasis">
+      <button type="button" class="about-modal-close" data-close-about aria-label="Close">×</button>
+      <iframe class="about-modal-frame" src="about.html" title="About Orovian Oasis"></iframe>
+    </div>
+  `;
+
+  document.body.appendChild(aboutModal);
+
+  aboutModal.querySelectorAll("[data-close-about]").forEach((button) => {
+    button.addEventListener("click", closeAboutModal);
+  });
+
+  return aboutModal;
+}
+
+function openAboutModal(event) {
+  if (event) event.preventDefault();
+
+  const modal = createAboutModal();
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  trackEvent("about_open", {
+    event_category: "Engagement",
+    event_label: "About Orovian Oasis Popup"
+  });
+}
+
+function closeAboutModal() {
+  if (!aboutModal) return;
+
+  aboutModal.classList.remove("active");
+  aboutModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+if (aboutLogoLink) {
+  aboutLogoLink.addEventListener("click", openAboutModal);
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && aboutModal?.classList.contains("active")) {
+    closeAboutModal();
+  }
+});
