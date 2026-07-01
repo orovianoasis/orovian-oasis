@@ -239,6 +239,8 @@ async function playSuccessAndRedirect(lead) {
     submission_mode: lead.submissionMode || ""
   });
 
+  sessionStorage.setItem("orovian_lead_submitted", "true");
+  
   if (window.OrovianEnhancements?.playSubmitSuccess) {
     await window.OrovianEnhancements.playSubmitSuccess({
       lead,
