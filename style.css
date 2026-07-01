@@ -242,16 +242,6 @@ h1 {
   pointer-events: none;
 }
 
-.ornament-top {
-  position: absolute;
-  top: 18px;
-  left: 38px;
-  width: 100px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(217, 189, 85, 0.72), transparent);
-}
-
-
 form, .form-grid, .field { position: relative; }
 
 .form-grid {
