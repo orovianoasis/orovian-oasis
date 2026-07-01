@@ -32,6 +32,9 @@ const addressInput = document.getElementById("propertyAddress");
 const googlePlaceIdInput = document.getElementById("googlePlaceId");
 const googleFormattedAddressInput = document.getElementById("googleFormattedAddress");
 const manualAddressModeInput = document.getElementById("manualAddressMode");
+const addPropertyDetailsToggle = document.getElementById("addPropertyDetailsToggle");
+const propertyDetailsWrap = document.getElementById("propertyDetailsWrap");
+const propertyDetailsInput = document.getElementById("propertyDetails");
 
 let addressAutocomplete = null;
 let formStartTracked = false;
@@ -76,6 +79,28 @@ if (manualAddressModeInput && addressInput) {
     trackEvent("manual_address_toggle", {
       event_category: "Lead",
       manual_address_mode: manualModeOn ? "yes" : "no"
+    });
+  });
+}
+
+if (addPropertyDetailsToggle && propertyDetailsWrap) {
+  addPropertyDetailsToggle.addEventListener("change", function () {
+    const detailsOpen = addPropertyDetailsToggle.checked;
+
+    propertyDetailsWrap.classList.toggle("active", detailsOpen);
+    propertyDetailsWrap.setAttribute("aria-hidden", detailsOpen ? "false" : "true");
+
+    if (!detailsOpen && propertyDetailsInput) {
+      propertyDetailsInput.value = "";
+    }
+
+    if (detailsOpen && propertyDetailsInput) {
+      propertyDetailsInput.focus();
+    }
+
+    trackEvent("optional_property_details_toggle", {
+      event_category: "Lead",
+      optional_property_details: detailsOpen ? "open" : "closed"
     });
   });
 }
@@ -129,6 +154,7 @@ function getFormData() {
     email: data.get("email")?.trim() || "",
     ownerStatus: data.get("ownerStatus") || "",
     timeline: data.get("timeline") || "",
+    propertyDetails: addPropertyDetailsToggle?.checked ? (data.get("propertyDetails")?.trim() || "") : "",
     submittedAt: new Date().toISOString(),
     source: "Orovian Oasis Website",
     submissionMode: SUBMISSION_MODE
