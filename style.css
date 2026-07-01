@@ -931,11 +931,11 @@ body.modal-open {
   }
 
   .about-page-shell {
-    min-height: 100vh;
-    padding: 8px 12px 12px;
-    display: grid;
-    place-items: start center;
-  }
+  min-height: 100vh;
+  padding: 18px 12px 12px;
+  display: grid;
+  place-items: start center;
+}
 
   .about-card {
     padding: 0 4px 10px;
