@@ -330,7 +330,7 @@ input:focus, select:focus {
   position: relative;
   width: 100%;
   min-height: clamp(46px, 6vh, 56px);
-  margin-top: clamp(6px, 1vh, 10px);
+  margin-top: clamp(8px, 1.2vh, 12px);
   font-size: clamp(1rem, 1.4vw, 1.12rem);
 }
 
@@ -543,13 +543,15 @@ body.manual-address-active .pac-container {
 /* How It Works popup */
 .how-it-works-link {
   display: block;
-  margin: -6 auto 2px;
+  width: max-content;
+  margin: -4px auto 6px;
   padding: 0;
   border: none;
   background: transparent;
   color: #b8860b;
   font-size: 0.95rem;
   font-weight: 800;
+  text-align: center;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -640,7 +642,7 @@ body.manual-address-active .pac-container {
 
 .optional-details-block {
   position: relative;
-  margin: 0 0 2px;
+  margin: 8px 0 6px;
   text-align: center;
 }
 
