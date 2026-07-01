@@ -330,7 +330,7 @@ input:focus, select:focus {
   position: relative;
   width: 100%;
   min-height: clamp(46px, 6vh, 56px);
-  margin-top: clamp(8px, 1.2vh, 12px);
+  margin-top: clamp(2px, 0.5vh, 6px);
   font-size: clamp(1rem, 1.4vw, 1.12rem);
 }
 
