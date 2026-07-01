@@ -1029,3 +1029,42 @@ body.modal-open {
     font-size: 0.9rem;
   }
 }
+.footer-legal-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+}
+
+.footer-legal-links a {
+  color: rgba(255, 250, 240, 0.72);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-legal-links a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.legal-modal-box {
+  height: min(720px, 90vh);
+}
+
+@media (max-width: 760px) {
+  .footer-note {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .footer-legal-links {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .legal-modal-box {
+    width: min(94vw, 620px);
+    height: 88vh;
+  }
+}
