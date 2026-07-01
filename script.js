@@ -32,9 +32,6 @@ const addressInput = document.getElementById("propertyAddress");
 const googlePlaceIdInput = document.getElementById("googlePlaceId");
 const googleFormattedAddressInput = document.getElementById("googleFormattedAddress");
 const manualAddressModeInput = document.getElementById("manualAddressMode");
-const showPropertyDetailsInput = document.getElementById("showPropertyDetails");
-const optionalPropertyDetails = document.getElementById("optionalPropertyDetails");
-const propertyDetailsInput = document.getElementById("propertyDetails");
 
 let addressAutocomplete = null;
 let formStartTracked = false;
@@ -79,28 +76,6 @@ if (manualAddressModeInput && addressInput) {
     trackEvent("manual_address_toggle", {
       event_category: "Lead",
       manual_address_mode: manualModeOn ? "yes" : "no"
-    });
-  });
-}
-
-if (showPropertyDetailsInput && optionalPropertyDetails) {
-  showPropertyDetailsInput.addEventListener("change", function () {
-    const detailsOn = showPropertyDetailsInput.checked;
-
-    optionalPropertyDetails.hidden = !detailsOn;
-    document.body.classList.toggle("optional-details-active", detailsOn);
-
-    if (!detailsOn && propertyDetailsInput) {
-      propertyDetailsInput.value = "";
-    }
-
-    if (detailsOn && propertyDetailsInput) {
-      propertyDetailsInput.focus();
-    }
-
-    trackEvent("optional_property_details_toggle", {
-      event_category: "Lead",
-      optional_property_details: detailsOn ? "yes" : "no"
     });
   });
 }
@@ -154,7 +129,6 @@ function getFormData() {
     email: data.get("email")?.trim() || "",
     ownerStatus: data.get("ownerStatus") || "",
     timeline: data.get("timeline") || "",
-    propertyDetails: data.get("propertyDetails")?.trim() || "",
     submittedAt: new Date().toISOString(),
     source: "Orovian Oasis Website",
     submissionMode: SUBMISSION_MODE
@@ -227,7 +201,6 @@ async function playSuccessAndRedirect(lead) {
     property_address: lead.propertyAddress || "",
     owner_status: lead.ownerStatus || "",
     selling_timeline: lead.timeline || "",
-    property_details_added: lead.propertyDetails ? "yes" : "no",
     submission_mode: lead.submissionMode || ""
   });
 
@@ -237,7 +210,6 @@ async function playSuccessAndRedirect(lead) {
     property_address: lead.propertyAddress || "",
     owner_status: lead.ownerStatus || "",
     selling_timeline: lead.timeline || "",
-    property_details_added: lead.propertyDetails ? "yes" : "no",
     submission_mode: lead.submissionMode || ""
   });
 
