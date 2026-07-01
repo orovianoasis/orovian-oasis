@@ -533,7 +533,7 @@ body.manual-address-active .pac-container {
 /* How It Works popup */
 .how-it-works-link {
   width: min(560px, 100%);
-  margin: -8px auto 4px;
+  margin: -12px auto 4px;
   padding: 0;
   border: none;
   background: transparent;
