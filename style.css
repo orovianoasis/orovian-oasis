@@ -124,6 +124,44 @@ body::before {
 }
 
 .gold-button,
+.optional-details-wrap {
+  position: relative;
+  margin: 7px 0 0;
+}
+
+.optional-details-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin: 0;
+  color: #8b6d23;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.optional-details-toggle input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--gold-2);
+}
+
+.optional-details-field {
+  margin-top: 7px;
+}
+
+.optional-details-field[hidden] {
+  display: none !important;
+}
+
+.optional-details-field label {
+  margin-bottom: 5px;
+}
+
 .submit-button {
   border: 0;
   border-radius: 999px;
@@ -306,7 +344,7 @@ label span { color: #8b6d23; }
 
 label span { color: #8b6d23; }
 
-input, select {
+input, select, textarea {
   width: 100%;
   height: clamp(43px, 5.7vh, 54px);
   border: 1px solid rgba(19, 34, 56, 0.16);
@@ -320,7 +358,15 @@ input, select {
   transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
-input:focus, select:focus {
+textarea {
+  height: auto;
+  min-height: 78px;
+  padding: 12px 14px;
+  resize: vertical;
+  line-height: 1.35;
+}
+
+input:focus, select:focus, textarea:focus {
   border-color: rgba(185, 144, 50, 0.85);
   box-shadow: 0 0 0 4px rgba(217, 189, 85, 0.18);
   background: #fff;
@@ -440,9 +486,13 @@ input:focus, select:focus {
   h1 { font-size: clamp(2.35rem, 5.2vw, 3.85rem); margin: 1px 0 10px; }
   .hero-copy { font-size: 0.95rem; line-height: 1.35; }
   .form-card { padding: 18px 26px; width: min(660px, 100%); }
-  input, select { height: 41px; }
+  input, select, textarea { height: 41px; }
   .form-grid { gap: 8px 14px; }
   .field.full { margin-bottom: 8px; }
+  textarea { min-height: 62px; }
+  .optional-details-wrap { margin-top: 5px; }
+  .optional-details-toggle { font-size: 0.76rem; }
+  .optional-details-field { margin-top: 5px; }
   .submit-button { min-height: 42px; margin-top: 10px; }
   .submit-note { margin-top: 6px; font-size: 0.74rem; }
   .site-footer { padding-top: 2px; padding-bottom: 4px; }
@@ -464,7 +514,7 @@ input:focus, select:focus {
   .eyebrow { gap: 10px; letter-spacing: 0.16em; font-size: 0.9rem; }
   .eyebrow span { width: 34px; }
   .form-card { padding: 18px; }
-  input, select { height: 42px; border-radius: 13px; }
+  input, select, textarea { height: 42px; border-radius: 13px; }
   .social-links a { width: 34px; height: 34px; }
 }
 
