@@ -66,10 +66,10 @@ function getTrackingData() {
     tracking[key] = cleanTrackingValue(sessionStorage.getItem(`orovian_${key}`));
   });
 
-  const inferredSource =
-    tracking.utm_source ||
-    tracking.source ||
-    (document.referrer ? "referral" : "direct");
+ const inferredSource =
+  tracking.utm_source ||
+  tracking.source ||
+  "website";
 
   return {
     ...tracking,
