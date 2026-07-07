@@ -66,10 +66,10 @@ function getTrackingData() {
     tracking[key] = cleanTrackingValue(sessionStorage.getItem(`orovian_${key}`));
   });
 
- const inferredSource =
-  tracking.utm_source ||
-  tracking.source ||
-  "website";
+  const inferredSource =
+    tracking.utm_source ||
+    tracking.source ||
+    "website";
 
   return {
     ...tracking,
@@ -215,7 +215,14 @@ function getFormData() {
 }
 
 function validateLead(lead) {
-  if (!lead.propertyAddress || !lead.firstName || !lead.lastName || !lead.phone || !lead.email) {
+  if (
+    !lead.propertyAddress ||
+    !lead.firstName ||
+    !lead.lastName ||
+    !lead.phone ||
+    !lead.email ||
+    !lead.ownerStatus
+  ) {
     return "Please complete the required fields.";
   }
 
@@ -524,6 +531,7 @@ document.addEventListener("keydown", (event) => {
     closeHowItWorksModal();
   }
 });
+
 // Legal pages popup
 const legalLinks = document.querySelectorAll("[data-legal-popup]");
 let legalModal = null;
