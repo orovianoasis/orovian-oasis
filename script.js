@@ -39,6 +39,48 @@ const propertyDetailsInput = document.getElementById("propertyDetails");
 let addressAutocomplete = null;
 let formStartTracked = false;
 
+const TRACKING_PARAM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "source"
+];
+
+function cleanTrackingValue(value) {
+  return (value || "").toString().trim().slice(0, 120);
+}
+
+function getTrackingData() {
+  const params = new URLSearchParams(window.location.search);
+  const tracking = {};
+
+  TRACKING_PARAM_KEYS.forEach((key) => {
+    const urlValue = cleanTrackingValue(params.get(key));
+
+    if (urlValue) {
+      sessionStorage.setItem(`orovian_${key}`, urlValue);
+    }
+
+    tracking[key] = cleanTrackingValue(sessionStorage.getItem(`orovian_${key}`));
+  });
+
+  const inferredSource =
+    tracking.utm_source ||
+    tracking.source ||
+    (document.referrer ? "referral" : "direct");
+
+  return {
+    ...tracking,
+    leadSource: inferredSource,
+    landingPage: window.location.href,
+    referrer: document.referrer || ""
+  };
+}
+
+const trackingData = getTrackingData();
+
 function trackEvent(eventName, eventParams = {}) {
   if (typeof gtag === "function") {
     gtag("event", eventName, eventParams);
@@ -129,7 +171,11 @@ if (form) {
 
     trackEvent("form_start", {
       event_category: "Lead",
-      form_name: "property_intake"
+      form_name: "property_intake",
+      lead_source: trackingData.leadSource || "",
+      utm_source: trackingData.utm_source || "",
+      utm_medium: trackingData.utm_medium || "",
+      utm_campaign: trackingData.utm_campaign || ""
     });
   });
 }
@@ -156,7 +202,14 @@ function getFormData() {
     timeline: data.get("timeline") || "",
     propertyDetails: addPropertyDetailsToggle?.checked ? (data.get("propertyDetails")?.trim() || "") : "",
     submittedAt: new Date().toISOString(),
-    source: "Orovian Oasis Website",
+    source: trackingData.leadSource || "Orovian Oasis Website",
+    utmSource: trackingData.utm_source || "",
+    utmMedium: trackingData.utm_medium || "",
+    utmCampaign: trackingData.utm_campaign || "",
+    utmContent: trackingData.utm_content || "",
+    utmTerm: trackingData.utm_term || "",
+    landingPage: trackingData.landingPage || "",
+    referrer: trackingData.referrer || "",
     submissionMode: SUBMISSION_MODE
   };
 }
@@ -227,7 +280,11 @@ async function playSuccessAndRedirect(lead) {
     property_address: lead.propertyAddress || "",
     owner_status: lead.ownerStatus || "",
     selling_timeline: lead.timeline || "",
-    submission_mode: lead.submissionMode || ""
+    submission_mode: lead.submissionMode || "",
+    lead_source: lead.source || "",
+    utm_source: lead.utmSource || "",
+    utm_medium: lead.utmMedium || "",
+    utm_campaign: lead.utmCampaign || ""
   });
 
   trackEvent("generate_lead", {
@@ -236,10 +293,20 @@ async function playSuccessAndRedirect(lead) {
     property_address: lead.propertyAddress || "",
     owner_status: lead.ownerStatus || "",
     selling_timeline: lead.timeline || "",
-    submission_mode: lead.submissionMode || ""
+    submission_mode: lead.submissionMode || "",
+    lead_source: lead.source || "",
+    utm_source: lead.utmSource || "",
+    utm_medium: lead.utmMedium || "",
+    utm_campaign: lead.utmCampaign || ""
   });
 
   sessionStorage.setItem("orovian_lead_submitted", "true");
+  sessionStorage.setItem("orovian_lead_tracking", JSON.stringify({
+    lead_source: lead.source || "",
+    utm_source: lead.utmSource || "",
+    utm_medium: lead.utmMedium || "",
+    utm_campaign: lead.utmCampaign || ""
+  }));
   
   if (window.OrovianEnhancements?.playSubmitSuccess) {
     await window.OrovianEnhancements.playSubmitSuccess({
