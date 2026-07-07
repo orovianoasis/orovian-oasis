@@ -30,8 +30,24 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
 
   <script>
   if (sessionStorage.getItem("orovian_lead_submitted") === "true") {
-    fbq("track", "Lead");
+    let leadTracking = {};
+
+    try {
+      leadTracking = JSON.parse(sessionStorage.getItem("orovian_lead_tracking") || "{}");
+    } catch (error) {
+      leadTracking = {};
+    }
+
+    fbq("track", "Lead", {
+      content_name: "property_intake",
+      lead_source: leadTracking.lead_source || "",
+      utm_source: leadTracking.utm_source || "",
+      utm_medium: leadTracking.utm_medium || "",
+      utm_campaign: leadTracking.utm_campaign || ""
+    });
+
     sessionStorage.removeItem("orovian_lead_submitted");
+    sessionStorage.removeItem("orovian_lead_tracking");
   }
 </script>
   
