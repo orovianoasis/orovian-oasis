@@ -110,14 +110,14 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
               </div>
 
               <div class="field">
-                <label for="ownerStatus">🔑 Are you the owner?</label>
-                <select id="ownerStatus" name="ownerStatus">
-                  <option value="">Select one</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                  <option value="representing-owner">Representing the owner</option>
-                </select>
-              </div>
+      <label for="ownerStatus">🔑 Are you the owner? <span>*</span></label>
+      <select id="ownerStatus" name="ownerStatus" required>
+    <option value="" disabled selected>Select one</option>
+    <option value="yes">Yes</option>
+    <option value="no">No</option>
+    <option value="representing-owner">Representing the owner</option>
+  </select>
+</div>
 
               <div class="field">
                 <label for="timeline">⏳ Selling Timeline</label>
