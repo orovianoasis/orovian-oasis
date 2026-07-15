@@ -608,7 +608,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 // About Orovian Oasis popup
-const aboutLogoLink = document.querySelector('.brand[href="about.html"]');
+const aboutOrovianLink = document.getElementById("aboutOrovianLink");
 let aboutModal = null;
 
 function createAboutModal() {
@@ -664,8 +664,8 @@ window.addEventListener("message", (event) => {
   }
 });
 
-if (aboutLogoLink) {
-  aboutLogoLink.addEventListener("click", openAboutModal);
+if (aboutOrovianLink) {
+  aboutOrovianLink.addEventListener("click", openAboutModal);
 }
 
 document.addEventListener("keydown", (event) => {

@@ -47,12 +47,15 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
         <a class="gold-button" href="tel:+12054339779" onclick="trackEvent('click_call', { event_category: 'Contact', contact_location: 'header', contact_method: 'phone' });">Call / Text</a>
       </div>
 
-      <a class="brand" href="about.html" aria-label="About Orovian Oasis">
-        <span class="brand-mark">
-          <img class="brand-logo" src="assets/logo.webp" alt="" />
-          <span class="brand-fallback">OO</span>
-        </span>
-      </a>
+      <div class="brand-stack" aria-label="Orovian Oasis brand">
+        <a class="brand" href="https://showcase.orovianoasis.com" aria-label="View Orovian Oasis showcase" target="_blank" rel="noopener noreferrer" onclick="trackEvent('click_showcase', { event_category: 'Navigation', nav_location: 'header_logo' });">
+          <span class="brand-mark">
+            <img class="brand-logo" src="assets/logo.webp" alt="Orovian Oasis logo" />
+            <span class="brand-fallback">OO</span>
+          </span>
+        </a>
+        <button type="button" id="aboutOrovianLink" class="brand-about-link" aria-label="About Orovian Oasis">Orovian Oasis</button>
+      </div>
 
       <div class="header-actions header-actions-right" aria-label="Email contact">
         <a class="gold-button outline" href="mailto:orovianoasis@gmail.com" onclick="trackEvent('click_email', { event_category: 'Contact', contact_location: 'header', contact_method: 'email' });">Email</a>
@@ -167,6 +170,9 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
         </a>
         <a href="https://www.tiktok.com/@orovian.oasis" onclick="trackEvent('click_social', { event_category: 'Contact', platform: 'tiktok' });" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.4 3 2.1 4.8 5 5v3.4c-1.8.2-3.4-.4-5-1.5v6.4c0 5.8-6.3 8.1-10.1 4.4-2.4-2.3-2.2-6.2.3-8.3 1.4-1.2 3.3-1.7 5.4-1.3v3.6c-.9-.3-1.7-.2-2.4.2-1.6.9-1.4 3.2.2 3.9 1.6.7 3.1-.4 3.1-2.4V2h3.5Z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@orovianoasis" onclick="trackEvent('click_social', { event_category: 'Contact', platform: 'youtube' });" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2c-.3-1.2-1.2-2.1-2.4-2.4C19 3.2 12 3.2 12 3.2s-7 0-9.1.6C1.7 4.1.8 5 .5 6.2.1 8.3.1 12 .1 12s0 3.7.6 5.8c.3 1.2 1.2 2.1 2.4 2.4 2.1.6 9.1.6 9.1.6s7 0 9.1-.6c1.2-.3 2.1-1.2 2.4-2.4.6-2.1.6-5.8.6-5.8s0-3.7-.8-5.8ZM9.7 15.8V8.2l6.3 3.8-6.3 3.8Z"/></svg>
         </a>
       </div>
 
