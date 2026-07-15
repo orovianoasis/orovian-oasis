@@ -666,6 +666,11 @@ window.addEventListener("message", (event) => {
 
 if (aboutOrovianLink) {
   aboutOrovianLink.addEventListener("click", openAboutModal);
+  aboutOrovianLink.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      openAboutModal(event);
+    }
+  });
 }
 
 document.addEventListener("keydown", (event) => {

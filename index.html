@@ -47,15 +47,12 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
         <a class="gold-button" href="tel:+12054339779" onclick="trackEvent('click_call', { event_category: 'Contact', contact_location: 'header', contact_method: 'phone' });">Call / Text</a>
       </div>
 
-      <div class="brand-stack" aria-label="Orovian Oasis brand">
-        <a class="brand" href="https://showcase.orovianoasis.com" aria-label="View Orovian Oasis showcase" target="_blank" rel="noopener noreferrer" onclick="trackEvent('click_showcase', { event_category: 'Navigation', nav_location: 'header_logo' });">
-          <span class="brand-mark">
-            <img class="brand-logo" src="assets/logo.webp" alt="Orovian Oasis logo" />
-            <span class="brand-fallback">OO</span>
-          </span>
-        </a>
-        <button type="button" id="aboutOrovianLink" class="brand-about-link" aria-label="About Orovian Oasis">Orovian Oasis</button>
-      </div>
+      <a class="brand" href="https://showcase.orovianoasis.com" aria-label="View Orovian Oasis showcase" target="_blank" rel="noopener noreferrer" onclick="trackEvent('click_showcase', { event_category: 'Navigation', nav_location: 'header_logo' });">
+        <span class="brand-mark">
+          <img class="brand-logo" src="assets/logo.webp" alt="Orovian Oasis logo" />
+          <span class="brand-fallback">OO</span>
+        </span>
+      </a>
 
       <div class="header-actions header-actions-right" aria-label="Email contact">
         <a class="gold-button outline" href="mailto:orovianoasis@gmail.com" onclick="trackEvent('click_email', { event_category: 'Contact', contact_location: 'header', contact_method: 'email' });">Email</a>
@@ -64,7 +61,7 @@ src="https://www.facebook.com/tr?id=2222729878523397&ev=PageView&noscript=1"
 
     <main id="top" class="main-content">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="eyebrow"><span></span>Orovian Oasis<span></span></div>
+        <div class="eyebrow about-eyebrow-trigger" id="aboutOrovianLink" role="button" tabindex="0" aria-label="About Orovian Oasis"><span></span>Orovian Oasis<span></span></div>
         <h1 id="hero-title">Submit Your Property</h1>
         <p class="hero-copy">
           We buy AS-IS & ALL CASH, keeping the process simple and direct. No repairs required.
