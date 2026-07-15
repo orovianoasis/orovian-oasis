@@ -1070,8 +1070,22 @@ body.modal-open {
 }
 
 
-.about-eyebrow-trigger {
+.about-eyebrow-trigger,
+.about-eyebrow-trigger span {
   cursor: pointer;
+}
+
+.about-eyebrow-trigger {
+  position: relative;
+  user-select: none;
+}
+
+.about-eyebrow-trigger span {
+  pointer-events: auto;
+}
+
+.about-eyebrow-trigger:hover {
+  color: #f6dc8c;
 }
 
 .about-eyebrow-trigger:focus-visible {
