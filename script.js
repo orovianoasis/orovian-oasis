@@ -21,6 +21,7 @@ const WEBHOOKS = {
 const SAVE_LOCAL_BACKUP_IF_LOCAL_WEBHOOK_FAILS = true;
 const THANK_YOU_URL = "thank-you.html";
 const LOCAL_BACKUP_KEY = "orovian_oasis_local_leads";
+const FORM_DRAFT_KEY = "orovian_oasis_property_form_draft";
 
 const WEBHOOK_URL = WEBHOOKS[SUBMISSION_MODE] || "";
 
@@ -118,6 +119,8 @@ if (manualAddressModeInput && addressInput) {
     addressInput.removeAttribute("disabled");
     addressInput.focus();
 
+    saveFormDraft();
+
     trackEvent("manual_address_toggle", {
       event_category: "Lead",
       manual_address_mode: manualModeOn ? "yes" : "no"
@@ -140,6 +143,8 @@ if (addPropertyDetailsToggle && propertyDetailsWrap) {
       propertyDetailsInput.focus();
     }
 
+    saveFormDraft();
+
     trackEvent("optional_property_details_toggle", {
       event_category: "Lead",
       optional_property_details: detailsOpen ? "open" : "closed"
@@ -160,11 +165,15 @@ if (phoneInput) {
     } else {
       event.target.value = "";
     }
+
+    saveFormDraft();
   });
 }
 
 if (form) {
   form.addEventListener("input", function () {
+    saveFormDraft();
+
     if (formStartTracked) return;
 
     formStartTracked = true;
@@ -178,12 +187,101 @@ if (form) {
       utm_campaign: trackingData.utm_campaign || ""
     });
   });
+
+  form.addEventListener("change", saveFormDraft);
+  restoreFormDraft();
 }
 
 function setMessage(text, type = "") {
   if (!formMessage) return;
   formMessage.textContent = text;
   formMessage.className = `form-message ${type}`.trim();
+}
+
+function getFormDraftData() {
+  if (!form) return null;
+
+  const data = new FormData(form);
+
+  return {
+    propertyAddress: data.get("propertyAddress")?.trim() || "",
+    googlePlaceId: data.get("googlePlaceId") || "",
+    googleFormattedAddress: data.get("googleFormattedAddress") || "",
+    manualAddressMode: manualAddressModeInput?.checked ? "yes" : "no",
+    firstName: data.get("firstName")?.trim() || "",
+    lastName: data.get("lastName")?.trim() || "",
+    phone: data.get("phone")?.trim() || "",
+    email: data.get("email")?.trim() || "",
+    ownerStatus: data.get("ownerStatus") || "",
+    timeline: data.get("timeline") || "",
+    addPropertyDetails: addPropertyDetailsToggle?.checked ? "yes" : "no",
+    propertyDetails: data.get("propertyDetails")?.trim() || "",
+    savedAt: new Date().toISOString()
+  };
+}
+
+function saveFormDraft() {
+  if (!form) return;
+
+  try {
+    localStorage.setItem(FORM_DRAFT_KEY, JSON.stringify(getFormDraftData()));
+  } catch (error) {
+    console.warn("Could not save form draft.", error);
+  }
+}
+
+function restoreFormDraft() {
+  if (!form) return;
+
+  let draft = null;
+
+  try {
+    draft = JSON.parse(localStorage.getItem(FORM_DRAFT_KEY) || "null");
+  } catch {
+    draft = null;
+  }
+
+  if (!draft) return;
+
+  if (addressInput) addressInput.value = draft.propertyAddress || "";
+  if (googlePlaceIdInput) googlePlaceIdInput.value = draft.googlePlaceId || "";
+  if (googleFormattedAddressInput) googleFormattedAddressInput.value = draft.googleFormattedAddress || "";
+  if (manualAddressModeInput) manualAddressModeInput.checked = draft.manualAddressMode === "yes";
+
+  const firstNameInput = form.querySelector('[name="firstName"]');
+  const lastNameInput = form.querySelector('[name="lastName"]');
+  const emailInput = form.querySelector('[name="email"]');
+  const ownerStatusInput = form.querySelector('[name="ownerStatus"]');
+  const timelineInput = form.querySelector('[name="timeline"]');
+
+  if (firstNameInput) firstNameInput.value = draft.firstName || "";
+  if (lastNameInput) lastNameInput.value = draft.lastName || "";
+  if (phoneInput) phoneInput.value = draft.phone || "";
+  if (emailInput) emailInput.value = draft.email || "";
+  if (ownerStatusInput) ownerStatusInput.value = draft.ownerStatus || "";
+  if (timelineInput) timelineInput.value = draft.timeline || "";
+
+  const detailsOpen = draft.addPropertyDetails === "yes" || !!draft.propertyDetails;
+
+  if (addPropertyDetailsToggle) addPropertyDetailsToggle.checked = detailsOpen;
+  if (propertyDetailsInput) propertyDetailsInput.value = draft.propertyDetails || "";
+
+  if (propertyDetailsWrap) {
+    propertyDetailsWrap.classList.toggle("active", detailsOpen);
+    propertyDetailsWrap.setAttribute("aria-hidden", detailsOpen ? "false" : "true");
+  }
+
+  document.body.classList.toggle("manual-address-active", draft.manualAddressMode === "yes");
+
+  if (addressInput) {
+    addressInput.placeholder = draft.manualAddressMode === "yes"
+      ? "Enter address, city, state, ZIP"
+      : "Start typing the property address";
+  }
+}
+
+function clearFormDraft() {
+  localStorage.removeItem(FORM_DRAFT_KEY);
 }
 
 function getFormData() {
@@ -314,6 +412,8 @@ async function playSuccessAndRedirect(lead) {
     utm_medium: lead.utmMedium || "",
     utm_campaign: lead.utmCampaign || ""
   }));
+
+  clearFormDraft();
   
   if (window.OrovianEnhancements?.playSubmitSuccess) {
     await window.OrovianEnhancements.playSubmitSuccess({
@@ -416,6 +516,12 @@ window.OrovianLocalLeads = {
   webhook: () => WEBHOOK_URL
 };
 
+window.OrovianFormDraft = {
+  save: saveFormDraft,
+  restore: restoreFormDraft,
+  clear: clearFormDraft
+};
+
 // Google Maps API failure handler.
 // Google Places autocomplete stays enabled when it works.
 // If Google fails, the seller can still type the address manually.
@@ -481,6 +587,8 @@ window.initAutocomplete = function initAutocomplete() {
     if (place.place_id && googlePlaceIdInput) {
       googlePlaceIdInput.value = place.place_id;
     }
+
+    saveFormDraft();
 
     trackEvent("address_autocomplete_selected", {
       event_category: "Lead",
