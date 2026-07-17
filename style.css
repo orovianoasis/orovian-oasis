@@ -941,7 +941,7 @@ body.modal-open {
 
   .about-modal-box {
     width: min(94vw, 620px);
-    height: min(clamp(428px, calc(650px - 50vw), 470px), calc(100dvh - 12px));
+    height: min(clamp(442px, calc(664px - 50vw), 484px), calc(100dvh - 12px));
     max-height: calc(100dvh - 12px);
     border-radius: 20px;
   }
@@ -1058,7 +1058,7 @@ body.modal-open {
   }
 
   .about-modal-box {
-    height: min(420px, calc(100dvh - 10px));
+    height: min(438px, calc(100dvh - 10px));
     max-height: calc(100dvh - 10px);
     border-radius: 18px;
   }
