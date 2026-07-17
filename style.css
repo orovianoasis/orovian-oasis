@@ -906,118 +906,214 @@ body.modal-open {
 
 @media (max-width: 520px) {
   .about-modal {
-    padding: 10px;
+    padding: 6px;
     align-items: center;
   }
 
   .about-modal-box {
-    width: min(94vw, 620px);
-    height: 92vh;
-    max-height: 92vh;
-    border-radius: 20px;
+    width: min(96vw, 620px);
+    height: calc(100dvh - 12px);
+    max-height: calc(100dvh - 12px);
+    border-radius: 18px;
   }
 
   .about-modal-close {
-    top: 8px;
-    right: 10px;
-    width: 34px;
-    height: 34px;
-    font-size: 1.5rem;
+    top: 6px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.45rem;
   }
 
   .about-page {
-    min-height: 100vh;
-    overflow: auto;
+    min-height: 100dvh;
+    overflow: hidden;
   }
 
   .about-page-shell {
-  min-height: 100vh;
-  padding: 18px 12px 12px;
-  display: grid;
-  place-items: start center;
-}
+    min-height: 100dvh;
+    padding: 6px 9px 7px;
+    display: grid;
+    place-items: center;
+  }
 
   .about-card {
-    padding: 0 4px 10px;
+    padding: 0 2px;
   }
 
   .about-logo {
-    width: clamp(64px, 18vw, 86px);
-    margin: -4px auto -8px;
+    width: clamp(52px, 15vw, 68px);
+    margin: -6px auto -8px;
   }
 
   .about-kicker {
-    margin: 0 0 5px;
-    letter-spacing: 0.15em;
-    font-size: 0.7rem;
+    margin: 0 0 4px;
+    letter-spacing: 0.12em;
+    font-size: 0.62rem;
   }
 
   .about-card h1 {
-    margin: 0 0 7px;
-    font-size: clamp(1.8rem, 8.8vw, 2.45rem);
+    margin: 0 0 5px;
+    font-size: clamp(1.45rem, 7.5vw, 2.02rem);
     line-height: 0.9;
   }
 
   .about-intro {
-    margin: 0 auto 8px;
-    font-size: 0.84rem;
-    line-height: 1.24;
+    margin: 0 auto 6px;
+    font-size: 0.76rem;
+    line-height: 1.16;
   }
 
   .about-highlight {
-    grid-template-columns: 26px 1fr;
-    gap: 7px;
-    margin: 0 0 8px;
-    padding: 8px;
-    border-radius: 13px;
+    grid-template-columns: 22px 1fr;
+    gap: 6px;
+    margin: 0 0 6px;
+    padding: 7px;
+    border-radius: 12px;
   }
 
   .about-highlight span {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .about-highlight p {
-    font-size: 0.8rem;
-    line-height: 1.2;
+    font-size: 0.72rem;
+    line-height: 1.14;
   }
 
   .about-points {
-    gap: 7px;
-    margin: 0 0 8px;
+    gap: 5px;
+    margin: 0 0 6px;
   }
 
   .about-point {
-    grid-template-columns: 30px 1fr;
-    gap: 8px;
-    padding: 8px;
-    border-radius: 13px;
+    grid-template-columns: 26px 1fr;
+    gap: 7px;
+    padding: 6px;
+    border-radius: 12px;
   }
 
   .about-point > span {
-    width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
   }
 
   .about-point strong {
     margin-bottom: 1px;
-    font-size: 0.86rem;
+    font-size: 0.78rem;
   }
 
   .about-point p {
-    font-size: 0.76rem;
-    line-height: 1.18;
+    font-size: 0.68rem;
+    line-height: 1.1;
   }
 
   .about-closing {
-    margin: 0 auto 7px;
-    font-size: 0.84rem;
+    margin: 0 auto 5px;
+    font-size: 0.74rem;
   }
 
   .about-return {
-    min-width: 220px;
-    padding: 11px 18px;
-    font-size: 0.88rem;
+    min-width: 190px;
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 380px), (max-height: 680px) {
+  .about-modal {
+    padding: 4px;
+  }
+
+  .about-modal-box {
+    width: calc(100vw - 8px);
+    height: calc(100dvh - 8px);
+    max-height: calc(100dvh - 8px);
+    border-radius: 16px;
+  }
+
+  .about-modal-close {
+    top: 5px;
+    right: 6px;
+    width: 29px;
+    height: 29px;
+    font-size: 1.3rem;
+  }
+
+  .about-page-shell {
+    padding: 4px 7px 5px;
+  }
+
+  .about-logo {
+    width: 48px;
+    margin: -7px auto -8px;
+  }
+
+  .about-kicker {
+    margin-bottom: 3px;
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+  }
+
+  .about-card h1 {
+    margin-bottom: 4px;
+    font-size: clamp(1.28rem, 7vw, 1.65rem);
+  }
+
+  .about-intro {
+    margin-bottom: 5px;
+    font-size: 0.68rem;
+    line-height: 1.08;
+  }
+
+  .about-highlight {
+    grid-template-columns: 19px 1fr;
+    gap: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+  }
+
+  .about-highlight p {
+    font-size: 0.64rem;
+    line-height: 1.08;
+  }
+
+  .about-points {
+    gap: 4px;
+    margin-bottom: 5px;
+  }
+
+  .about-point {
+    grid-template-columns: 22px 1fr;
+    gap: 6px;
+    padding: 5px;
+  }
+
+  .about-point > span {
+    width: 21px;
+    height: 21px;
+    font-size: 0.72rem;
+  }
+
+  .about-point strong {
+    font-size: 0.7rem;
+  }
+
+  .about-point p {
+    font-size: 0.61rem;
+    line-height: 1.04;
+  }
+
+  .about-closing {
+    margin-bottom: 4px;
+    font-size: 0.66rem;
+  }
+
+  .about-return {
+    min-width: 172px;
+    padding: 7px 12px;
+    font-size: 0.7rem;
   }
 }
 
