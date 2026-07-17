@@ -949,7 +949,7 @@ body.modal-open {
   .about-page-shell {
     min-height: 0;
     height: 100%;
-    padding: 4px 10px 4px;
+    padding: 4px 10px 12px;
     display: grid;
     place-items: start center;
   }
