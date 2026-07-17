@@ -1343,3 +1343,57 @@ body.modal-open {
     line-height: 1.2;
   }
 }
+
+/* Mobile About modal tight-centering fix */
+@media (max-width: 520px) {
+  .about-modal {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .about-modal-box {
+    width: min(96vw, 620px);
+    height: min(700px, calc(100dvh - 28px));
+    max-height: calc(100dvh - 28px);
+    border-radius: 20px;
+  }
+
+  .about-modal-frame {
+    height: 100%;
+  }
+
+  .about-page {
+    min-height: 100%;
+    overflow: hidden;
+  }
+
+  .about-page-shell {
+    min-height: 100%;
+    padding: 10px 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-card {
+    width: 100%;
+    padding: 0 4px;
+  }
+}
+
+@media (max-width: 380px), (max-height: 680px) {
+  .about-modal {
+    padding: 7px;
+  }
+
+  .about-modal-box {
+    width: calc(100vw - 14px);
+    height: min(620px, calc(100dvh - 18px));
+    max-height: calc(100dvh - 18px);
+    border-radius: 18px;
+  }
+
+  .about-page-shell {
+    padding: 8px 8px 10px;
+  }
+}
