@@ -600,6 +600,20 @@ body.manual-address-active .pac-container {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 1.6rem;
   text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 14px rgba(217, 189, 85, 0.34);
+}
+
+.how-it-works-box h2::before,
+.how-it-works-box h2::after {
+  content: "✦";
+  display: inline-block;
+  margin: 0 10px;
+  color: #d3ac39;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.72em;
+  line-height: 1;
+  vertical-align: 0.08em;
+  text-shadow: 0 0 10px rgba(217, 189, 85, 0.42);
 }
 
 .how-it-works-close {
@@ -949,7 +963,7 @@ body.modal-open {
   .about-page-shell {
     min-height: 0;
     height: 100%;
-    padding: 4px 10px 12px;
+    padding: 8px 10px 12px;
     display: grid;
     place-items: start center;
   }
@@ -1050,7 +1064,7 @@ body.modal-open {
   }
 
   .about-page-shell {
-    padding: 3px 8px 3px;
+    padding: 6px 8px 8px;
   }
 
   .about-logo {
