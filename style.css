@@ -927,7 +927,7 @@ body.modal-open {
 
   .about-modal-box {
     width: min(94vw, 620px);
-    height: min(500px, calc(100svh - 12px));
+    height: min(365px, calc(100svh - 12px));
     max-height: calc(100svh - 12px);
     border-radius: 20px;
   }
@@ -943,13 +943,14 @@ body.modal-open {
   .about-page {
     min-height: 0;
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .about-page-shell {
     min-height: 0;
-    height: 100%;
-    padding: 4px 10px 3px;
+    height: auto;
+    padding: 4px 10px 4px;
     display: grid;
     place-items: start center;
   }
@@ -1044,13 +1045,13 @@ body.modal-open {
   }
 
   .about-modal-box {
-    height: min(480px, calc(100svh - 10px));
+    height: min(350px, calc(100svh - 10px));
     max-height: calc(100svh - 10px);
     border-radius: 18px;
   }
 
   .about-page-shell {
-    padding: 3px 8px 2px;
+    padding: 3px 8px 3px;
   }
 
   .about-logo {
