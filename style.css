@@ -606,13 +606,24 @@ body.manual-address-active .pac-container {
   position: absolute;
   top: 10px;
   right: 14px;
-  border: none;
-  background: transparent;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(217, 189, 85, 0.48);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, 0.92);
   color: #132238;
-  font-size: 2rem;
+  font-size: 1.7rem;
   line-height: 1;
   cursor: pointer;
 }
+
+.how-it-works-close:hover,
+.how-it-works-close:focus-visible {
+  background: #fffaf0;
+  color: #07111f;
+  outline: none;
+}
+
 
 .how-it-works-steps {
   display: grid;
@@ -910,14 +921,14 @@ body.modal-open {
 
 @media (max-width: 520px) {
   .about-modal {
-    padding: 8px;
+    padding: 6px;
     align-items: center;
   }
 
   .about-modal-box {
     width: min(94vw, 620px);
-    height: min(620px, calc(100svh - 18px));
-    max-height: calc(100svh - 18px);
+    height: min(560px, calc(100svh - 12px));
+    max-height: calc(100svh - 12px);
     border-radius: 20px;
   }
 
@@ -936,7 +947,7 @@ body.modal-open {
 
   .about-page-shell {
     min-height: 100svh;
-    padding: 10px 12px;
+    padding: 6px 10px;
     display: grid;
     place-items: center;
   }
@@ -946,8 +957,8 @@ body.modal-open {
   }
 
   .about-logo {
-    width: clamp(60px, 16vw, 78px);
-    margin: -8px auto -10px;
+    width: clamp(54px, 15vw, 70px);
+    margin: -12px auto -14px;
   }
 
   .about-kicker {
@@ -963,16 +974,16 @@ body.modal-open {
   }
 
   .about-intro {
-    margin: 0 auto 7px;
-    font-size: 0.8rem;
-    line-height: 1.2;
+    margin: 0 auto 6px;
+    font-size: 0.78rem;
+    line-height: 1.18;
   }
 
   .about-highlight {
     grid-template-columns: 24px 1fr;
-    gap: 7px;
-    margin: 0 0 7px;
-    padding: 7px;
+    gap: 6px;
+    margin: 0 0 6px;
+    padding: 6px;
     border-radius: 12px;
   }
 
@@ -986,14 +997,14 @@ body.modal-open {
   }
 
   .about-points {
-    gap: 6px;
-    margin: 0 0 7px;
+    gap: 5px;
+    margin: 0 0 6px;
   }
 
   .about-point {
-    grid-template-columns: 28px 1fr;
-    gap: 7px;
-    padding: 7px;
+    grid-template-columns: 27px 1fr;
+    gap: 6px;
+    padding: 6px;
     border-radius: 12px;
   }
 
@@ -1019,9 +1030,9 @@ body.modal-open {
   }
 
   .about-return {
-    min-width: 200px;
-    padding: 10px 16px;
-    font-size: 0.84rem;
+    min-width: 190px;
+    padding: 9px 14px;
+    font-size: 0.82rem;
   }
 }
 
@@ -1031,18 +1042,18 @@ body.modal-open {
   }
 
   .about-modal-box {
-    height: calc(100svh - 12px);
-    max-height: calc(100svh - 12px);
+    height: calc(100svh - 10px);
+    max-height: calc(100svh - 10px);
     border-radius: 18px;
   }
 
   .about-page-shell {
-    padding: 8px 10px;
+    padding: 5px 8px;
   }
 
   .about-logo {
-    width: clamp(54px, 15vw, 68px);
-    margin: -10px auto -12px;
+    width: clamp(48px, 14vw, 60px);
+    margin: -14px auto -16px;
   }
 
   .about-kicker {
@@ -1051,8 +1062,8 @@ body.modal-open {
   }
 
   .about-card h1 {
-    margin-bottom: 5px;
-    font-size: clamp(1.48rem, 7.2vw, 2rem);
+    margin-bottom: 4px;
+    font-size: clamp(1.38rem, 6.8vw, 1.86rem);
   }
 
   .about-intro {
