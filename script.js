@@ -11,11 +11,11 @@
     Sends to your public n8n production webhook.
 */
 
-const SUBMISSION_MODE = "local"; // "local" or "production"
+const SUBMISSION_MODE = "production"; // "local" or "production"
 
 const WEBHOOKS = {
   local: "http://localhost:5678/webhook/orovian-oasis-lead",
-  production: "PASTE_YOUR_N8N_PRODUCTION_WEBHOOK_URL_HERE"
+  production: "https://n8n.orovianoasis.com/webhook/orovian-oasis-lead"
 };
 
 const SAVE_LOCAL_BACKUP_IF_LOCAL_WEBHOOK_FAILS = true;
