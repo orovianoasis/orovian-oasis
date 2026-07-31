@@ -382,7 +382,6 @@ async function playSuccessAndRedirect(lead) {
 
   trackEvent("lead_submit", {
     event_category: "Lead",
-    property_address: lead.propertyAddress || "",
     owner_status: lead.ownerStatus || "",
     selling_timeline: lead.timeline || "",
     submission_mode: lead.submissionMode || "",
@@ -395,7 +394,6 @@ async function playSuccessAndRedirect(lead) {
   trackEvent("generate_lead", {
     currency: "USD",
     value: 1,
-    property_address: lead.propertyAddress || "",
     owner_status: lead.ownerStatus || "",
     selling_timeline: lead.timeline || "",
     submission_mode: lead.submissionMode || "",
