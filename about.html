@@ -90,7 +90,7 @@ src="https://www.facebook.com/tr?id=1422354923049203&ev=PageView&noscript=1"
         🌿 A fresh start begins with one simple step.
       </p>
 
-      <a class="about-return gold-button" href="#" onclick="window.parent.postMessage('closeAboutModal', '*'); return false;">Continue to Property Form</a>
+      <a class="about-return gold-button" href="/" onclick="if (window.parent !== window) { window.parent.postMessage('closeAboutModal', window.location.origin); return false; }">Continue to Property Form</a>
     </section>
   </main>
 </body>
