@@ -36,7 +36,7 @@
     enabledOnLoad: true,
 
     // Background photo
-    backgroundPhoto: true,
+    backgroundPhoto: false,
     backgroundPhotoUrl: "assets/background1.webp",
     backgroundPhotoOpacity: 0.14,
 
