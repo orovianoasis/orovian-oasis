@@ -89,6 +89,33 @@
       mask-image: linear-gradient(to bottom, black, transparent 92%);
     }
 
+    body.faq-embedded {
+      height: 100%;
+      min-height: 100%;
+      background: transparent;
+    }
+
+    body.faq-embedded::before {
+      display: none;
+    }
+
+    body.faq-embedded .faq-shell {
+      width: 100%;
+      min-height: 100%;
+      padding: 0;
+    }
+
+    body.faq-embedded .faq-card {
+      min-height: 100%;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    body.faq-embedded .faq-card::before {
+      display: none;
+    }
+
     .faq-shell {
       position: relative;
       z-index: 1;
@@ -389,6 +416,11 @@
   </style>
 </head>
 <body>
+  <script>
+    if (window.parent !== window) {
+      document.body.classList.add("faq-embedded");
+    }
+  </script>
   <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1422354923049203&ev=PageView&noscript=1" alt="" /></noscript>
 
   <main class="faq-shell">
@@ -500,9 +532,16 @@
       <p class="faq-closing">🌿 A clear next step can start with one simple submission.</p>
 
       <div class="faq-return">
-        <a class="gold-button" href="/" onclick="if (window.parent !== window) { window.parent.postMessage('closeFaqModal', window.location.origin); return false; }">Continue to Property Form</a>
+        <a id="faqReturnLink" class="gold-button" href="/" onclick="if (window.parent !== window) { window.parent.postMessage('closeFaqModal', window.location.origin); return false; }">Continue to Property Form</a>
       </div>
     </article>
   </main>
+
+  <script>
+    const faqReturnLink = document.getElementById("faqReturnLink");
+    if (faqReturnLink && window.parent !== window) {
+      faqReturnLink.textContent = "Back to How It Works";
+    }
+  </script>
 </body>
 </html>

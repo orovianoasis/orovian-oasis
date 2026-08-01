@@ -638,6 +638,97 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+// FAQ popup, opened from How It Works
+const faqFromHowItWorks = document.getElementById("faqFromHowItWorks");
+let faqModal = null;
+let faqReturnToHowItWorks = false;
+
+function createFaqModal() {
+  if (faqModal) return faqModal;
+
+  faqModal = document.createElement("div");
+  faqModal.id = "faqModal";
+  faqModal.className = "about-modal faq-modal";
+  faqModal.setAttribute("aria-hidden", "true");
+
+  faqModal.innerHTML = `
+    <div class="about-modal-overlay" data-close-faq></div>
+    <div class="about-modal-box faq-modal-box" role="dialog" aria-modal="true" aria-label="Frequently Asked Questions">
+      <button type="button" class="about-modal-close faq-modal-close" data-close-faq aria-label="Close frequently asked questions">×</button>
+      <iframe class="about-modal-frame faq-modal-frame" src="faq.html" title="Frequently Asked Questions"></iframe>
+    </div>
+  `;
+
+  document.body.appendChild(faqModal);
+
+  faqModal.querySelectorAll("[data-close-faq]").forEach((button) => {
+    button.addEventListener("click", closeFaqModal);
+  });
+
+  return faqModal;
+}
+
+function openFaqFromHowItWorks(event) {
+  if (event) event.preventDefault();
+
+  faqReturnToHowItWorks = true;
+
+  if (howItWorksModal) {
+    howItWorksModal.classList.remove("active");
+    howItWorksModal.setAttribute("aria-hidden", "true");
+  }
+
+  const modal = createFaqModal();
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  const closeButton = modal.querySelector("[data-close-faq]");
+  window.setTimeout(() => closeButton?.focus(), 0);
+
+  trackEvent("faq_open", {
+    event_category: "Engagement",
+    faq_source: "how_it_works"
+  });
+}
+
+function closeFaqModal() {
+  if (!faqModal) return;
+
+  faqModal.classList.remove("active");
+  faqModal.setAttribute("aria-hidden", "true");
+
+  if (faqReturnToHowItWorks && howItWorksModal) {
+    faqReturnToHowItWorks = false;
+    howItWorksModal.classList.add("active");
+    howItWorksModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    window.setTimeout(() => faqFromHowItWorks?.focus(), 0);
+    return;
+  }
+
+  faqReturnToHowItWorks = false;
+  document.body.classList.remove("modal-open");
+}
+
+if (faqFromHowItWorks) {
+  faqFromHowItWorks.addEventListener("click", openFaqFromHowItWorks);
+}
+
+window.addEventListener("message", (event) => {
+  if (event.origin !== window.location.origin) return;
+
+  if (event.data === "closeFaqModal") {
+    closeFaqModal();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && faqModal?.classList.contains("active")) {
+    closeFaqModal();
+  }
+});
+
 // Legal pages popup
 const legalLinks = document.querySelectorAll("[data-legal-popup]");
 let legalModal = null;
