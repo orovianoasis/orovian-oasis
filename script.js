@@ -625,7 +625,10 @@ function closeHowItWorksModal() {
 }
 
 if (howItWorksBtn) {
-  howItWorksBtn.addEventListener("click", openHowItWorksModal);
+  howItWorksBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    openHowItWorksModal();
+  });
 }
 
 howItWorksCloseButtons.forEach((button) => {
