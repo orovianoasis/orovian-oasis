@@ -1867,3 +1867,14 @@ body.portal-page {
     offset-distance: 12%;
   }
 }
+
+/* Desktop center-divider correction (2026-08-03)
+   Keep the centered OR badge, but remove the stationary vertical divider
+   so the expanding destination boundary is the only visible separation. */
+@media (min-width: 901px) {
+  .portal-stage::before,
+  .portal-center-mark i {
+    display: none;
+  }
+}
+
