@@ -844,7 +844,7 @@ body.portal-page {
   }
 }
 
-@media (max-width: 720px) and (orientation: portrait) {
+@media (max-width: 900px) and (orientation: portrait) {
   :root {
     --header-height: clamp(72px, 10.5vh, 92px);
     --footer-height: clamp(91px, 13.5vh, 112px);
@@ -955,7 +955,7 @@ body.portal-page {
   .contact-button { height: 42px; }
 }
 
-@media (max-width: 720px) and (orientation: portrait) and (max-height: 720px) {
+@media (max-width: 900px) and (orientation: portrait) and (max-height: 720px) {
   :root { --footer-height: 88px; }
   .choice-description { display: none; }
   .choice-copy { width: 69%; }
@@ -979,3 +979,243 @@ body.portal-page {
     transition-duration: .01ms !important;
   }
 }
+
+/* Portal layout + footer clarity revision (2026-08-03) */
+
+/* Keep each message in its own visual zone instead of laying it over the artwork. */
+.portal-choice-intake {
+  align-items: flex-start;
+}
+
+.portal-choice-intake .choice-copy {
+  width: min(560px, 70%);
+  margin-top: clamp(5px, 1.5vh, 18px);
+}
+
+.portal-choice-intake .choice-scene {
+  inset: 23% -3% -7% 31%;
+  place-items: end center;
+  opacity: .84;
+}
+
+.portal-choice-showcase {
+  align-items: flex-end;
+}
+
+.portal-choice-showcase .choice-copy {
+  width: min(590px, 72%);
+  margin-left: auto;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.portal-choice-showcase .choice-scene {
+  inset: -5% 30% 31% -8%;
+  place-items: start center;
+  opacity: .84;
+}
+
+.choice-copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -18px -20px;
+  border-radius: 28px;
+  background: radial-gradient(ellipse at center, rgba(3,2,6,.74), rgba(3,2,6,.38) 58%, transparent 78%);
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.choice-title {
+  font-size: clamp(2.45rem, 4.65vw, 4.8rem);
+}
+
+/* The large 01 / 02 numerals were decorative but competed with the calls to action. */
+.choice-number {
+  display: none;
+}
+
+/* Social buttons stay in their platform colors; hover only gives them lift and glow. */
+.portal-socials a {
+  border-color: rgba(255,255,255,.34);
+  box-shadow: inset 0 0 15px rgba(255,255,255,.10), 0 7px 18px rgba(0,0,0,.25);
+}
+
+.portal-socials .social-facebook,
+.portal-socials .social-facebook:hover,
+.portal-socials .social-facebook:focus-visible {
+  background: linear-gradient(135deg, #1877f2, #55a3ff);
+  box-shadow: inset 0 0 15px rgba(255,255,255,.13), 0 0 20px rgba(24,119,242,.30);
+}
+
+.portal-socials .social-instagram,
+.portal-socials .social-instagram:hover,
+.portal-socials .social-instagram:focus-visible {
+  background: linear-gradient(135deg, #833ab4, #fd1d1d 55%, #fcb045);
+  box-shadow: inset 0 0 15px rgba(255,255,255,.13), 0 0 20px rgba(225,48,108,.30);
+}
+
+.portal-socials .social-tiktok,
+.portal-socials .social-tiktok:hover,
+.portal-socials .social-tiktok:focus-visible {
+  background: linear-gradient(135deg, #00e5df, #17171d 48%, #ff3d85);
+  box-shadow: inset 0 0 15px rgba(255,255,255,.13), 0 0 20px rgba(0,229,223,.23);
+}
+
+.portal-socials .social-youtube,
+.portal-socials .social-youtube:hover,
+.portal-socials .social-youtube:focus-visible {
+  background: linear-gradient(135deg, #ff0033, #a00020);
+  box-shadow: inset 0 0 15px rgba(255,255,255,.13), 0 0 20px rgba(255,0,51,.28);
+}
+
+.portal-socials a:hover,
+.portal-socials a:focus-visible {
+  filter: brightness(1.12) saturate(1.15);
+  transform: translateY(-4px) scale(1.055);
+}
+
+/* Contact buttons now use one larger, unambiguous label. */
+.contact-button {
+  min-width: 132px;
+  height: 50px;
+  justify-content: center;
+}
+
+.contact-button span {
+  display: block;
+  font-size: .88rem;
+  line-height: 1;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+
+.contact-button small {
+  display: none;
+}
+
+.contact-button:hover,
+.contact-button:focus-visible {
+  transform: translateY(-4px) scale(1.045);
+}
+
+@media (max-width: 1180px) and (min-width: 721px) {
+  .portal-choice {
+    padding: clamp(26px, 3.4vw, 48px);
+  }
+
+  .portal-choice-intake .choice-copy,
+  .portal-choice-showcase .choice-copy {
+    width: 74%;
+  }
+
+  .portal-choice-intake .choice-scene {
+    inset: 28% -6% -8% 33%;
+  }
+
+  .portal-choice-showcase .choice-scene {
+    inset: -6% 34% 35% -10%;
+  }
+
+  .choice-title {
+    font-size: clamp(2.35rem, 4.35vw, 4.15rem);
+  }
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .portal-choice {
+    padding: clamp(12px, 3.8vw, 20px) clamp(16px, 5vw, 25px);
+  }
+
+  .portal-choice-intake {
+    align-items: flex-start;
+  }
+
+  .portal-choice-intake .choice-copy {
+    width: 73%;
+    margin: 0;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .portal-choice-intake .choice-scene {
+    inset: 30% -9% -10% 39%;
+    place-items: end center;
+  }
+
+  .portal-choice-showcase {
+    align-items: flex-end;
+  }
+
+  .portal-choice-showcase .choice-copy {
+    width: 76%;
+    margin: 0 0 0 auto;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .portal-choice-showcase .choice-scene {
+    inset: -10% 40% 39% -12%;
+    place-items: start center;
+  }
+
+  .choice-copy::before {
+    inset: -11px -12px;
+    border-radius: 20px;
+    background: radial-gradient(ellipse at center, rgba(3,2,6,.78), rgba(3,2,6,.40) 60%, transparent 80%);
+  }
+
+  .choice-title {
+    font-size: clamp(1.8rem, 8.2vw, 2.65rem);
+  }
+
+  .portal-socials a {
+    box-shadow: inset 0 0 10px rgba(255,255,255,.12), 0 0 12px rgba(255,255,255,.10);
+  }
+
+  .contact-button {
+    min-width: 88px;
+    height: 41px;
+    padding: 0 10px;
+  }
+
+  .contact-button span {
+    font-size: .69rem;
+  }
+}
+
+@media (max-width: 900px) and (orientation: portrait) and (max-height: 720px) {
+  .portal-choice-intake .choice-copy,
+  .portal-choice-showcase .choice-copy {
+    width: 74%;
+  }
+
+  .portal-choice-intake .choice-scene {
+    inset: 29% -10% -12% 42%;
+  }
+
+  .portal-choice-showcase .choice-scene {
+    inset: -12% 43% 42% -13%;
+  }
+
+  .contact-button {
+    min-width: 82px;
+    height: 38px;
+  }
+
+  .contact-button span {
+    font-size: .64rem;
+  }
+}
+
+@media (max-width: 370px) and (orientation: portrait) {
+  .contact-button {
+    min-width: 76px;
+    padding-inline: 8px;
+  }
+
+  .contact-button span {
+    font-size: .59rem;
+  }
+}
+
