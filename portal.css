@@ -1641,3 +1641,207 @@ body.portal-page {
     transform: rotate(1deg) translateY(-2px) scale(.98);
   }
 }
+
+
+/* Neon lane definition + mirrored perimeter tracers (2026-08-03)
+   Remove the two .lane-trace-orb spans from index.html and this block to remove the effect. */
+.portal-choice::after {
+  border: 2px solid rgba(var(--accent-rgb), .58);
+  box-shadow:
+    inset 0 0 24px rgba(var(--accent-rgb), .10),
+    inset 0 0 70px rgba(var(--accent-rgb), .055),
+    0 0 14px rgba(var(--accent-rgb), .22);
+}
+
+.portal-choice-intake::after {
+  border-color: rgba(255, 214, 107, .62);
+  box-shadow:
+    inset 0 0 24px rgba(255, 214, 107, .10),
+    inset 0 0 72px rgba(66, 245, 207, .055),
+    0 0 15px rgba(255, 214, 107, .24);
+}
+
+.portal-choice-showcase::after {
+  border-color: rgba(49, 217, 255, .62);
+  box-shadow:
+    inset 0 0 24px rgba(49, 217, 255, .10),
+    inset 0 0 72px rgba(255, 79, 184, .055),
+    0 0 15px rgba(49, 217, 255, .24);
+}
+
+.portal-stage::before {
+  content: "";
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  pointer-events: none;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 214, 107, .78) 16%,
+    rgba(66, 245, 207, .82) 43%,
+    rgba(49, 217, 255, .86) 57%,
+    rgba(255, 79, 184, .78) 84%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 7px rgba(255, 214, 107, .55),
+    0 0 16px rgba(49, 217, 255, .38),
+    0 0 28px rgba(255, 79, 184, .20);
+  opacity: .88;
+}
+
+.lane-trace-orb {
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  pointer-events: none;
+  offset-path: inset(10px round 18px);
+  offset-distance: 0%;
+  offset-rotate: 0deg;
+  will-change: offset-distance, transform, opacity;
+  animation: laneTraceOrbit 11.5s linear infinite;
+}
+
+.lane-trace-orb::before,
+.lane-trace-orb::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.lane-trace-orb::before {
+  inset: -8px;
+  border: 1px solid currentColor;
+  opacity: .35;
+  filter: blur(.4px);
+  animation: laneTracePulse 2.4s ease-in-out infinite;
+}
+
+.lane-trace-orb::after {
+  inset: -18px;
+  background: radial-gradient(circle, currentColor 0 7%, transparent 58%);
+  opacity: .38;
+  filter: blur(5px);
+}
+
+.lane-trace-orb-intake {
+  color: #ffd66b;
+  background: radial-gradient(circle at 34% 30%, #fffbdc 0 16%, #ffd66b 31%, #ff8e53 58%, #42f5cf 100%);
+  box-shadow:
+    0 0 8px #fff4be,
+    0 0 17px rgba(255, 214, 107, .95),
+    0 0 30px rgba(66, 245, 207, .62);
+  animation-direction: normal;
+}
+
+.lane-trace-orb-showcase {
+  color: #31d9ff;
+  background: radial-gradient(circle at 34% 30%, #f8ffff 0 16%, #31d9ff 31%, #a576ff 59%, #ff4fb8 100%);
+  box-shadow:
+    0 0 8px #eafcff,
+    0 0 17px rgba(49, 217, 255, .95),
+    0 0 30px rgba(255, 79, 184, .62);
+  animation-direction: reverse;
+  animation-delay: -5.75s;
+}
+
+@keyframes laneTraceOrbit {
+  0% { offset-distance: 0%; transform: scale(.84); opacity: .55; }
+  18% { transform: scale(1.18); opacity: 1; }
+  50% { transform: scale(.92); opacity: .72; }
+  77% { transform: scale(1.22); opacity: 1; }
+  100% { offset-distance: 100%; transform: scale(.84); opacity: .55; }
+}
+
+@keyframes laneTracePulse {
+  0%, 100% { transform: scale(.78); opacity: .20; }
+  50% { transform: scale(1.22); opacity: .62; }
+}
+
+/* Construction sign legibility: fasteners sit high like real sign hardware,
+   clear of the words on both desktop and mobile. */
+.showcase-status-sticker {
+  padding-inline: 26px;
+}
+
+.showcase-status-sticker::before,
+.showcase-status-sticker::after {
+  top: 12px;
+  width: 11px;
+  height: 11px;
+  transform: none;
+  z-index: 2;
+}
+
+.showcase-status-sticker::before { left: 12px; }
+.showcase-status-sticker::after { right: 12px; }
+
+.showcase-status-sticker span {
+  font-size: clamp(.60rem, .68vw, .74rem);
+  letter-spacing: .16em;
+}
+
+.showcase-status-sticker strong {
+  font-size: clamp(.78rem, .90vw, 1rem);
+  letter-spacing: .065em;
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .portal-stage::before {
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 214, 107, .76) 18%,
+      rgba(66, 245, 207, .84) 43%,
+      rgba(49, 217, 255, .86) 57%,
+      rgba(255, 79, 184, .76) 82%,
+      transparent 100%
+    );
+  }
+
+  .lane-trace-orb {
+    width: 12px;
+    height: 12px;
+    offset-path: inset(7px round 13px);
+    animation-duration: 10.5s;
+  }
+
+  .showcase-status-sticker {
+    padding-inline: 21px;
+  }
+
+  .showcase-status-sticker::before,
+  .showcase-status-sticker::after {
+    top: 9px;
+    width: 8px;
+    height: 8px;
+  }
+
+  .showcase-status-sticker::before { left: 9px; }
+  .showcase-status-sticker::after { right: 9px; }
+  .showcase-status-sticker span { font-size: .52rem; letter-spacing: .15em; }
+  .showcase-status-sticker strong { font-size: .69rem; letter-spacing: .055em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lane-trace-orb {
+    animation: none !important;
+    offset-distance: 12%;
+  }
+}
