@@ -1700,18 +1700,15 @@ body.portal-page {
   z-index: 7;
   top: 0;
   left: 0;
-  width: 8px;
-  height: 8px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   pointer-events: none;
-  /* The 4px path keeps the 8px orb centered directly over the inner edge
-     of the 2px neon border without clipping it outside the card. */
-  offset-path: inset(4px round 4px);
+  offset-path: inset(10px round 18px);
   offset-distance: 0%;
-  offset-anchor: center;
   offset-rotate: 0deg;
   will-change: offset-distance, transform, opacity;
-  animation: laneTraceOrbit 26s linear infinite;
+  animation: laneTraceOrbit 11.5s linear infinite;
 }
 
 .lane-trace-orb::before,
@@ -1723,18 +1720,18 @@ body.portal-page {
 }
 
 .lane-trace-orb::before {
-  inset: -5px;
+  inset: -8px;
   border: 1px solid currentColor;
-  opacity: .32;
-  filter: blur(.35px);
-  animation: laneTracePulse 3.4s ease-in-out infinite;
+  opacity: .35;
+  filter: blur(.4px);
+  animation: laneTracePulse 2.4s ease-in-out infinite;
 }
 
 .lane-trace-orb::after {
-  inset: -12px;
+  inset: -18px;
   background: radial-gradient(circle, currentColor 0 7%, transparent 58%);
-  opacity: .34;
-  filter: blur(4px);
+  opacity: .38;
+  filter: blur(5px);
 }
 
 .lane-trace-orb-intake {
@@ -1744,6 +1741,7 @@ body.portal-page {
     0 0 8px #fff4be,
     0 0 17px rgba(255, 214, 107, .95),
     0 0 30px rgba(66, 245, 207, .62);
+  animation-direction: normal;
 }
 
 .lane-trace-orb-showcase {
@@ -1753,28 +1751,8 @@ body.portal-page {
     0 0 8px #eafcff,
     0 0 17px rgba(49, 217, 255, .95),
     0 0 30px rgba(255, 79, 184, .62);
-}
-
-/* Each destination has two tracers moving in complete opposite directions.
-   Their phase offsets keep the four lights mirrored instead of clustered. */
-.lane-trace-orb-intake.lane-trace-orb-primary {
-  animation-direction: normal;
-  animation-delay: 0s;
-}
-
-.lane-trace-orb-intake.lane-trace-orb-secondary {
   animation-direction: reverse;
-  animation-delay: -13s;
-}
-
-.lane-trace-orb-showcase.lane-trace-orb-primary {
-  animation-direction: reverse;
-  animation-delay: -6.5s;
-}
-
-.lane-trace-orb-showcase.lane-trace-orb-secondary {
-  animation-direction: normal;
-  animation-delay: -19.5s;
+  animation-delay: -5.75s;
 }
 
 @keyframes laneTraceOrbit {
@@ -1838,10 +1816,10 @@ body.portal-page {
   }
 
   .lane-trace-orb {
-    width: 7px;
-    height: 7px;
-    offset-path: inset(3.5px round 3.5px);
-    animation-duration: 24s;
+    width: 12px;
+    height: 12px;
+    offset-path: inset(7px round 13px);
+    animation-duration: 10.5s;
   }
 
   .showcase-status-sticker {
@@ -1868,13 +1846,24 @@ body.portal-page {
   }
 }
 
-/* Desktop center-divider correction (2026-08-03)
-   Keep the centered OR badge, but remove the stationary vertical divider
-   so the expanding destination boundary is the only visible separation. */
+
+/* Desktop centerline removal fix (keep OR centered) */
 @media (min-width: 901px) {
-  .portal-stage::before,
+  .portal-stage::before {
+    display: none !important;
+  }
+
+  .portal-center-mark {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 20 !important;
+    margin: 0 !important;
+  }
+
   .portal-center-mark i {
-    display: none;
+    display: none !important;
   }
 }
 
