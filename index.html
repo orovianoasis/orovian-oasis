@@ -138,9 +138,16 @@
             <path class="house-halo" d="M112 153 259 43l149 110v134H112Z" />
             <path class="house-line" d="M112 153 259 43l149 110v134H112Z" />
             <path class="house-line" d="M72 174 259 33l190 141" />
-            <path class="house-line" d="M306 78V35h52v82" />
+            <path class="house-line house-chimney" d="M306 78V35h52v82" />
+            <g class="chimney-smoke" aria-hidden="true">
+              <circle class="smoke-puff smoke-one" cx="331" cy="24" r="9" />
+              <circle class="smoke-puff smoke-two" cx="343" cy="8" r="12" />
+              <circle class="smoke-puff smoke-three" cx="326" cy="-10" r="15" />
+            </g>
             <path class="house-door" d="M226 287V187h68v100" />
             <path class="door-light" d="M236 276v-79h48v79Z" />
+            <path class="door-panel" d="M236 276v-79h48v79Z" />
+            <circle class="door-knob" cx="276" cy="237" r="3.5" />
             <circle class="house-spark spark-one" cx="99" cy="89" r="4" />
             <circle class="house-spark spark-two" cx="427" cy="74" r="3" />
             <circle class="house-spark spark-three" cx="445" cy="228" r="5" />
@@ -170,6 +177,19 @@
             <path class="film-frame" d="M79 64h362v211H79Z" />
             <path class="film-frame" d="M79 102h362M79 237h362" />
             <path class="film-ticks" d="M109 64v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38M109 237v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38" />
+            <g class="floating-media media-card-one">
+              <rect x="42" y="126" width="116" height="72" rx="10" />
+              <path d="M58 145h58M58 160h80M58 176h45" />
+            </g>
+            <g class="floating-media media-card-two">
+              <rect x="354" y="48" width="126" height="78" rx="10" />
+              <circle cx="383" cy="76" r="11" />
+              <path d="M405 68h50M405 84h36M373 106h82" />
+            </g>
+            <g class="floating-media media-card-three">
+              <rect x="338" y="218" width="132" height="70" rx="10" />
+              <path d="m356 270 30-32 22 22 18-16 26 26" />
+            </g>
             <path class="prism-shape prism-main" d="m260 110 78 103H182Z" />
             <path class="prism-ray ray-one" d="m260 110 156 42" />
             <path class="prism-ray ray-two" d="m260 110 137 100" />
@@ -210,7 +230,7 @@
         </a>
       </nav>
 
-      <p class="portal-copyright">© <span id="portalYear"></span> Orovian Oasis.</p>
+      <p class="portal-copyright">© <span id="portalYear"></span> Orovian Oasis. All rights reserved.</p>
 
       <div class="portal-contact-actions" aria-label="Contact Orovian Oasis">
         <a class="contact-button contact-phone" href="tel:+12054339779" data-contact="phone">
