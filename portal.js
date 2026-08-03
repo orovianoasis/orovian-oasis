@@ -2,10 +2,11 @@
   "use strict";
 
   const shell = document.getElementById("portalShell");
-  const particleLayer = document.getElementById("portalParticles");
+  const prismLayer = document.getElementById("cinemaPrisms");
   const year = document.getElementById("portalYear");
-  const cards = document.querySelectorAll("[data-portal-destination]");
+  const choices = document.querySelectorAll("[data-portal-destination]");
   const socialLinks = document.querySelectorAll("[data-social]");
+  const contactLinks = document.querySelectorAll("[data-contact]");
 
   if (year) {
     year.textContent = String(new Date().getFullYear());
@@ -21,8 +22,8 @@
     }
   };
 
-  cards.forEach((card) => {
-    const destination = card.dataset.portalDestination || "unknown";
+  choices.forEach((choice) => {
+    const destination = choice.dataset.portalDestination || "unknown";
 
     const activate = () => {
       if (shell) shell.dataset.active = destination;
@@ -32,11 +33,11 @@
       if (shell) delete shell.dataset.active;
     };
 
-    card.addEventListener("pointerenter", activate);
-    card.addEventListener("pointerleave", clear);
-    card.addEventListener("focus", activate);
-    card.addEventListener("blur", clear);
-    card.addEventListener("click", () => {
+    choice.addEventListener("pointerenter", activate);
+    choice.addEventListener("pointerleave", clear);
+    choice.addEventListener("focus", activate);
+    choice.addEventListener("blur", clear);
+    choice.addEventListener("click", () => {
       track("portal_select", {
         event_category: "Navigation",
         destination
@@ -53,6 +54,15 @@
     });
   });
 
+  contactLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      track("portal_contact_click", {
+        event_category: "Contact",
+        method: link.dataset.contact || "unknown"
+      });
+    });
+  });
+
   if (shell && window.matchMedia("(pointer: fine)").matches) {
     let frame = 0;
 
@@ -60,34 +70,42 @@
       if (frame) return;
 
       frame = window.requestAnimationFrame(() => {
-        shell.style.setProperty("--mouse-x", `${(event.clientX / window.innerWidth) * 100}%`);
-        shell.style.setProperty("--mouse-y", `${(event.clientY / window.innerHeight) * 100}%`);
+        shell.style.setProperty("--pointer-x", `${(event.clientX / window.innerWidth) * 100}%`);
+        shell.style.setProperty("--pointer-y", `${(event.clientY / window.innerHeight) * 100}%`);
         frame = 0;
       });
     }, { passive: true });
   }
 
-  if (particleLayer && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (prismLayer && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const fragment = document.createDocumentFragment();
-    const colors = ["#f7c45d", "#56d6ca", "#a784ff", "#fff2c7"];
+    const palettes = [
+      ["rgba(255,214,107,.72)", "rgba(255,142,83,.12)"],
+      ["rgba(66,245,207,.62)", "rgba(49,217,255,.12)"],
+      ["rgba(165,118,255,.65)", "rgba(255,79,184,.12)"],
+      ["rgba(255,79,184,.55)", "rgba(255,214,107,.1)"]
+    ];
 
-    for (let index = 0; index < 34; index += 1) {
-      const particle = document.createElement("i");
-      const size = 1 + Math.random() * 2.2;
+    for (let index = 0; index < 18; index += 1) {
+      const prism = document.createElement("i");
+      const palette = palettes[index % palettes.length];
+      const size = 9 + Math.random() * 22;
 
-      particle.className = "portal-particle";
-      particle.style.setProperty("--size", `${size}px`);
-      particle.style.setProperty("--left", `${Math.random() * 100}%`);
-      particle.style.setProperty("--top", `${Math.random() * 100}%`);
-      particle.style.setProperty("--opacity", String(0.18 + Math.random() * 0.52));
-      particle.style.setProperty("--color", colors[index % colors.length]);
-      particle.style.setProperty("--duration", `${5 + Math.random() * 9}s`);
-      particle.style.setProperty("--delay", `${-Math.random() * 10}s`);
-      particle.style.setProperty("--drift-x", `${-24 + Math.random() * 48}px`);
-      particle.style.setProperty("--drift-y", `${-32 + Math.random() * 64}px`);
-      fragment.appendChild(particle);
+      prism.className = "cinema-prism";
+      prism.style.setProperty("--left", `${Math.random() * 100}%`);
+      prism.style.setProperty("--top", `${Math.random() * 100}%`);
+      prism.style.setProperty("--size", `${size}px`);
+      prism.style.setProperty("--opacity", String(.13 + Math.random() * .28));
+      prism.style.setProperty("--color-a", palette[0]);
+      prism.style.setProperty("--color-b", palette[1]);
+      prism.style.setProperty("--duration", `${7 + Math.random() * 10}s`);
+      prism.style.setProperty("--delay", `${-Math.random() * 13}s`);
+      prism.style.setProperty("--drift-x", `${-36 + Math.random() * 72}px`);
+      prism.style.setProperty("--drift-y", `${-48 + Math.random() * 96}px`);
+      prism.style.setProperty("--rotate", `${Math.random() * 180}deg`);
+      fragment.appendChild(prism);
     }
 
-    particleLayer.appendChild(fragment);
+    prismLayer.appendChild(fragment);
   }
 })();

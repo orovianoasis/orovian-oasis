@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+  <!-- One-file switch: set enabled to false in portal-config.js to bypass this cover. -->
+  <script src="portal-config.js"></script>
+  <script>
+    if (window.OROVIAN_PORTAL && window.OROVIAN_PORTAL.enabled === false) {
+      window.location.replace(window.OROVIAN_PORTAL.fallbackUrl || "property-intake.html");
+    }
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JSYNE84D7G"></script>
   <script>
@@ -31,19 +39,19 @@
   /></noscript>
   <!-- End Meta Pixel Code -->
 
-  <title>Orovian Oasis | Property Intake &amp; Showcase</title>
-  <meta name="description" content="Choose your destination at Orovian Oasis: submit a property for review or enter the real estate showcase." />
+  <title>Orovian Oasis | Choose Your Destination</title>
+  <meta name="description" content="Enter Orovian Oasis to submit a property for review or explore the real estate showcase." />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://orovianoasis.com/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Orovian Oasis" />
-  <meta property="og:title" content="Orovian Oasis | Property Intake &amp; Showcase" />
+  <meta property="og:title" content="Orovian Oasis | Choose Your Destination" />
   <meta property="og:description" content="Submit a property for review or enter the Orovian Oasis showcase." />
   <meta property="og:url" content="https://orovianoasis.com/" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Orovian Oasis | Property Intake &amp; Showcase" />
+  <meta name="twitter:title" content="Orovian Oasis | Choose Your Destination" />
   <meta name="twitter:description" content="Choose your path: property intake or the Orovian Oasis showcase." />
 
   <script type="application/ld+json">
@@ -78,92 +86,143 @@
 </head>
 <body class="portal-page">
   <div class="portal-shell" id="portalShell">
-    <div class="portal-atmosphere" aria-hidden="true">
-      <span class="portal-aurora portal-aurora-one"></span>
-      <span class="portal-aurora portal-aurora-two"></span>
-      <span class="portal-vignette"></span>
-      <span class="portal-grain"></span>
-      <span class="portal-particles" id="portalParticles"></span>
+    <div class="cinema-world" aria-hidden="true">
+      <span class="cinema-curtain curtain-left"></span>
+      <span class="cinema-curtain curtain-right"></span>
+      <span class="cinema-beam beam-one"></span>
+      <span class="cinema-beam beam-two"></span>
+      <span class="cinema-beam beam-three"></span>
+      <span class="cinema-ribbon ribbon-one"></span>
+      <span class="cinema-ribbon ribbon-two"></span>
+      <span class="cinema-ribbon ribbon-three"></span>
+      <span class="cinema-vignette"></span>
+      <span class="cinema-grain"></span>
+      <span class="cinema-prisms" id="cinemaPrisms"></span>
     </div>
 
     <header class="portal-header">
       <a class="portal-brand" href="/" aria-label="Orovian Oasis home">
-        <span class="portal-logo-wrap" aria-hidden="true">
-          <span class="portal-logo-ring"></span>
+        <span class="portal-logo-stage" aria-hidden="true">
+          <span class="portal-logo-glow"></span>
           <img src="assets/logo.webp" alt="" class="portal-logo" />
         </span>
         <span class="portal-brand-copy">
           <span class="portal-brand-name">Orovian Oasis</span>
-          <span class="portal-brand-line">Property • Possibility • Perspective</span>
+          <span class="portal-brand-line">Two doors. One vision.</span>
         </span>
       </a>
-      <p class="portal-prompt">Choose your destination</p>
+
+      <div class="portal-header-cue" aria-hidden="true">
+        <span></span>
+        Choose your entrance
+        <span></span>
+      </div>
     </header>
 
     <main class="portal-stage" aria-label="Choose an Orovian Oasis destination">
-      <a class="portal-card portal-card-intake" href="property-intake.html" data-portal-destination="property_intake" aria-label="Submit a property for review">
-        <span class="portal-card-art" aria-hidden="true">
-          <span class="portal-orbit portal-orbit-one"></span>
-          <span class="portal-orbit portal-orbit-two"></span>
-          <span class="portal-horizon"></span>
-          <svg class="portal-symbol portal-symbol-house" viewBox="0 0 160 160" role="img" aria-hidden="true">
-            <path d="M25 76 80 31l55 45v57a10 10 0 0 1-10 10H35a10 10 0 0 1-10-10V76Z" />
-            <path d="M57 143V96h46v47M16 81l64-52 64 52" />
-            <path d="M114 49V28h17v35" />
+      <a class="portal-choice portal-choice-intake" href="property-intake.html" data-portal-destination="property_intake" aria-label="Submit a property for review">
+        <span class="choice-backdrop" aria-hidden="true"></span>
+        <span class="choice-scene" aria-hidden="true">
+          <svg class="scene-house" viewBox="0 0 520 320">
+            <defs>
+              <linearGradient id="intakeGlow" x1="0" x2="1">
+                <stop offset="0" stop-color="#ffd66b" />
+                <stop offset="0.52" stop-color="#ff8e53" />
+                <stop offset="1" stop-color="#42f5cf" />
+              </linearGradient>
+              <filter id="intakeBlur"><feGaussianBlur stdDeviation="8" /></filter>
+            </defs>
+            <path class="scene-contour contour-a" d="M-15 244C77 190 132 266 222 209s158-87 310-10" />
+            <path class="scene-contour contour-b" d="M-26 277c112-68 175 13 269-45s190-64 314-10" />
+            <path class="scene-contour contour-c" d="M-10 304c94-42 181 4 270-43s160-50 278-17" />
+            <path class="house-halo" d="M112 153 259 43l149 110v134H112Z" />
+            <path class="house-line" d="M112 153 259 43l149 110v134H112Z" />
+            <path class="house-line" d="M72 174 259 33l190 141" />
+            <path class="house-line" d="M306 78V35h52v82" />
+            <path class="house-door" d="M226 287V187h68v100" />
+            <path class="door-light" d="M236 276v-79h48v79Z" />
+            <circle class="house-spark spark-one" cx="99" cy="89" r="4" />
+            <circle class="house-spark spark-two" cx="427" cy="74" r="3" />
+            <circle class="house-spark spark-three" cx="445" cy="228" r="5" />
           </svg>
         </span>
-        <span class="portal-card-content">
-          <span class="portal-kicker">Property Owners</span>
-          <span class="portal-title">Submit a Property</span>
-          <span class="portal-copy">Share the details. Explore a simple, direct as-is property review.</span>
-          <span class="portal-action">Start Property Intake <span aria-hidden="true">→</span></span>
+        <span class="choice-copy">
+          <span class="choice-number">01</span>
+          <span class="choice-kicker">Property Owners</span>
+          <span class="choice-title">Submit a Property</span>
+          <span class="choice-description">Share the details and explore a simple, direct as-is property review.</span>
+          <span class="choice-button">Start Property Intake <b aria-hidden="true">→</b></span>
         </span>
-        <span class="portal-card-shine" aria-hidden="true"></span>
       </a>
 
-      <a class="portal-card portal-card-showcase" href="https://showcase.orovianoasis.com" data-portal-destination="showcase" aria-label="Enter the Orovian Oasis showcase">
-        <span class="portal-card-art" aria-hidden="true">
-          <span class="portal-orbit portal-orbit-one"></span>
-          <span class="portal-orbit portal-orbit-two"></span>
-          <span class="portal-horizon"></span>
-          <svg class="portal-symbol portal-symbol-showcase" viewBox="0 0 160 160" role="img" aria-hidden="true">
-            <rect x="25" y="31" width="110" height="98" rx="10" />
-            <path d="M25 58h110M51 31v27M109 31v27M51 129v-27M109 129v-27" />
-            <path d="m69 73 32 17-32 17V73Z" />
+      <a class="portal-choice portal-choice-showcase" href="https://showcase.orovianoasis.com" data-portal-destination="showcase" aria-label="Enter the Orovian Oasis showcase">
+        <span class="choice-backdrop" aria-hidden="true"></span>
+        <span class="choice-scene" aria-hidden="true">
+          <svg class="scene-showcase" viewBox="0 0 520 320">
+            <defs>
+              <linearGradient id="showcaseGlow" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#31d9ff" />
+                <stop offset="0.5" stop-color="#a576ff" />
+                <stop offset="1" stop-color="#ff4fb8" />
+              </linearGradient>
+              <filter id="showcaseBlur"><feGaussianBlur stdDeviation="10" /></filter>
+            </defs>
+            <path class="film-halo" d="M79 64h362v211H79Z" />
+            <path class="film-frame" d="M79 64h362v211H79Z" />
+            <path class="film-frame" d="M79 102h362M79 237h362" />
+            <path class="film-ticks" d="M109 64v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38M109 237v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38m42-38v38" />
+            <path class="prism-shape prism-main" d="m260 110 78 103H182Z" />
+            <path class="prism-ray ray-one" d="m260 110 156 42" />
+            <path class="prism-ray ray-two" d="m260 110 137 100" />
+            <path class="prism-ray ray-three" d="m260 110 105 148" />
+            <circle class="showcase-spark spark-one" cx="115" cy="154" r="4" />
+            <circle class="showcase-spark spark-two" cx="414" cy="177" r="5" />
+            <circle class="showcase-spark spark-three" cx="370" cy="92" r="3" />
           </svg>
         </span>
-        <span class="portal-card-content">
-          <span class="portal-kicker">Explore the Vision</span>
-          <span class="portal-title">Enter the Showcase</span>
-          <span class="portal-copy">Step into the creative side of Orovian Oasis and see what is taking shape.</span>
-          <span class="portal-action">View the Showcase <span aria-hidden="true">→</span></span>
+        <span class="choice-copy">
+          <span class="choice-number">02</span>
+          <span class="choice-kicker">Explore the Vision</span>
+          <span class="choice-title">Enter the Showcase</span>
+          <span class="choice-description">Step into the creative side of Orovian Oasis and see what is taking shape.</span>
+          <span class="choice-button">View the Showcase <b aria-hidden="true">→</b></span>
         </span>
-        <span class="portal-card-shine" aria-hidden="true"></span>
       </a>
 
-      <span class="portal-divider" aria-hidden="true"><span>OR</span></span>
+      <span class="portal-center-mark" aria-hidden="true"><i></i><b>OR</b><i></i></span>
     </main>
 
     <footer class="portal-footer">
-      <div class="portal-socials" aria-label="Orovian Oasis social media">
-        <a href="https://facebook.com/orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="Facebook" data-social="facebook">
+      <nav class="portal-socials" aria-label="Orovian Oasis social media">
+        <a class="social-facebook" href="https://facebook.com/orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="Facebook" data-social="facebook">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.2V5.1c-.4-.1-1.7-.2-3.2-.2-3.1 0-5.2 1.9-5.2 5.5v3.1H4.5v3.8h3.3V24h4.1v-6.7h3.2l.5-3.8h-3.7v-2.7c0-1.1.3-2.3 2.1-2.3Z"/></svg>
+          <span>Facebook</span>
         </a>
-        <a href="https://instagram.com/orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="Instagram" data-social="instagram">
+        <a class="social-instagram" href="https://instagram.com/orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="Instagram" data-social="instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6a5.2 5.2 0 0 1-5.2 5.2H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm0 2A3.2 3.2 0 0 0 4 7.2v9.6A3.2 3.2 0 0 0 7.2 20h9.6a3.2 3.2 0 0 0 3.2-3.2V7.2A3.2 3.2 0 0 0 16.8 4H7.2ZM12 7.4A4.6 4.6 0 1 1 12 16.6 4.6 4.6 0 0 1 12 7.4Zm0 2A2.6 2.6 0 1 0 12 14.6 2.6 2.6 0 0 0 12 9.4Zm5-2.7a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/></svg>
+          <span>Instagram</span>
         </a>
-        <a href="https://www.tiktok.com/@orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="TikTok" data-social="tiktok">
+        <a class="social-tiktok" href="https://www.tiktok.com/@orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="TikTok" data-social="tiktok">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.4 3 2.1 4.8 5 5v3.4c-1.8.2-3.4-.4-5-1.5v6.4c0 5.8-6.3 8.1-10.1 4.4-2.4-2.3-2.2-6.2.3-8.3 1.4-1.2 3.3-1.7 5.4-1.3v3.6c-.9-.3-1.7-.2-2.4.2-1.6.9-1.4 3.2.2 3.9 1.6.7 3.1-.4 3.1-2.4V2h3.5Z"/></svg>
+          <span>TikTok</span>
         </a>
-        <a href="https://www.youtube.com/@orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="YouTube" data-social="youtube">
+        <a class="social-youtube" href="https://www.youtube.com/@orovianoasis" target="_blank" rel="noopener noreferrer" aria-label="YouTube" data-social="youtube">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2c-.3-1.2-1.2-2.1-2.4-2.4C19 3.2 12 3.2 12 3.2s-7 0-9.1.6C1.7 4.1.8 5 .5 6.2.1 8.3.1 12 .1 12s0 3.7.6 5.8c.3 1.2 1.2 2.1 2.4 2.4 2.1.6 9.1.6 9.1.6s7 0 9.1-.6c1.2-.3 2.1-1.2 2.4-2.4.6-2.1.6-5.8.6-5.8s0-3.7-.8-5.8ZM9.7 15.8V8.2l6.3 3.8-6.3 3.8Z"/></svg>
+          <span>YouTube</span>
         </a>
-      </div>
-      <p class="portal-footer-note">© <span id="portalYear"></span> Orovian Oasis</p>
-      <div class="portal-contact-links">
-        <a href="tel:+12054339779">Call / Text</a>
-        <span aria-hidden="true">•</span>
-        <a href="mailto:orovianoasis@gmail.com">Email</a>
+      </nav>
+
+      <p class="portal-copyright">© <span id="portalYear"></span> Orovian Oasis. All rights reserved.</p>
+
+      <div class="portal-contact-actions" aria-label="Contact Orovian Oasis">
+        <a class="contact-button contact-phone" href="tel:+12054339779" data-contact="phone">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 2.7 9 2.1l2.1 5.2-2.2 1.5c1.2 2.5 2.9 4.3 5.4 5.5l1.5-2.2 5.2 2.1-.6 2.5c-.4 1.8-2 3.1-3.8 3.1C9.8 19.8 4.2 14.2 4.2 7.4c0-1.8 1.2-3.4 2.3-4.7Z"/></svg>
+          <span><small>Talk to us</small>Call / Text</span>
+        </a>
+        <a class="contact-button contact-email" href="mailto:orovianoasis@gmail.com" data-contact="email">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3V5Zm2 2v.3l7 5.1 7-5.1V7H5Zm14 10V9.8l-7 5-7-5V17h14Z"/></svg>
+          <span><small>Write to us</small>Email</span>
+        </a>
       </div>
     </footer>
   </div>
