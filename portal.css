@@ -1544,78 +1544,100 @@ body.portal-page {
   z-index: 12;
   display: grid;
   place-items: center;
-  min-width: clamp(118px, 11vw, 158px);
-  padding: 10px 15px 11px;
-  border: 2px solid rgba(255, 245, 201, .92);
-  border-radius: 8px;
+  min-width: clamp(150px, 13vw, 190px);
+  padding: 17px 22px 18px;
+  border: 4px solid #17130b;
+  border-radius: 9px;
   background:
-    linear-gradient(145deg, rgba(255, 224, 105, .98), rgba(216, 154, 31, .98));
+    repeating-linear-gradient(135deg, #17130b 0 10px, #f6bd2f 10px 20px) top / 100% 9px no-repeat,
+    repeating-linear-gradient(135deg, #17130b 0 10px, #f6bd2f 10px 20px) bottom / 100% 9px no-repeat,
+    linear-gradient(145deg, #ffad22 0%, #f58a18 52%, #df6710 100%);
   box-shadow:
-    0 11px 28px rgba(0, 0, 0, .34),
-    0 0 0 4px rgba(255, 207, 70, .12),
-    inset 0 1px 0 rgba(255, 255, 255, .58);
-  color: #241400;
+    0 13px 30px rgba(0, 0, 0, .42),
+    0 0 0 3px rgba(255, 205, 79, .2),
+    inset 0 0 0 2px rgba(255, 238, 180, .45),
+    inset 0 2px 0 rgba(255, 255, 255, .35);
+  color: #17130b;
   font-family: "Inter", sans-serif;
   line-height: 1;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: .08em;
+  letter-spacing: .075em;
   transform: rotate(4deg);
+  transform-origin: center;
   pointer-events: none;
-  opacity: .96;
+  opacity: .98;
+  overflow: hidden;
 }
 
 .showcase-status-sticker::before,
 .showcase-status-sticker::after {
   content: "";
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 226, 139, .7);
   border-radius: 50%;
-  background: rgba(62, 35, 0, .72);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, .35);
+  background: radial-gradient(circle at 35% 30%, #6d5c3b 0 20%, #211a0f 45% 100%);
+  box-shadow: 0 1px 2px rgba(0,0,0,.65);
 }
 
-.showcase-status-sticker::before { left: 8px; top: 8px; }
-.showcase-status-sticker::after { right: 8px; bottom: 8px; }
+.showcase-status-sticker::before { left: 10px; top: 50%; transform: translateY(-50%); }
+.showcase-status-sticker::after { right: 10px; top: 50%; transform: translateY(-50%); }
 
 .showcase-status-sticker span {
   display: block;
-  margin-bottom: 3px;
-  font-size: clamp(.58rem, .65vw, .72rem);
-  font-weight: 800;
+  margin-bottom: 4px;
+  font-size: clamp(.62rem, .72vw, .78rem);
+  font-weight: 900;
+  letter-spacing: .18em;
 }
 
 .showcase-status-sticker strong {
   display: block;
-  font-size: clamp(.72rem, .82vw, .92rem);
-  font-weight: 900;
+  font-size: clamp(.82rem, .96vw, 1.08rem);
+  font-weight: 950;
+  letter-spacing: .075em;
 }
 
 .portal-choice-showcase:hover .showcase-status-sticker,
 .portal-choice-showcase:focus-visible .showcase-status-sticker {
-  transform: rotate(1deg) translateY(-3px) scale(1.035);
+  transform: rotate(1deg) translateY(-4px) scale(1.045);
   box-shadow:
-    0 16px 32px rgba(0, 0, 0, .4),
-    0 0 0 5px rgba(255, 207, 70, .16),
-    inset 0 1px 0 rgba(255, 255, 255, .65);
+    0 18px 36px rgba(0, 0, 0, .48),
+    0 0 0 5px rgba(255, 196, 58, .18),
+    inset 0 0 0 2px rgba(255, 238, 180, .52),
+    inset 0 2px 0 rgba(255, 255, 255, .4);
 }
 
 @media (max-width: 900px) and (orientation: portrait) {
   .showcase-status-sticker {
     top: 13px;
     right: 14px;
-    min-width: 105px;
-    padding: 8px 12px 9px;
-    transform: rotate(3deg) scale(.9);
+    min-width: 128px;
+    padding: 14px 17px 15px;
+    border-width: 3px;
+    background:
+      repeating-linear-gradient(135deg, #17130b 0 8px, #f6bd2f 8px 16px) top / 100% 7px no-repeat,
+      repeating-linear-gradient(135deg, #17130b 0 8px, #f6bd2f 8px 16px) bottom / 100% 7px no-repeat,
+      linear-gradient(145deg, #ffad22 0%, #f58a18 52%, #df6710 100%);
+    transform: rotate(3deg) scale(.94);
     transform-origin: top right;
   }
 
-  .showcase-status-sticker span { font-size: .54rem; }
-  .showcase-status-sticker strong { font-size: .68rem; }
+  .showcase-status-sticker::before,
+  .showcase-status-sticker::after {
+    width: 10px;
+    height: 10px;
+  }
+
+  .showcase-status-sticker::before { left: 8px; }
+  .showcase-status-sticker::after { right: 8px; }
+  .showcase-status-sticker span { font-size: .56rem; }
+  .showcase-status-sticker strong { font-size: .75rem; }
 
   .portal-choice-showcase:hover .showcase-status-sticker,
   .portal-choice-showcase:focus-visible .showcase-status-sticker {
-    transform: rotate(1deg) translateY(-2px) scale(.93);
+    transform: rotate(1deg) translateY(-2px) scale(.98);
   }
 }
