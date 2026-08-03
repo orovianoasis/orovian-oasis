@@ -1525,3 +1525,11 @@ body.portal-page {
     max-width: 82%;
   }
 }
+
+/* Desktop artwork sizing refinement (2026-08-03) */
+@media (min-width: 1181px) {
+  .portal-choice-intake .choice-scene svg,
+  .portal-choice-showcase .choice-scene svg {
+    width: min(91%, 680px);
+  }
+}
