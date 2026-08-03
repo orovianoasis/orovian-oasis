@@ -1533,3 +1533,89 @@ body.portal-page {
     width: min(91%, 680px);
   }
 }
+
+
+/* SHOWCASE STATUS STICKER
+   Remove this block and the matching span in index.html when the showcase is ready. */
+.showcase-status-sticker {
+  position: absolute;
+  top: clamp(18px, 2.2vw, 34px);
+  right: clamp(18px, 2.2vw, 34px);
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  min-width: clamp(118px, 11vw, 158px);
+  padding: 10px 15px 11px;
+  border: 2px solid rgba(255, 245, 201, .92);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(255, 224, 105, .98), rgba(216, 154, 31, .98));
+  box-shadow:
+    0 11px 28px rgba(0, 0, 0, .34),
+    0 0 0 4px rgba(255, 207, 70, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .58);
+  color: #241400;
+  font-family: "Inter", sans-serif;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  transform: rotate(4deg);
+  pointer-events: none;
+  opacity: .96;
+}
+
+.showcase-status-sticker::before,
+.showcase-status-sticker::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(62, 35, 0, .72);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, .35);
+}
+
+.showcase-status-sticker::before { left: 8px; top: 8px; }
+.showcase-status-sticker::after { right: 8px; bottom: 8px; }
+
+.showcase-status-sticker span {
+  display: block;
+  margin-bottom: 3px;
+  font-size: clamp(.58rem, .65vw, .72rem);
+  font-weight: 800;
+}
+
+.showcase-status-sticker strong {
+  display: block;
+  font-size: clamp(.72rem, .82vw, .92rem);
+  font-weight: 900;
+}
+
+.portal-choice-showcase:hover .showcase-status-sticker,
+.portal-choice-showcase:focus-visible .showcase-status-sticker {
+  transform: rotate(1deg) translateY(-3px) scale(1.035);
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, .4),
+    0 0 0 5px rgba(255, 207, 70, .16),
+    inset 0 1px 0 rgba(255, 255, 255, .65);
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .showcase-status-sticker {
+    top: 13px;
+    right: 14px;
+    min-width: 105px;
+    padding: 8px 12px 9px;
+    transform: rotate(3deg) scale(.9);
+    transform-origin: top right;
+  }
+
+  .showcase-status-sticker span { font-size: .54rem; }
+  .showcase-status-sticker strong { font-size: .68rem; }
+
+  .portal-choice-showcase:hover .showcase-status-sticker,
+  .portal-choice-showcase:focus-visible .showcase-status-sticker {
+    transform: rotate(1deg) translateY(-2px) scale(.93);
+  }
+}
