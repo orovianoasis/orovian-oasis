@@ -1741,6 +1741,7 @@ body.portal-page {
     0 0 8px #fff4be,
     0 0 17px rgba(255, 214, 107, .95),
     0 0 30px rgba(66, 245, 207, .62);
+  animation-direction: normal;
 }
 
 .lane-trace-orb-showcase {
@@ -1750,27 +1751,7 @@ body.portal-page {
     0 0 8px #eafcff,
     0 0 17px rgba(49, 217, 255, .95),
     0 0 30px rgba(255, 79, 184, .62);
-}
-
-/* Two perimeter tracers per destination. The second tracer runs in the
-   complete opposite direction and starts half a circuit away. */
-.lane-trace-orb-intake.lane-trace-orb-primary {
-  animation-direction: normal;
-  animation-delay: 0s;
-}
-
-.lane-trace-orb-intake.lane-trace-orb-secondary {
   animation-direction: reverse;
-  animation-delay: -5.75s;
-}
-
-.lane-trace-orb-showcase.lane-trace-orb-primary {
-  animation-direction: reverse;
-  animation-delay: 0s;
-}
-
-.lane-trace-orb-showcase.lane-trace-orb-secondary {
-  animation-direction: normal;
   animation-delay: -5.75s;
 }
 
@@ -1841,18 +1822,6 @@ body.portal-page {
     animation-duration: 10.5s;
   }
 
-  /* Mobile gets its own half-circuit phase spacing so both tracers remain
-     visibly separate while moving in opposite directions. */
-  .lane-trace-orb-intake.lane-trace-orb-primary,
-  .lane-trace-orb-showcase.lane-trace-orb-primary {
-    animation-delay: 0s;
-  }
-
-  .lane-trace-orb-intake.lane-trace-orb-secondary,
-  .lane-trace-orb-showcase.lane-trace-orb-secondary {
-    animation-delay: -5.25s;
-  }
-
   .showcase-status-sticker {
     padding-inline: 21px;
   }
@@ -1876,25 +1845,3 @@ body.portal-page {
     offset-distance: 12%;
   }
 }
-
-
-/* Desktop centerline removal fix (keep OR centered) */
-@media (min-width: 901px) {
-  .portal-stage::before {
-    display: none !important;
-  }
-
-  .portal-center-mark {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    z-index: 20 !important;
-    margin: 0 !important;
-  }
-
-  .portal-center-mark i {
-    display: none !important;
-  }
-}
-
