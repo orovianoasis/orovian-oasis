@@ -1845,3 +1845,40 @@ body.portal-page {
     offset-distance: 12%;
   }
 }
+
+/* Desktop OR badge: follow the real moving split between the two grid cards.
+   The visible split is the cards' own borders, so the separate fixed divider
+   and the line segments inside the OR marker are disabled on desktop. */
+@media (min-width: 901px) {
+  .portal-stage::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .portal-center-mark {
+    top: 50% !important;
+    left: 50%;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) !important;
+    transition: left 600ms cubic-bezier(.22, .72, .16, 1) !important;
+  }
+
+  .portal-center-mark i {
+    display: none !important;
+  }
+
+  .portal-center-mark b {
+    background: rgba(5, 3, 8, .97) !important;
+  }
+
+  .portal-shell[data-active="property_intake"] .portal-center-mark {
+    left: 56%;
+  }
+
+  .portal-shell[data-active="showcase"] .portal-center-mark {
+    left: 44%;
+  }
+}
