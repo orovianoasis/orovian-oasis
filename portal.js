@@ -5,338 +5,324 @@
   const stage = document.querySelector(".portal-stage");
   const prismLayer = document.getElementById("cinemaPrisms");
   const year = document.getElementById("portalYear");
-
-  const choices = Array.from(
-    document.querySelectorAll("[data-portal-destination]")
-  );
-
+  const choices = Array.from(document.querySelectorAll("[data-portal-destination]"));
   const socialLinks = document.querySelectorAll("[data-social]");
   const contactLinks = document.querySelectorAll("[data-contact]");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  );
+  let foldOpen = false;
+  let resizeTimer = 0;
 
-  const realHover = window.matchMedia(
-    "(hover: hover) and (pointer: fine)"
-  );
+  const isAndroidTouch = () =>
+    /Android/i.test(navigator.userAgent || "") &&
+    (navigator.maxTouchPoints || 0) > 0;
 
-  let foldSafeMode = false;
-  let resizeTimer = null;
+  const isSideBySide = () => {
+    if (!stage || choices.length < 2) return false;
 
-  /*
-   * ------------------------------------------------------------
-   * FOLD / LARGE ANDROID TOUCH-SCREEN STABILITY FIX
-   * ------------------------------------------------------------
-   *
-   * The unfolded Fold can be wide enough to receive the desktop
-   * two-column layout even though it is still Android Chrome.
-   *
-   * Desktop SVG/filter animations can cause GPU compositing flashes
-   * on that combination.
-   *
-   * Instead of changing the layout, this detects:
-   *
-   * 1. Android
-   * 2. Touch capability
-   * 3. The two portal cards actually being side-by-side
-   *
-   * It then keeps the two-column design but uses safer animation.
-   */
-
-  const isAndroidTouchDevice = () => {
-    const userAgent = navigator.userAgent || "";
+    const left = choices[0].getBoundingClientRect();
+    const right = choices[1].getBoundingClientRect();
 
     return (
-      /Android/i.test(userAgent) &&
-      (navigator.maxTouchPoints || 0) > 0
+      left.width > 0 &&
+      right.width > 0 &&
+      Math.abs(left.top - right.top) < 16 &&
+      Math.abs(left.left - right.left) > 40
     );
   };
 
-  const portalIsSideBySide = () => {
-    if (!stage || choices.length < 2) {
-      return false;
+  const style = document.createElement("style");
+  style.id = "orovianFoldRenderingProfile";
+
+  style.textContent = `
+    /*
+      ONLY activates on:
+      Android + touch + actual side-by-side portal layout.
+    */
+
+    .portal-shell.is-fold-open .cinema-world,
+    .portal-shell.is-fold-open .portal-choice,
+    .portal-shell.is-fold-open .choice-scene {
+      isolation: isolate;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
-    const leftCard = choices[0].getBoundingClientRect();
-    const rightCard = choices[1].getBoundingClientRect();
-
-    if (!leftCard.width || !rightCard.width) {
-      return false;
+    .portal-shell.is-fold-open .cinema-world {
+      contain: paint;
     }
 
-    const sameRow =
-      Math.abs(leftCard.top - rightCard.top) < 16;
-
-    const horizontallySeparated =
-      Math.abs(leftCard.left - rightCard.left) > 40;
-
-    return sameRow && horizontallySeparated;
-  };
-
-  const installFoldSafeCSS = () => {
-    if (document.getElementById("orovianFoldSafeCSS")) {
-      return;
+    .portal-shell.is-fold-open .portal-choice {
+      contain: layout paint style;
     }
 
-    const style = document.createElement("style");
+    /*
+      Do not move the filtered SVG root itself.
+      Keep everything inside the SVG animated,
+      but move the scene canvas instead.
+    */
 
-    style.id = "orovianFoldSafeCSS";
-
-    style.textContent = `
-      /*
-       * Only active when portal.js adds .portal-fold-safe.
-       * Desktop and normal phone layouts are untouched.
-       */
-
-      .portal-shell.portal-fold-safe .scene-house,
-      .portal-shell.portal-fold-safe .scene-showcase {
-        animation: none !important;
-        transform: none !important;
-        will-change: auto !important;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-      }
-
-      /*
-       * Stop repaint-heavy animation INSIDE the SVG artwork.
-       * The complete scene container will still move below.
-       */
-
-      .portal-shell.portal-fold-safe .scene-contour,
-      .portal-shell.portal-fold-safe .house-halo,
-      .portal-shell.portal-fold-safe .house-line,
-      .portal-shell.portal-fold-safe .house-chimney,
-      .portal-shell.portal-fold-safe .chimney-smoke,
-      .portal-shell.portal-fold-safe .smoke-puff,
-      .portal-shell.portal-fold-safe .house-door,
-      .portal-shell.portal-fold-safe .door-light,
-      .portal-shell.portal-fold-safe .door-panel,
-      .portal-shell.portal-fold-safe .door-knob,
-      .portal-shell.portal-fold-safe .house-spark,
-      .portal-shell.portal-fold-safe .film-halo,
-      .portal-shell.portal-fold-safe .film-frame,
-      .portal-shell.portal-fold-safe .film-ticks,
-      .portal-shell.portal-fold-safe .floating-media,
-      .portal-shell.portal-fold-safe .prism-shape,
-      .portal-shell.portal-fold-safe .prism-ray,
-      .portal-shell.portal-fold-safe .showcase-spark {
-        animation: none !important;
-      }
-
-      /*
-       * Android Chrome can flash when filtered SVG layers are
-       * simultaneously being transformed.
-       *
-       * Remove those expensive filter passes ONLY in Fold-safe mode.
-       */
-
-      .portal-shell.portal-fold-safe .choice-scene svg,
-      .portal-shell.portal-fold-safe .house-halo,
-      .portal-shell.portal-fold-safe .film-halo,
-      .portal-shell.portal-fold-safe .door-light,
-      .portal-shell.portal-fold-safe .house-spark,
-      .portal-shell.portal-fold-safe .showcase-spark,
-      .portal-shell.portal-fold-safe .floating-media,
-      .portal-shell.portal-fold-safe .smoke-puff {
-        filter: none !important;
-      }
-
-      /*
-       * Animate the OUTER scene instead.
-       * Same living/moving feeling, safer compositor layer.
-       */
-
-      .portal-shell.portal-fold-safe
-      .portal-choice-intake
-      .choice-scene {
-        animation:
-          orovianFoldIntakeMotion
-          22s
-          ease-in-out
-          infinite
-          alternate !important;
-
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        will-change: transform;
-      }
-
-      .portal-shell.portal-fold-safe
-      .portal-choice-showcase
-      .choice-scene {
-        animation:
-          orovianFoldShowcaseMotion
-          23s
-          ease-in-out
-          infinite
-          alternate !important;
-
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        will-change: transform;
-      }
-
-      /*
-       * Freeze the largest full-screen decorative animations.
-       * They remain visible.
-       */
-
-      .portal-shell.portal-fold-safe .cinema-curtain,
-      .portal-shell.portal-fold-safe .cinema-beam,
-      .portal-shell.portal-fold-safe .cinema-ribbon,
-      .portal-shell.portal-fold-safe .cinema-prism {
-        animation-play-state: paused !important;
-        will-change: auto !important;
-      }
-
-      /*
-       * Grain animation can trigger frequent full-screen repaints.
-       */
-
-      .portal-shell.portal-fold-safe .cinema-grain {
-        animation: none !important;
-      }
-
-      /*
-       * Prevent Android touch from leaving desktop hover transforms
-       * stuck after a tap.
-       */
-
-      .portal-shell.portal-fold-safe
-      .portal-choice:hover
-      .choice-backdrop,
-
-      .portal-shell.portal-fold-safe
-      .portal-choice:focus
-      .choice-backdrop {
-        transform: none;
-      }
-
-      @keyframes orovianFoldIntakeMotion {
-        0% {
-          transform: translate3d(-1.2%, 1%, 0);
-        }
-
-        33% {
-          transform: translate3d(1.6%, -1%, 0);
-        }
-
-        66% {
-          transform: translate3d(-0.8%, -1.5%, 0);
-        }
-
-        100% {
-          transform: translate3d(1.4%, 0.8%, 0);
-        }
-      }
-
-      @keyframes orovianFoldShowcaseMotion {
-        0% {
-          transform: translate3d(1.2%, -1%, 0);
-        }
-
-        33% {
-          transform: translate3d(-1.6%, 1%, 0);
-        }
-
-        66% {
-          transform: translate3d(0.8%, 1.5%, 0);
-        }
-
-        100% {
-          transform: translate3d(-1.4%, -0.8%, 0);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .portal-shell.portal-fold-safe .choice-scene {
-          animation: none !important;
-          transform: none !important;
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
-  };
-
-  const updateFoldSafeMode = () => {
-    if (!shell) {
-      return;
+    .portal-shell.is-fold-open .scene-house,
+    .portal-shell.is-fold-open .scene-showcase {
+      animation: none !important;
+      transform: none !important;
+      will-change: auto !important;
     }
 
-    foldSafeMode =
-      isAndroidTouchDevice() &&
-      portalIsSideBySide();
+    .portal-shell.is-fold-open .choice-scene {
+      contain: layout paint style;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+    }
+
+    .portal-shell.is-fold-open
+    .portal-choice-intake
+    .choice-scene {
+      animation:
+        foldHouseRoam
+        14s
+        ease-in-out
+        infinite
+        alternate !important;
+    }
+
+    .portal-shell.is-fold-open
+    .portal-choice-showcase
+    .choice-scene {
+      animation:
+        foldShowcaseRoam
+        16s
+        ease-in-out
+        infinite
+        alternate !important;
+    }
+
+    /*
+      Keep these animations moving.
+      Only remove their expensive live blur filters.
+    */
+
+    .portal-shell.is-fold-open .cinema-beam {
+      filter: none !important;
+    }
+
+    .portal-shell.is-fold-open .cinema-ribbon {
+      filter: none !important;
+      box-shadow: 0 0 16px currentColor;
+    }
+
+    .portal-shell.is-fold-open .cinema-prism {
+      filter: none !important;
+      box-shadow: 0 0 9px var(--color-a);
+    }
+
+    /*
+      Original grain uses a full-screen animated SVG
+      feTurbulence filter.
+
+      Keep animated grain, but use lightweight CSS
+      texture only on the unfolded Fold.
+    */
+
+    .portal-shell.is-fold-open .cinema-grain {
+      background-image:
+        radial-gradient(
+          circle at 20% 25%,
+          rgba(255,255,255,.34) 0 .55px,
+          transparent .75px
+        ),
+        radial-gradient(
+          circle at 70% 65%,
+          rgba(255,255,255,.24) 0 .45px,
+          transparent .70px
+        ),
+        radial-gradient(
+          circle at 45% 80%,
+          rgba(255,255,255,.18) 0 .40px,
+          transparent .65px
+        ) !important;
+
+      background-size:
+        4px 4px,
+        7px 7px,
+        9px 9px !important;
+
+      mix-blend-mode: screen;
+      will-change: transform;
+    }
+
+    /*
+      Prevent Chrome from constantly re-blurring
+      the moving page underneath the header.
+    */
+
+    .portal-shell.is-fold-open .portal-header {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(3,2,6,.98),
+          rgba(3,2,6,.78)
+        ) !important;
+    }
+
+    /*
+      The text glow remains because the radial
+      gradient already creates it.
+    */
+
+    .portal-shell.is-fold-open .choice-copy::before {
+      filter: none !important;
+    }
+
+    /*
+      Fold versions of the SAME roaming motions.
+      Movement stays, but occurs on the scene layer.
+    */
+
+    @keyframes foldHouseRoam {
+      0% {
+        transform:
+          translate3d(-8%, 5%, 0)
+          rotate(-1.2deg)
+          scale(1.10);
+      }
+
+      28% {
+        transform:
+          translate3d(5%, -4%, 0)
+          rotate(.8deg)
+          scale(1.15);
+      }
+
+      57% {
+        transform:
+          translate3d(-3%, -7%, 0)
+          rotate(-.55deg)
+          scale(1.12);
+      }
+
+      78% {
+        transform:
+          translate3d(8%, 2%, 0)
+          rotate(1.1deg)
+          scale(1.16);
+      }
+
+      100% {
+        transform:
+          translate3d(-1%, 6%, 0)
+          rotate(-.35deg)
+          scale(1.11);
+      }
+    }
+
+    @keyframes foldShowcaseRoam {
+      0% {
+        transform:
+          translate3d(8%, -5%, 0)
+          rotate(1.2deg)
+          scale(1.11);
+      }
+
+      27% {
+        transform:
+          translate3d(-5%, 4%, 0)
+          rotate(-.85deg)
+          scale(1.16);
+      }
+
+      54% {
+        transform:
+          translate3d(3%, 7%, 0)
+          rotate(.55deg)
+          scale(1.13);
+      }
+
+      79% {
+        transform:
+          translate3d(-8%, -2%, 0)
+          rotate(-1.15deg)
+          scale(1.17);
+      }
+
+      100% {
+        transform:
+          translate3d(1%, -6%, 0)
+          rotate(.35deg)
+          scale(1.12);
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  const syncFoldMode = () => {
+    if (!shell) return;
+
+    foldOpen =
+      isAndroidTouch() &&
+      isSideBySide();
 
     shell.classList.toggle(
-      "portal-fold-safe",
-      foldSafeMode
+      "is-fold-open",
+      foldOpen
     );
 
     /*
-     * Clear any desktop hover state Android may have remembered.
-     */
-    if (foldSafeMode) {
+      Touch devices can leave a fake hover state.
+      Clear only the desktop expansion state.
+    */
+
+    if (foldOpen) {
       delete shell.dataset.active;
     }
   };
 
-  installFoldSafeCSS();
+  const scheduleFoldCheck = () => {
+    clearTimeout(resizeTimer);
 
-  /*
-   * Wait until browser layout exists before measuring cards.
-   */
-  window.requestAnimationFrame(updateFoldSafeMode);
+    resizeTimer =
+      setTimeout(syncFoldMode, 140);
+  };
 
-  /*
-   * Re-check when the Fold opens/closes or browser dimensions change.
-   */
+  requestAnimationFrame(syncFoldMode);
+
   window.addEventListener(
     "resize",
-    () => {
-      clearTimeout(resizeTimer);
-
-      resizeTimer = setTimeout(() => {
-        updateFoldSafeMode();
-      }, 150);
-    },
+    scheduleFoldCheck,
     { passive: true }
   );
 
   window.addEventListener(
     "orientationchange",
-    () => {
-      clearTimeout(resizeTimer);
-
-      resizeTimer = setTimeout(() => {
-        updateFoldSafeMode();
-      }, 250);
-    },
+    scheduleFoldCheck,
     { passive: true }
   );
 
-  /*
-   * ------------------------------------------------------------
-   * YEAR
-   * ------------------------------------------------------------
-   */
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener(
+      "resize",
+      scheduleFoldCheck,
+      { passive: true }
+    );
+  }
 
   if (year) {
     year.textContent =
       String(new Date().getFullYear());
   }
 
-  /*
-   * ------------------------------------------------------------
-   * ANALYTICS
-   * ------------------------------------------------------------
-   */
-
-  const track = (eventName, parameters = {}) => {
-    if (typeof window.gtag === "function") {
+  const track = (
+    eventName,
+    parameters = {}
+  ) => {
+    if (
+      typeof window.gtag === "function"
+    ) {
       window.gtag(
         "event",
         eventName,
@@ -344,7 +330,9 @@
       );
     }
 
-    if (typeof window.fbq === "function") {
+    if (
+      typeof window.fbq === "function"
+    ) {
       window.fbq(
         "trackCustom",
         eventName,
@@ -353,12 +341,6 @@
     }
   };
 
-  /*
-   * ------------------------------------------------------------
-   * PORTAL DESTINATION HOVER / FOCUS
-   * ------------------------------------------------------------
-   */
-
   choices.forEach((choice) => {
     const destination =
       choice.dataset.portalDestination ||
@@ -366,16 +348,19 @@
 
     const activate = () => {
       /*
-       * Keep your existing expanding desktop cards.
-       *
-       * Do NOT activate desktop hover expansion on the Fold.
-       */
+        Desktop keeps normal hover expansion.
+
+        Fold-open touch mode does not trigger
+        a fake hover/grid resize.
+      */
+
       if (
         shell &&
-        !foldSafeMode &&
-        realHover.matches
+        !foldOpen &&
+        finePointer.matches
       ) {
-        shell.dataset.active = destination;
+        shell.dataset.active =
+          destination;
       }
     };
 
@@ -398,13 +383,12 @@
     choice.addEventListener(
       "focus",
       () => {
-        /*
-         * Keyboard focus still works on real desktop devices.
-         */
-        if (!foldSafeMode) {
-          if (shell) {
-            shell.dataset.active = destination;
-          }
+        if (
+          shell &&
+          !foldOpen
+        ) {
+          shell.dataset.active =
+            destination;
         }
       }
     );
@@ -422,19 +406,14 @@
         track(
           "portal_select",
           {
-            event_category: "Navigation",
+            event_category:
+              "Navigation",
             destination
           }
         );
       }
     );
   });
-
-  /*
-   * ------------------------------------------------------------
-   * SOCIAL LINKS
-   * ------------------------------------------------------------
-   */
 
   socialLinks.forEach((link) => {
     link.addEventListener(
@@ -443,7 +422,9 @@
         track(
           "portal_social_click",
           {
-            event_category: "Navigation",
+            event_category:
+              "Navigation",
+
             platform:
               link.dataset.social ||
               "unknown"
@@ -453,12 +434,6 @@
     );
   });
 
-  /*
-   * ------------------------------------------------------------
-   * CONTACT LINKS
-   * ------------------------------------------------------------
-   */
-
   contactLinks.forEach((link) => {
     link.addEventListener(
       "click",
@@ -466,7 +441,9 @@
         track(
           "portal_contact_click",
           {
-            event_category: "Contact",
+            event_category:
+              "Contact",
+
             method:
               link.dataset.contact ||
               "unknown"
@@ -477,37 +454,34 @@
   });
 
   /*
-   * ------------------------------------------------------------
-   * POINTER LIGHT EFFECT
-   * ------------------------------------------------------------
-   *
-   * Desktop only.
-   * Disabled in Fold-safe mode to avoid constant full-screen repaint.
-   */
+    Pointer-follow lighting remains desktop-only.
+  */
 
-  if (shell) {
-    let pointerFrame = 0;
+  if (
+    shell &&
+    finePointer.matches
+  ) {
+    let frame = 0;
 
     window.addEventListener(
       "pointermove",
       (event) => {
         if (
-          foldSafeMode ||
-          !realHover.matches ||
-          pointerFrame
+          foldOpen ||
+          frame
         ) {
           return;
         }
 
-        pointerFrame =
-          window.requestAnimationFrame(
+        frame =
+          requestAnimationFrame(
             () => {
               shell.style.setProperty(
                 "--pointer-x",
                 `${
                   (
                     event.clientX /
-                    window.innerWidth
+                    innerWidth
                   ) * 100
                 }%`
               );
@@ -517,12 +491,12 @@
                 `${
                   (
                     event.clientY /
-                    window.innerHeight
+                    innerHeight
                   ) * 100
                 }%`
               );
 
-              pointerFrame = 0;
+              frame = 0;
             }
           );
       },
@@ -531,12 +505,8 @@
   }
 
   /*
-   * ------------------------------------------------------------
-   * CINEMA PRISMS
-   * ------------------------------------------------------------
-   *
-   * This preserves the same prism system from your current portal.js.
-   */
+    Original prism generation preserved.
+  */
 
   if (
     prismLayer &&
@@ -574,11 +544,13 @@
 
       const palette =
         palettes[
-          index % palettes.length
+          index %
+          palettes.length
         ];
 
       const size =
-        9 + Math.random() * 22;
+        9 +
+        Math.random() * 22;
 
       prism.className =
         "cinema-prism";
@@ -654,17 +626,13 @@
         }deg`
       );
 
-      fragment.appendChild(prism);
+      fragment.appendChild(
+        prism
+      );
     }
 
-    prismLayer.appendChild(fragment);
-
-    /*
-     * Newly-created prisms appeared after our original Fold check.
-     * Re-run it so their animation is immediately stabilized too.
-     */
-    window.requestAnimationFrame(
-      updateFoldSafeMode
+    prismLayer.appendChild(
+      fragment
     );
   }
 })();
