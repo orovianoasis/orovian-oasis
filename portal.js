@@ -8,257 +8,216 @@
   const choices = Array.from(document.querySelectorAll("[data-portal-destination]"));
   const socialLinks = document.querySelectorAll("[data-social]");
   const contactLinks = document.querySelectorAll("[data-contact]");
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   let foldOpen = false;
   let resizeTimer = 0;
 
-  const isAndroidTouch = () =>
-    /Android/i.test(navigator.userAgent || "") &&
-    (navigator.maxTouchPoints || 0) > 0;
+  const isAndroidTouch = () => {
+    return /Android/i.test(navigator.userAgent || "") &&
+      (navigator.maxTouchPoints || 0) > 0;
+  };
 
   const isSideBySide = () => {
     if (!stage || choices.length < 2) return false;
 
-    const left = choices[0].getBoundingClientRect();
-    const right = choices[1].getBoundingClientRect();
+    const first = choices[0].getBoundingClientRect();
+    const second = choices[1].getBoundingClientRect();
 
     return (
-      left.width > 0 &&
-      right.width > 0 &&
-      Math.abs(left.top - right.top) < 16 &&
-      Math.abs(left.left - right.left) > 40
+      first.width > 0 &&
+      second.width > 0 &&
+      Math.abs(first.top - second.top) < 16 &&
+      Math.abs(first.left - second.left) > 40
     );
   };
 
-  const style = document.createElement("style");
-  style.id = "orovianFoldRenderingProfile";
+  const installFoldStyles = () => {
+    if (document.getElementById("orovianFoldStableStyles")) return;
 
-  style.textContent = `
-    /*
-      ONLY activates on:
-      Android + touch + actual side-by-side portal layout.
-    */
+    const style = document.createElement("style");
+    style.id = "orovianFoldStableStyles";
 
-    .portal-shell.is-fold-open .cinema-world,
-    .portal-shell.is-fold-open .portal-choice,
-    .portal-shell.is-fold-open .choice-scene {
-      isolation: isolate;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
+    style.textContent = `
+      /*
+       * IMPORTANT:
+       * We do NOT override .scene-house, .scene-showcase,
+       * or .choice-scene animation/transform behavior.
+       *
+       * The original artwork motion remains intact.
+       */
 
-    .portal-shell.is-fold-open .cinema-world {
-      contain: paint;
-    }
-
-    .portal-shell.is-fold-open .portal-choice {
-      contain: layout paint style;
-    }
-
-    /*
-      Do not move the filtered SVG root itself.
-      Keep everything inside the SVG animated,
-      but move the scene canvas instead.
-    */
-
-    .portal-shell.is-fold-open .scene-house,
-    .portal-shell.is-fold-open .scene-showcase {
-      animation: none !important;
-      transform: none !important;
-      will-change: auto !important;
-    }
-
-    .portal-shell.is-fold-open .choice-scene {
-      contain: layout paint style;
-      transform: translate3d(0, 0, 0);
-      will-change: transform;
-    }
-
-    .portal-shell.is-fold-open
-    .portal-choice-intake
-    .choice-scene {
-      animation:
-        foldHouseRoam
-        14s
-        ease-in-out
-        infinite
-        alternate !important;
-    }
-
-    .portal-shell.is-fold-open
-    .portal-choice-showcase
-    .choice-scene {
-      animation:
-        foldShowcaseRoam
-        16s
-        ease-in-out
-        infinite
-        alternate !important;
-    }
-
-    /*
-      Keep these animations moving.
-      Only remove their expensive live blur filters.
-    */
-
-    .portal-shell.is-fold-open .cinema-beam {
-      filter: none !important;
-    }
-
-    .portal-shell.is-fold-open .cinema-ribbon {
-      filter: none !important;
-      box-shadow: 0 0 16px currentColor;
-    }
-
-    .portal-shell.is-fold-open .cinema-prism {
-      filter: none !important;
-      box-shadow: 0 0 9px var(--color-a);
-    }
-
-    /*
-      Original grain uses a full-screen animated SVG
-      feTurbulence filter.
-
-      Keep animated grain, but use lightweight CSS
-      texture only on the unfolded Fold.
-    */
-
-    .portal-shell.is-fold-open .cinema-grain {
-      background-image:
-        radial-gradient(
-          circle at 20% 25%,
-          rgba(255,255,255,.34) 0 .55px,
-          transparent .75px
-        ),
-        radial-gradient(
-          circle at 70% 65%,
-          rgba(255,255,255,.24) 0 .45px,
-          transparent .70px
-        ),
-        radial-gradient(
-          circle at 45% 80%,
-          rgba(255,255,255,.18) 0 .40px,
-          transparent .65px
-        ) !important;
-
-      background-size:
-        4px 4px,
-        7px 7px,
-        9px 9px !important;
-
-      mix-blend-mode: screen;
-      will-change: transform;
-    }
-
-    /*
-      Prevent Chrome from constantly re-blurring
-      the moving page underneath the header.
-    */
-
-    .portal-shell.is-fold-open .portal-header {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-
-      background:
-        linear-gradient(
-          180deg,
-          rgba(3,2,6,.98),
-          rgba(3,2,6,.78)
-        ) !important;
-    }
-
-    /*
-      The text glow remains because the radial
-      gradient already creates it.
-    */
-
-    .portal-shell.is-fold-open .choice-copy::before {
-      filter: none !important;
-    }
-
-    /*
-      Fold versions of the SAME roaming motions.
-      Movement stays, but occurs on the scene layer.
-    */
-
-    @keyframes foldHouseRoam {
-      0% {
-        transform:
-          translate3d(-8%, 5%, 0)
-          rotate(-1.2deg)
-          scale(1.10);
+      .portal-shell.fold-open-stable .choice-scene,
+      .portal-shell.fold-open-stable .scene-house,
+      .portal-shell.fold-open-stable .scene-showcase {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
       }
 
-      28% {
-        transform:
-          translate3d(5%, -4%, 0)
-          rotate(.8deg)
-          scale(1.15);
+      /*
+       * Keep all SVG animations.
+       * Remove only the expensive outer moving drop-shadow.
+       */
+      .portal-shell.fold-open-stable .choice-scene svg {
+        filter: none !important;
       }
 
-      57% {
-        transform:
-          translate3d(-3%, -7%, 0)
-          rotate(-.55deg)
-          scale(1.12);
+      /*
+       * These elements still animate.
+       * Only their live SVG blur/filter is removed.
+       */
+      .portal-shell.fold-open-stable .house-halo,
+      .portal-shell.fold-open-stable .film-halo,
+      .portal-shell.fold-open-stable .door-light,
+      .portal-shell.fold-open-stable .house-spark,
+      .portal-shell.fold-open-stable .showcase-spark,
+      .portal-shell.fold-open-stable .smoke-puff {
+        filter: none !important;
       }
 
-      78% {
-        transform:
-          translate3d(8%, 2%, 0)
-          rotate(1.1deg)
-          scale(1.16);
+      .portal-shell.fold-open-stable .house-halo,
+      .portal-shell.fold-open-stable .film-halo {
+        opacity: .20 !important;
       }
 
-      100% {
-        transform:
-          translate3d(-1%, 6%, 0)
-          rotate(-.35deg)
-          scale(1.11);
-      }
-    }
-
-    @keyframes foldShowcaseRoam {
-      0% {
-        transform:
-          translate3d(8%, -5%, 0)
-          rotate(1.2deg)
-          scale(1.11);
+      /*
+       * Beams still sweep.
+       * Remove live blur + screen blending on Fold only.
+       */
+      .portal-shell.fold-open-stable .cinema-beam {
+        filter: none !important;
+        mix-blend-mode: normal !important;
+        opacity: .10;
       }
 
-      27% {
-        transform:
-          translate3d(-5%, 4%, 0)
-          rotate(-.85deg)
-          scale(1.16);
+      /*
+       * Ribbons still move.
+       */
+      .portal-shell.fold-open-stable .cinema-ribbon {
+        filter: none !important;
+        box-shadow: 0 0 14px currentColor;
       }
 
-      54% {
-        transform:
-          translate3d(3%, 7%, 0)
-          rotate(.55deg)
-          scale(1.13);
+      /*
+       * Curtains still breathe.
+       */
+      .portal-shell.fold-open-stable .cinema-curtain {
+        filter: none !important;
       }
 
-      79% {
-        transform:
-          translate3d(-8%, -2%, 0)
-          rotate(-1.15deg)
-          scale(1.17);
+      /*
+       * Prisms still float.
+       * Box shadow replaces GPU drop-shadow.
+       */
+      .portal-shell.fold-open-stable .cinema-prism {
+        filter: none !important;
+        box-shadow: 0 0 9px var(--color-a);
       }
 
-      100% {
-        transform:
-          translate3d(1%, -6%, 0)
-          rotate(.35deg)
-          scale(1.12);
-      }
-    }
-  `;
+      /*
+       * Keep animated grain,
+       * but replace SVG feTurbulence with lightweight CSS grain.
+       */
+      .portal-shell.fold-open-stable .cinema-grain {
+        background-image:
+          radial-gradient(
+            circle,
+            rgba(255,255,255,.30) 0 .45px,
+            transparent .65px
+          ),
+          radial-gradient(
+            circle,
+            rgba(255,255,255,.18) 0 .40px,
+            transparent .60px
+          ) !important;
 
-  document.head.appendChild(style);
+        background-position:
+          0 0,
+          3px 4px;
+
+        background-size:
+          5px 5px,
+          8px 8px;
+
+        mix-blend-mode: normal !important;
+        opacity: .035 !important;
+
+        animation:
+          foldGrainMove
+          .42s
+          steps(2)
+          infinite !important;
+      }
+
+      @keyframes foldGrainMove {
+        0% {
+          transform: translate3d(0,0,0);
+        }
+
+        25% {
+          transform: translate3d(-4px,3px,0);
+        }
+
+        50% {
+          transform: translate3d(3px,-4px,0);
+        }
+
+        75% {
+          transform: translate3d(4px,3px,0);
+        }
+
+        100% {
+          transform: translate3d(-3px,-3px,0);
+        }
+      }
+
+      /*
+       * Backdrop blur repeatedly samples everything moving behind it.
+       * Replace only that blur on Fold-open.
+       */
+      .portal-shell.fold-open-stable .portal-header {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+
+        background:
+          linear-gradient(
+            180deg,
+            rgba(3,2,6,.97),
+            rgba(3,2,6,.70)
+          ) !important;
+      }
+
+      .portal-shell.fold-open-stable .portal-footer {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+
+        background:
+          linear-gradient(
+            180deg,
+            rgba(5,3,8,.88),
+            rgba(3,2,6,.98)
+          ) !important;
+      }
+
+      .portal-shell.fold-open-stable .choice-button,
+      .portal-shell.fold-open-stable .portal-center-mark b {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      /*
+       * Keep the text halo,
+       * but remove the blur operation itself.
+       */
+      .portal-shell.fold-open-stable .choice-copy::before {
+        filter: none !important;
+      }
+    `;
+
+    document.head.appendChild(style);
+  };
 
   const syncFoldMode = () => {
     if (!shell) return;
@@ -268,14 +227,9 @@
       isSideBySide();
 
     shell.classList.toggle(
-      "is-fold-open",
+      "fold-open-stable",
       foldOpen
     );
-
-    /*
-      Touch devices can leave a fake hover state.
-      Clear only the desktop expansion state.
-    */
 
     if (foldOpen) {
       delete shell.dataset.active;
@@ -286,10 +240,17 @@
     clearTimeout(resizeTimer);
 
     resizeTimer =
-      setTimeout(syncFoldMode, 140);
+      setTimeout(
+        syncFoldMode,
+        140
+      );
   };
 
-  requestAnimationFrame(syncFoldMode);
+  installFoldStyles();
+
+  requestAnimationFrame(
+    syncFoldMode
+  );
 
   window.addEventListener(
     "resize",
@@ -347,17 +308,9 @@
       "unknown";
 
     const activate = () => {
-      /*
-        Desktop keeps normal hover expansion.
-
-        Fold-open touch mode does not trigger
-        a fake hover/grid resize.
-      */
-
       if (
         shell &&
-        !foldOpen &&
-        finePointer.matches
+        !foldOpen
       ) {
         shell.dataset.active =
           destination;
@@ -372,7 +325,13 @@
 
     choice.addEventListener(
       "pointerenter",
-      activate
+      () => {
+        if (
+          finePointer.matches
+        ) {
+          activate();
+        }
+      }
     );
 
     choice.addEventListener(
@@ -383,12 +342,8 @@
     choice.addEventListener(
       "focus",
       () => {
-        if (
-          shell &&
-          !foldOpen
-        ) {
-          shell.dataset.active =
-            destination;
+        if (!foldOpen) {
+          activate();
         }
       }
     );
@@ -454,9 +409,9 @@
   });
 
   /*
-    Pointer-follow lighting remains desktop-only.
-  */
-
+   * Pointer glow stays unchanged on real desktop.
+   * Fold-open doesn't need mouse-follow behavior.
+   */
   if (
     shell &&
     finePointer.matches
@@ -481,7 +436,7 @@
                 `${
                   (
                     event.clientX /
-                    innerWidth
+                    window.innerWidth
                   ) * 100
                 }%`
               );
@@ -491,7 +446,7 @@
                 `${
                   (
                     event.clientY /
-                    innerHeight
+                    window.innerHeight
                   ) * 100
                 }%`
               );
@@ -505,9 +460,8 @@
   }
 
   /*
-    Original prism generation preserved.
-  */
-
+   * Original prism generation preserved.
+   */
   if (
     prismLayer &&
     !reducedMotion.matches
