@@ -7,6 +7,55 @@
   const choices = document.querySelectorAll("[data-portal-destination]");
   const socialLinks = document.querySelectorAll("[data-social]");
   const contactLinks = document.querySelectorAll("[data-contact]");
+  const fineHoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+  const noHoverQuery = window.matchMedia("(hover: none)");
+
+  const isWideTouchViewport = () => {
+    const width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const height = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const shortSide = Math.min(width, height);
+    const longSide = Math.max(width, height);
+    const aspect = shortSide > 0 ? longSide / shortSide : Infinity;
+    const hasTouch = (navigator.maxTouchPoints || 0) > 0 || "ontouchstart" in window;
+    const touchFirst = coarsePointerQuery.matches || noHoverQuery.matches;
+
+    // Fold inner displays and tablet-style touch viewports are much wider than a
+    // normal phone, but still compact enough that the desktop compositor profile
+    // is unnecessarily expensive. The aspect fallback also covers Android builds
+    // that expose unusual pointer/hover capabilities while unfolded.
+    const tabletGeometry = shortSide >= 560 && shortSide <= 1000 && longSide >= 720 && longSide <= 1500;
+    const foldLikeGeometry = tabletGeometry && aspect <= 1.6;
+
+    return hasTouch && tabletGeometry && (touchFirst || foldLikeGeometry);
+  };
+
+  const updateRenderProfile = () => {
+    if (!shell) return;
+
+    const wideTouch = isWideTouchViewport();
+    shell.classList.toggle("is-wide-touch", wideTouch);
+    shell.dataset.renderProfile = wideTouch ? "wide-touch" : "default";
+
+    if (wideTouch) {
+      delete shell.dataset.active;
+    }
+  };
+
+  updateRenderProfile();
+
+  let resizeFrame = 0;
+  const scheduleRenderProfileUpdate = () => {
+    if (resizeFrame) return;
+
+    resizeFrame = window.requestAnimationFrame(() => {
+      updateRenderProfile();
+      resizeFrame = 0;
+    });
+  };
+
+  window.addEventListener("resize", scheduleRenderProfileUpdate, { passive: true });
+  window.addEventListener("orientationchange", scheduleRenderProfileUpdate, { passive: true });
 
   if (year) {
     year.textContent = String(new Date().getFullYear());
@@ -26,16 +75,34 @@
     const destination = choice.dataset.portalDestination || "unknown";
 
     const activate = () => {
-      if (shell) shell.dataset.active = destination;
+      if (shell && !shell.classList.contains("is-wide-touch")) {
+        shell.dataset.active = destination;
+      }
     };
 
     const clear = () => {
       if (shell) delete shell.dataset.active;
     };
 
-    choice.addEventListener("pointerenter", activate);
+    choice.addEventListener("pointerenter", (event) => {
+      // Touch pointerenter can become sticky in Chrome/Android and previously
+      // triggered a full grid resize on the unfolded Fold. Hover expansion is
+      // now reserved for a real fine/hover pointer.
+      if (fineHoverQuery.matches && event.pointerType !== "touch") {
+        activate();
+      }
+    });
     choice.addEventListener("pointerleave", clear);
-    choice.addEventListener("focus", activate);
+    choice.addEventListener("pointercancel", clear);
+    choice.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch") clear();
+    }, { passive: true });
+    choice.addEventListener("focus", () => {
+      // Keep keyboard accessibility without treating ordinary touch focus as hover.
+      if (fineHoverQuery.matches || choice.matches(":focus-visible")) {
+        activate();
+      }
+    });
     choice.addEventListener("blur", clear);
     choice.addEventListener("click", () => {
       track("portal_select", {
@@ -63,11 +130,11 @@
     });
   });
 
-  if (shell && window.matchMedia("(pointer: fine)").matches) {
+  if (shell && fineHoverQuery.matches) {
     let frame = 0;
 
     window.addEventListener("pointermove", (event) => {
-      if (frame) return;
+      if (frame || event.pointerType === "touch") return;
 
       frame = window.requestAnimationFrame(() => {
         shell.style.setProperty("--pointer-x", `${(event.clientX / window.innerWidth) * 100}%`);

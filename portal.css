@@ -1882,3 +1882,368 @@ body.portal-page {
     left: 44%;
   }
 }
+
+/* Unfolded Fold / wide-touch compositor profile (2026-08-08)
+   Activated by portal.js from real viewport geometry + touch capabilities.
+   Goal: preserve the cinematic portal while keeping animated paint bounds small
+   and avoiding Android Chrome's most fragile filtered/composited combinations. */
+.portal-shell.is-wide-touch {
+  --header-height: clamp(76px, 9.5svh, 94px);
+  --footer-height: clamp(78px, 9.8svh, 96px);
+}
+
+.portal-shell.is-wide-touch .portal-stage,
+.portal-shell.is-wide-touch[data-active="property_intake"] .portal-stage,
+.portal-shell.is-wide-touch[data-active="showcase"] .portal-stage {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  transition: none;
+  contain: layout paint;
+}
+
+.portal-shell.is-wide-touch .portal-choice {
+  min-width: 0;
+  padding: clamp(18px, 2.8vw, 30px);
+  contain: paint;
+}
+
+.portal-shell.is-wide-touch .portal-choice-intake {
+  align-items: flex-start;
+}
+
+.portal-shell.is-wide-touch .portal-choice-showcase {
+  align-items: flex-end;
+}
+
+.portal-shell.is-wide-touch .portal-choice-intake .choice-copy,
+.portal-shell.is-wide-touch .portal-choice-showcase .choice-copy {
+  width: min(88%, 410px);
+}
+
+.portal-shell.is-wide-touch .portal-choice-intake .choice-copy {
+  margin: 0;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.portal-shell.is-wide-touch .portal-choice-showcase .choice-copy {
+  margin: 0 0 0 auto;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.portal-shell.is-wide-touch .choice-title {
+  font-size: clamp(2.05rem, 4.8vw, 3.35rem);
+}
+
+.portal-shell.is-wide-touch .choice-description {
+  max-width: 330px;
+  margin-top: 10px;
+  font-size: clamp(.72rem, 1.55vw, .9rem);
+  line-height: 1.42;
+}
+
+.portal-shell.is-wide-touch .choice-kicker {
+  font-size: clamp(.56rem, 1.15vw, .7rem);
+}
+
+.portal-shell.is-wide-touch .choice-button {
+  margin-top: 14px;
+  padding: 11px 14px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background:
+    linear-gradient(110deg, rgba(var(--accent-rgb), .18), rgba(5,4,8,.88)),
+    rgba(5,4,8,.82);
+}
+
+/* The normal-phone fix already moves the scene wrapper instead of the filtered
+   SVG. Wide-touch keeps that architecture, shrinks the canvas, and removes the
+   expensive filters from the moving descendants. */
+.portal-shell.is-wide-touch .portal-choice-intake .scene-house,
+.portal-shell.is-wide-touch .portal-choice-showcase .scene-showcase {
+  animation: none !important;
+  transform: none !important;
+  will-change: auto;
+}
+
+.portal-shell.is-wide-touch .portal-choice-intake .choice-scene,
+.portal-shell.is-wide-touch .portal-choice-showcase .choice-scene {
+  opacity: .72;
+  place-items: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: auto;
+}
+
+.portal-shell.is-wide-touch .portal-choice-intake .choice-scene {
+  inset: 27% -2% 2% 10%;
+  animation: intakeSceneDriftWideTouch 18s ease-in-out infinite alternate;
+}
+
+.portal-shell.is-wide-touch .portal-choice-showcase .choice-scene {
+  inset: 2% 10% 27% -2%;
+  animation: showcaseSceneDriftWideTouch 19s ease-in-out infinite alternate;
+}
+
+.portal-shell.is-wide-touch .portal-choice-intake .choice-scene svg,
+.portal-shell.is-wide-touch .portal-choice-showcase .choice-scene svg {
+  width: min(90%, 470px) !important;
+  max-width: 90%;
+  transform: none !important;
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .house-halo,
+.portal-shell.is-wide-touch .film-halo,
+.portal-shell.is-wide-touch .door-light {
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .house-halo,
+.portal-shell.is-wide-touch .film-halo {
+  stroke-width: 9;
+  opacity: .2;
+}
+
+.portal-shell.is-wide-touch .smoke-puff,
+.portal-shell.is-wide-touch .house-spark,
+.portal-shell.is-wide-touch .showcase-spark,
+.portal-shell.is-wide-touch .floating-media {
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .smoke-puff {
+  fill: rgba(255, 239, 203, .16);
+}
+
+.portal-shell.is-wide-touch .floating-media {
+  animation: mediaFloatWideTouch 9.5s ease-in-out infinite;
+}
+
+/* Keep the atmosphere animated, but stop repainting several full-resolution,
+   blurred/blended surfaces every frame on the high-DPR inner display. */
+.portal-shell.is-wide-touch .cinema-beam {
+  width: 56vw;
+  height: 108vh;
+  opacity: .11;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.portal-shell.is-wide-touch .cinema-ribbon {
+  width: 54vw;
+  height: 20vh;
+  opacity: .15;
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .cinema-curtain {
+  filter: none;
+  opacity: .34;
+}
+
+.portal-shell.is-wide-touch .cinema-grain {
+  opacity: .045;
+  mix-blend-mode: normal;
+  animation: none;
+}
+
+.portal-shell.is-wide-touch .cinema-prism {
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .cinema-prism:nth-child(n + 11) {
+  display: none;
+}
+
+.portal-shell.is-wide-touch .portal-header,
+.portal-shell.is-wide-touch .portal-footer {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.portal-shell.is-wide-touch .portal-header {
+  justify-content: space-between;
+  padding-inline: clamp(18px, 3vw, 30px);
+  background: linear-gradient(180deg, rgba(3,2,6,.98), rgba(3,2,6,.78));
+}
+
+.portal-shell.is-wide-touch .portal-header-cue {
+  display: flex;
+  font-size: clamp(.92rem, 2vw, 1.25rem);
+}
+
+.portal-shell.is-wide-touch .portal-footer {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  gap: clamp(8px, 1.5vw, 18px);
+  padding: 7px clamp(12px, 2.2vw, 24px) max(7px, env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(5,3,8,.9), rgba(3,2,6,.99));
+}
+
+.portal-shell.is-wide-touch .portal-copyright {
+  grid-column: auto;
+  grid-row: auto;
+  max-width: 145px;
+  font-size: .52rem;
+  line-height: 1.18;
+  white-space: normal;
+}
+
+.portal-shell.is-wide-touch .portal-socials a {
+  width: 32px;
+  height: 32px;
+}
+
+.portal-shell.is-wide-touch .contact-button {
+  min-width: 84px;
+  height: 40px;
+  padding-inline: 9px;
+}
+
+.portal-shell.is-wide-touch .contact-button span {
+  font-size: .69rem;
+}
+
+.portal-shell.is-wide-touch .choice-copy::before {
+  filter: none;
+  background: radial-gradient(ellipse at center, rgba(3,2,6,.84), rgba(3,2,6,.56) 58%, transparent 82%);
+}
+
+.portal-shell.is-wide-touch .portal-center-mark {
+  top: 50% !important;
+  left: 50% !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  transition: none !important;
+}
+
+.portal-shell.is-wide-touch .portal-center-mark i {
+  display: none !important;
+}
+
+.portal-shell.is-wide-touch .portal-center-mark b {
+  width: 42px;
+  height: 42px;
+  background: rgba(5, 3, 8, .97) !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.portal-shell.is-wide-touch .portal-stage::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Touch Chrome can retain :hover after a tap. Do not let that transient state
+   scale filtered artwork or change panel brightness on the wide-touch profile. */
+.portal-shell.is-wide-touch .portal-choice:hover {
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .portal-choice:hover .choice-backdrop {
+  transform: none;
+  filter: none;
+}
+
+.portal-shell.is-wide-touch .portal-choice:hover .choice-scene {
+  opacity: .72;
+}
+
+.portal-shell.is-wide-touch .portal-choice:hover .choice-copy {
+  transform: none;
+}
+
+.portal-shell.is-wide-touch .portal-choice:hover .choice-button {
+  color: #fff9e8;
+  background:
+    linear-gradient(110deg, rgba(var(--accent-rgb), .18), rgba(5,4,8,.88)),
+    rgba(5,4,8,.82);
+  box-shadow: 0 0 26px rgba(var(--accent-rgb), .16), inset 0 0 20px rgba(var(--accent-rgb), .06);
+  transform: none;
+}
+
+.portal-shell.is-wide-touch .portal-choice:hover .choice-button b {
+  color: var(--accent-b);
+  transform: none;
+}
+
+.portal-shell.is-wide-touch .portal-choice:hover .showcase-status-sticker {
+  transform: rotate(3deg) scale(.94);
+}
+
+.portal-shell.is-wide-touch .lane-trace-orb {
+  width: 12px;
+  height: 12px;
+  offset-path: inset(7px round 14px);
+  animation-duration: 14s;
+  will-change: auto;
+}
+
+.portal-shell.is-wide-touch .lane-trace-orb::before {
+  inset: -6px;
+  filter: none;
+  opacity: .24;
+}
+
+.portal-shell.is-wide-touch .lane-trace-orb::after {
+  inset: -11px;
+  filter: none;
+  opacity: .22;
+}
+
+.portal-shell.is-wide-touch .lane-trace-orb-intake {
+  box-shadow: 0 0 7px #fff4be, 0 0 14px rgba(255, 214, 107, .78);
+}
+
+.portal-shell.is-wide-touch .lane-trace-orb-showcase {
+  box-shadow: 0 0 7px #eafcff, 0 0 14px rgba(49, 217, 255, .78);
+}
+
+.portal-shell.is-wide-touch .showcase-status-sticker {
+  top: 14px;
+  right: 14px;
+  min-width: 128px;
+  padding: 14px 20px 15px;
+  border-width: 3px;
+  transform: rotate(3deg) scale(.94);
+  transform-origin: top right;
+}
+
+.portal-shell.is-wide-touch .showcase-status-sticker::before,
+.portal-shell.is-wide-touch .showcase-status-sticker::after {
+  top: 9px;
+  width: 8px;
+  height: 8px;
+}
+
+.portal-shell.is-wide-touch .showcase-status-sticker span {
+  font-size: .53rem;
+}
+
+.portal-shell.is-wide-touch .showcase-status-sticker strong {
+  font-size: .72rem;
+}
+
+@keyframes intakeSceneDriftWideTouch {
+  0%   { transform: translate3d(-2.5%, 2.5%, 0); }
+  36%  { transform: translate3d(3.2%, -2%, 0); }
+  72%  { transform: translate3d(-1.5%, -3.2%, 0); }
+  100% { transform: translate3d(3.5%, 1.5%, 0); }
+}
+
+@keyframes showcaseSceneDriftWideTouch {
+  0%   { transform: translate3d(2.5%, -2.5%, 0); }
+  36%  { transform: translate3d(-3.2%, 2%, 0); }
+  72%  { transform: translate3d(1.5%, 3.2%, 0); }
+  100% { transform: translate3d(-3.5%, -1.5%, 0); }
+}
+
+@keyframes mediaFloatWideTouch {
+  0%, 100% { transform: translate3d(-7px, 5px, 0) rotate(-1deg); opacity: .58; }
+  50%      { transform: translate3d(9px, -7px, 0) rotate(1deg); opacity: .84; }
+}
