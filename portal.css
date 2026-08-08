@@ -1883,191 +1883,42 @@ body.portal-page {
   }
 }
 
-/* ========================================================================== 
-   WIDE ANDROID TOUCH RENDERING PROFILE — Fold / tablet stability (2026-08-08)
-   Enabled by portal-fold.js only when Android + touch is actually using the
-   portal's two-column layout. Desktop, normal portrait phone, and Fold-closed
-   mobile styling remain on the original rules above.
+/* ============================================================
+   UNFOLDED ANDROID / WIDE-TOUCH STABILITY PROFILE
+   ------------------------------------------------------------
+   The expensive part on the Fold is the large SVG root itself
+   roaming while the SVG is also being filtered and its children
+   are animating. On Fold-open only, freeze that ROOT movement.
 
-   Important: animations are NOT removed. The expensive moving filtered SVG
-   root is replaced with movement on its outer scene layer, while contours,
-   smoke, media cards, line drawing, sparks, cinema beams/ribbons/prisms,
-   grain, logo animation, lane tracers, etc. continue moving.
-   ========================================================================== */
+   Everything inside the artwork still animates:
+   contours, line drawing, smoke, sparks, floating media, etc.
+   Cinema beams/ribbons/prisms/grain and lane orbs also remain.
+   Desktop, ordinary phone, and Fold-closed behavior are untouched.
+   ============================================================ */
 
-.portal-shell.portal-wide-touch .portal-choice-intake .scene-house,
-.portal-shell.portal-wide-touch .portal-choice-showcase .scene-showcase {
+.portal-shell.fold-open-static-root .portal-choice-intake .scene-house {
   animation: none !important;
-  transform: none !important;
+  transform: translate3d(10%, 8%, 0) rotate(0deg) scale(1.12) !important;
   will-change: auto !important;
 }
 
-.portal-shell.portal-wide-touch .portal-choice-intake .choice-scene,
-.portal-shell.portal-wide-touch .portal-choice-showcase .choice-scene {
+.portal-shell.fold-open-static-root .portal-choice-showcase .scene-showcase {
+  animation: none !important;
+  transform: translate3d(-8%, -6%, 0) rotate(0deg) scale(1.13) !important;
+  will-change: auto !important;
+}
+
+/* Remove only the full-SVG drop shadow. Individual neon/glow elements inside
+   the SVG keep their own effects and animations. This prevents Chrome from
+   re-rasterizing one giant filtered moving surface every frame. */
+.portal-shell.fold-open-static-root .choice-scene > svg {
+  filter: none !important;
+  will-change: auto !important;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: opacity 300ms ease !important;
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
 }
 
-.portal-shell.portal-wide-touch .portal-choice-intake .choice-scene {
-  animation: intakeSceneDriftWideTouch 14s ease-in-out -2.8s infinite alternate !important;
-}
-
-.portal-shell.portal-wide-touch .portal-choice-showcase .choice-scene {
-  animation: showcaseSceneDriftWideTouch 16s ease-in-out -7.2s infinite alternate !important;
-}
-
-@keyframes intakeSceneDriftWideTouch {
-  0%   { transform: translate3d(-8%, 5%, 0) rotate(-.35deg) scale(1.015); }
-  28%  { transform: translate3d(6%, -4%, 0) rotate(.25deg) scale(1.025); }
-  57%  { transform: translate3d(-4%, -7%, 0) rotate(-.18deg) scale(1.02); }
-  78%  { transform: translate3d(9%, 2%, 0) rotate(.32deg) scale(1.03); }
-  100% { transform: translate3d(-2%, 6%, 0) rotate(-.12deg) scale(1.018); }
-}
-
-@keyframes showcaseSceneDriftWideTouch {
-  0%   { transform: translate3d(8%, -5%, 0) rotate(.35deg) scale(1.018); }
-  27%  { transform: translate3d(-6%, 4%, 0) rotate(-.25deg) scale(1.028); }
-  54%  { transform: translate3d(4%, 7%, 0) rotate(.18deg) scale(1.022); }
-  79%  { transform: translate3d(-9%, -2%, 0) rotate(-.32deg) scale(1.03); }
-  100% { transform: translate3d(2%, -6%, 0) rotate(.12deg) scale(1.02); }
-}
-
-/* The SVG remains fully animated internally; only GPU-heavy filters are swapped. */
-.portal-shell.portal-wide-touch .choice-scene svg {
-  filter: none !important;
-  transform: none !important;
-  will-change: auto !important;
-}
-
-.portal-shell.portal-wide-touch .house-halo,
-.portal-shell.portal-wide-touch .film-halo,
-.portal-shell.portal-wide-touch .door-light,
-.portal-shell.portal-wide-touch .house-spark,
-.portal-shell.portal-wide-touch .showcase-spark,
-.portal-shell.portal-wide-touch .smoke-puff,
-.portal-shell.portal-wide-touch .floating-media,
-.portal-shell.portal-wide-touch .door-knob {
-  filter: none !important;
-}
-
-.portal-shell.portal-wide-touch .house-halo,
-.portal-shell.portal-wide-touch .film-halo {
-  opacity: .20;
-}
-
-.portal-shell.portal-wide-touch .house-spark,
-.portal-shell.portal-wide-touch .showcase-spark,
-.portal-shell.portal-wide-touch .door-knob {
-  stroke: rgba(255,255,255,.12);
-  stroke-width: 1px;
-}
-
-/* Keep the full cinematic background moving, but avoid live blur/blend passes. */
-.portal-shell.portal-wide-touch .cinema-curtain {
-  filter: none !important;
-}
-
-.portal-shell.portal-wide-touch .cinema-beam {
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  opacity: .11;
-}
-
-.portal-shell.portal-wide-touch .cinema-ribbon {
-  filter: none !important;
-  box-shadow: 0 0 14px currentColor;
-}
-
-.portal-shell.portal-wide-touch .cinema-prism {
-  filter: none !important;
-  box-shadow: 0 0 9px var(--color-a);
-}
-
-/* Preserve moving grain without the full-screen SVG feTurbulence filter. */
-.portal-shell.portal-wide-touch .cinema-grain {
-  opacity: .045;
-  mix-blend-mode: normal !important;
-  background-image:
-    radial-gradient(circle at 25% 25%, rgba(255,255,255,.34) 0 .45px, transparent .7px),
-    radial-gradient(circle at 70% 65%, rgba(255,255,255,.22) 0 .4px, transparent .65px),
-    radial-gradient(circle at 48% 83%, rgba(255,255,255,.16) 0 .35px, transparent .6px) !important;
-  background-size: 5px 5px, 8px 8px, 11px 11px !important;
-  animation: grainJitter .42s steps(2) infinite !important;
-}
-
-/* Backdrop blur forces Chrome to resample all animation behind these surfaces. */
-.portal-shell.portal-wide-touch .portal-header,
-.portal-shell.portal-wide-touch .portal-footer,
-.portal-shell.portal-wide-touch .choice-button,
-.portal-shell.portal-wide-touch .portal-center-mark b {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.portal-shell.portal-wide-touch .portal-header {
-  background: linear-gradient(180deg, rgba(3,2,6,.97), rgba(3,2,6,.62));
-}
-
-.portal-shell.portal-wide-touch .portal-footer {
-  background: linear-gradient(180deg, rgba(5,3,8,.82), rgba(3,2,6,.97));
-}
-
-.portal-shell.portal-wide-touch .choice-copy::before {
-  filter: none !important;
-  background: radial-gradient(ellipse at center, rgba(3,2,6,.80), rgba(3,2,6,.44) 58%, transparent 78%);
-}
-
-.portal-shell.portal-wide-touch .portal-logo-glow {
-  filter: none !important;
-  box-shadow:
-    0 0 10px rgba(255,214,107,.34),
-    0 0 20px rgba(49,217,255,.20),
-    0 0 28px rgba(255,79,184,.14);
-}
-
-/* Lane tracers keep orbiting. Their glow is rendered without blur filters. */
-.portal-shell.portal-wide-touch .lane-trace-orb {
-  will-change: auto;
-}
-
-.portal-shell.portal-wide-touch .lane-trace-orb::before,
-.portal-shell.portal-wide-touch .lane-trace-orb::after {
-  filter: none !important;
-}
-
-.portal-shell.portal-wide-touch .lane-trace-orb::after {
-  opacity: .28;
-}
-
-/* Touch must never trigger the desktop hover expansion/compositor stack. */
-.portal-shell.portal-wide-touch .portal-choice:hover,
-.portal-shell.portal-wide-touch .portal-choice:focus-visible,
-.portal-shell.portal-wide-touch[data-active="property_intake"] .portal-choice-showcase,
-.portal-shell.portal-wide-touch[data-active="showcase"] .portal-choice-intake {
-  filter: none !important;
-}
-
-.portal-shell.portal-wide-touch .portal-choice:hover .choice-backdrop,
-.portal-shell.portal-wide-touch .portal-choice:focus-visible .choice-backdrop {
-  transform: none !important;
-  filter: none !important;
-}
-
-.portal-shell.portal-wide-touch .portal-choice:hover .choice-scene,
-.portal-shell.portal-wide-touch .portal-choice:focus-visible .choice-scene {
-  opacity: .82;
-}
-
-.portal-shell.portal-wide-touch .portal-choice:hover .choice-copy,
-.portal-shell.portal-wide-touch .portal-choice:focus-visible .choice-copy,
-.portal-shell.portal-wide-touch .portal-choice:hover .choice-button,
-.portal-shell.portal-wide-touch .portal-choice:focus-visible .choice-button,
-.portal-shell.portal-wide-touch .portal-choice:hover .choice-button b,
-.portal-shell.portal-wide-touch .portal-choice:focus-visible .choice-button b,
-.portal-shell.portal-wide-touch .portal-choice-showcase:hover .showcase-status-sticker,
-.portal-shell.portal-wide-touch .portal-choice-showcase:focus-visible .showcase-status-sticker {
-  transform: none !important;
+/* Keep each card's repaint area bounded while its internal details animate. */
+.portal-shell.fold-open-static-root .portal-choice {
+  contain: paint;
 }

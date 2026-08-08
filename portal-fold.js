@@ -7,69 +7,53 @@
 
   if (!shell || !stage || choices.length < 2) return;
 
-  let resizeFrame = 0;
+  let resizeTimer = 0;
 
   const isAndroidTouch = () =>
     /Android/i.test(navigator.userAgent || "") &&
     (navigator.maxTouchPoints || 0) > 0;
 
-  const usesWideTwoColumnLayout = () => {
+  const isSideBySide = () => {
     const left = choices[0].getBoundingClientRect();
     const right = choices[1].getBoundingClientRect();
 
     return (
       left.width > 0 &&
       right.width > 0 &&
-      Math.abs(left.top - right.top) < 18 &&
-      Math.abs(left.left - right.left) > 48
+      Math.abs(left.top - right.top) < 16 &&
+      Math.abs(left.left - right.left) > 40
     );
   };
 
-  const syncWideTouchMode = () => {
-    const enabled = isAndroidTouch() && usesWideTwoColumnLayout();
+  const syncFoldMode = () => {
+    const foldOpen = isAndroidTouch() && isSideBySide();
+    shell.classList.toggle("fold-open-static-root", foldOpen);
 
-    shell.classList.toggle("portal-wide-touch", enabled);
-
-    // A touch can leave Chrome's desktop-style :hover / active state stuck.
-    // Clear only that temporary expansion state; links/clicks still work normally.
-    if (enabled) delete shell.dataset.active;
+    // Android touch can retain a desktop-style hover state.
+    if (foldOpen) delete shell.dataset.active;
   };
 
   const scheduleSync = () => {
-    if (resizeFrame) cancelAnimationFrame(resizeFrame);
-
-    resizeFrame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        resizeFrame = 0;
-        syncWideTouchMode();
-      });
-    });
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(syncFoldMode, 140);
   };
 
-  // portal.js is loaded first, so these handlers run after its handlers and
-  // immediately undo touch-generated desktop hover expansion on wide touch screens.
+  // Clear fake desktop hover after the original portal.js handlers run.
   choices.forEach((choice) => {
     choice.addEventListener("pointerenter", () => {
-      if (shell.classList.contains("portal-wide-touch")) {
+      if (shell.classList.contains("fold-open-static-root")) {
         delete shell.dataset.active;
       }
     });
 
     choice.addEventListener("focus", () => {
-      if (shell.classList.contains("portal-wide-touch")) {
-        delete shell.dataset.active;
-      }
-    });
-
-    choice.addEventListener("pointerdown", () => {
-      if (shell.classList.contains("portal-wide-touch")) {
+      if (shell.classList.contains("fold-open-static-root")) {
         delete shell.dataset.active;
       }
     });
   });
 
-  scheduleSync();
-
+  requestAnimationFrame(syncFoldMode);
   window.addEventListener("resize", scheduleSync, { passive: true });
   window.addEventListener("orientationchange", scheduleSync, { passive: true });
 
