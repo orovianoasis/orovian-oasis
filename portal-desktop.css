@@ -1,0 +1,30 @@
+/* ================================================================
+   OROVIAN OASIS — DESKTOP PORTAL OVERRIDES
+   Edit desktop-only animation/rendering behavior here.
+   Shared layout and styling remain in portal.css.
+   ================================================================ */
+
+html[data-portal-profile="desktop"] .portal-stage {
+  transition: grid-template-columns 600ms cubic-bezier(.22,.72,.16,1);
+}
+
+/* Keep the OR badge attached to the real moving split. */
+html[data-portal-profile="desktop"] .portal-center-mark {
+  top: 50% !important;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  transition: left 600ms cubic-bezier(.22,.72,.16,1) !important;
+}
+
+html[data-portal-profile="desktop"] .portal-shell[data-active="property_intake"] .portal-center-mark {
+  left: 56%;
+}
+
+html[data-portal-profile="desktop"] .portal-shell[data-active="showcase"] .portal-center-mark {
+  left: 44%;
+}
+
+/* Desktop keeps both perimeter orbs active in opposite directions. */
+html[data-portal-profile="desktop"] .lane-trace-orb {
+  animation-duration: 11.5s;
+}

@@ -1,0 +1,67 @@
+/* ================================================================
+   OROVIAN OASIS — UNFOLDED FOLD / WIDE-TOUCH OVERRIDES
+   Edit ONLY this file for unfolded-fold animation stability.
+   Closed foldables use portal-mobile.css automatically.
+   ================================================================ */
+
+/* Keep the unfolded profile visually active but compositor-friendly. */
+html[data-portal-profile="fold-open"] .cinema-grain {
+  animation: none !important;
+  mix-blend-mode: normal !important;
+}
+
+html[data-portal-profile="fold-open"] .portal-header,
+html[data-portal-profile="fold-open"] .portal-footer {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-portal-profile="fold-open"] .cinema-beam,
+html[data-portal-profile="fold-open"] .cinema-ribbon,
+html[data-portal-profile="fold-open"] .cinema-curtain,
+html[data-portal-profile="fold-open"] .cinema-prism,
+html[data-portal-profile="fold-open"] .choice-scene svg,
+html[data-portal-profile="fold-open"] .smoke-puff,
+html[data-portal-profile="fold-open"] .floating-media {
+  filter: none !important;
+}
+
+/* No hover-resize on the unfolded touch display. */
+html[data-portal-profile="fold-open"] .portal-stage,
+html[data-portal-profile="fold-open"] .portal-shell[data-active="property_intake"] .portal-stage,
+html[data-portal-profile="fold-open"] .portal-shell[data-active="showcase"] .portal-stage {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  transition: none !important;
+}
+
+/* Keep both opposite-direction orbs, but make them cheaper to composite. */
+html[data-portal-profile="fold-open"] .lane-trace-orb {
+  width: 12px;
+  height: 12px;
+  offset-path: inset(7px round 14px);
+  animation-duration: 14s;
+  will-change: auto;
+}
+
+html[data-portal-profile="fold-open"] .lane-trace-orb-intake.lane-trace-orb-primary,
+html[data-portal-profile="fold-open"] .lane-trace-orb-showcase.lane-trace-orb-primary {
+  animation-delay: 0s;
+}
+
+html[data-portal-profile="fold-open"] .lane-trace-orb-intake.lane-trace-orb-secondary,
+html[data-portal-profile="fold-open"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
+  animation-delay: -7s;
+}
+
+html[data-portal-profile="fold-open"] .lane-trace-orb::before,
+html[data-portal-profile="fold-open"] .lane-trace-orb::after {
+  filter: none !important;
+}
+
+/* OR stays centered because Fold touch mode intentionally does not expand cards. */
+html[data-portal-profile="fold-open"] .portal-center-mark {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  transition: none !important;
+}

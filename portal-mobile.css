@@ -1,0 +1,28 @@
+/* ================================================================
+   OROVIAN OASIS — MOBILE / CLOSED-FOLD OVERRIDES
+   Edit phone and closed-fold animation/rendering behavior here.
+   ================================================================ */
+
+html[data-portal-profile="mobile"] .lane-trace-orb {
+  width: 12px;
+  height: 12px;
+  offset-path: inset(7px round 13px);
+  animation-duration: 10.5s;
+}
+
+/* Two visible mobile tracers per destination, traveling opposite ways. */
+html[data-portal-profile="mobile"] .lane-trace-orb-intake.lane-trace-orb-primary,
+html[data-portal-profile="mobile"] .lane-trace-orb-showcase.lane-trace-orb-primary {
+  animation-delay: 0s;
+}
+
+html[data-portal-profile="mobile"] .lane-trace-orb-intake.lane-trace-orb-secondary,
+html[data-portal-profile="mobile"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
+  animation-delay: -5.25s;
+}
+
+/* Touch devices should never inherit desktop hover expansion. */
+html[data-portal-profile="mobile"] .portal-shell[data-active="property_intake"] .portal-stage,
+html[data-portal-profile="mobile"] .portal-shell[data-active="showcase"] .portal-stage {
+  grid-template-columns: 1fr;
+}

@@ -8,36 +8,25 @@
   const socialLinks = document.querySelectorAll("[data-social]");
   const contactLinks = document.querySelectorAll("[data-contact]");
   const fineHoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
-  const noHoverQuery = window.matchMedia("(hover: none)");
-
-  const isWideTouchViewport = () => {
-    const width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const height = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-    const shortSide = Math.min(width, height);
-    const longSide = Math.max(width, height);
-    const aspect = shortSide > 0 ? longSide / shortSide : Infinity;
-    const hasTouch = (navigator.maxTouchPoints || 0) > 0 || "ontouchstart" in window;
-    const touchFirst = coarsePointerQuery.matches || noHoverQuery.matches;
-
-    // Fold inner displays and tablet-style touch viewports are much wider than a
-    // normal phone, but still compact enough that the desktop compositor profile
-    // is unnecessarily expensive. The aspect fallback also covers Android builds
-    // that expose unusual pointer/hover capabilities while unfolded.
-    const tabletGeometry = shortSide >= 560 && shortSide <= 1000 && longSide >= 720 && longSide <= 1500;
-    const foldLikeGeometry = tabletGeometry && aspect <= 1.6;
-
-    return hasTouch && tabletGeometry && (touchFirst || foldLikeGeometry);
+  const getRenderProfile = () => {
+    if (window.OROVIAN_PORTAL_PROFILE && typeof window.OROVIAN_PORTAL_PROFILE.get === "function") {
+      return window.OROVIAN_PORTAL_PROFILE.get();
+    }
+    return document.documentElement.dataset.portalProfile || "desktop";
   };
 
   const updateRenderProfile = () => {
     if (!shell) return;
 
-    const wideTouch = isWideTouchViewport();
-    shell.classList.toggle("is-wide-touch", wideTouch);
-    shell.dataset.renderProfile = wideTouch ? "wide-touch" : "default";
+    const profile = getRenderProfile();
+    const foldOpen = profile === "fold-open";
 
-    if (wideTouch) {
+    // Keep the legacy class only for the unfolded Fold safety rules already
+    // present in portal.css. Other platform overrides live in their own files.
+    shell.classList.toggle("is-wide-touch", foldOpen);
+    shell.dataset.renderProfile = profile;
+
+    if (foldOpen) {
       delete shell.dataset.active;
     }
   };
@@ -56,6 +45,7 @@
 
   window.addEventListener("resize", scheduleRenderProfileUpdate, { passive: true });
   window.addEventListener("orientationchange", scheduleRenderProfileUpdate, { passive: true });
+  window.addEventListener("orovian:profilechange", scheduleRenderProfileUpdate);
 
   if (year) {
     year.textContent = String(new Date().getFullYear());

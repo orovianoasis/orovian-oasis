@@ -1,0 +1,24 @@
+/* ================================================================
+   OROVIAN OASIS — TABLET OVERRIDES
+   Edit tablet-only animation/rendering behavior here.
+   This profile is intentionally separate from unfolded foldables.
+   ================================================================ */
+
+html[data-portal-profile="tablet"] .lane-trace-orb {
+  animation-duration: 12s;
+}
+
+html[data-portal-profile="tablet"] .lane-trace-orb-intake.lane-trace-orb-secondary,
+html[data-portal-profile="tablet"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
+  animation-delay: -6s;
+}
+
+/* Coarse-pointer tablets do not need desktop hover-driven panel resizing. */
+html[data-portal-profile="tablet"] .portal-stage {
+  transition: none;
+}
+
+html[data-portal-profile="tablet"] .portal-shell[data-active="property_intake"] .portal-stage,
+html[data-portal-profile="tablet"] .portal-shell[data-active="showcase"] .portal-stage {
+  grid-template-columns: 1fr 1fr;
+}
