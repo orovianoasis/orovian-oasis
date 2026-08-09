@@ -37,7 +37,9 @@ html[data-portal-profile="fold-open"] .choice-scene,
 html[data-portal-profile="fold-open"] .portal-choice-intake .choice-scene,
 html[data-portal-profile="fold-open"] .portal-choice-showcase .choice-scene {
   animation: none !important;
-  transform: none !important;
+  /* Do NOT make transform !important here: Fold scene keyframes below
+     must be allowed to animate transform on the scene wrapper. */
+  transform: none;
   transition: none !important;
   will-change: auto !important;
   backface-visibility: visible !important;
