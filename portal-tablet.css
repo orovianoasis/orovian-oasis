@@ -5,13 +5,10 @@
    ================================================================ */
 
 html[data-portal-profile="tablet"] .lane-trace-orb {
-  animation-duration: 12s;
+  --orb-platform-adjust: .55s;
 }
 
-html[data-portal-profile="tablet"] .lane-trace-orb-intake.lane-trace-orb-secondary,
-html[data-portal-profile="tablet"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
-  animation-delay: -6s;
-}
+/* Direction, unique lap variation, and phase spacing come from portal.css. */
 
 /* Coarse-pointer tablets do not need desktop hover-driven panel resizing. */
 html[data-portal-profile="tablet"] .portal-stage {

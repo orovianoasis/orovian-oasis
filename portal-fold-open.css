@@ -127,8 +127,9 @@ html[data-portal-profile="fold-open"] .lane-trace-orb {
   width: 12px;
   height: 12px;
   offset-path: inset(7px round 14px);
+  --orb-platform-adjust: 2.75s;
   animation-name: laneTraceOrbitFoldStable !important;
-  animation-duration: 14s !important;
+  animation-duration: calc(var(--orb-master-duration) + var(--orb-platform-adjust) + var(--orb-duration-offset)) !important;
   animation-timing-function: linear !important;
   animation-iteration-count: infinite !important;
   opacity: .9;
@@ -136,15 +137,8 @@ html[data-portal-profile="fold-open"] .lane-trace-orb {
   will-change: auto !important;
 }
 
-html[data-portal-profile="fold-open"] .lane-trace-orb-intake.lane-trace-orb-primary,
-html[data-portal-profile="fold-open"] .lane-trace-orb-showcase.lane-trace-orb-primary {
-  animation-delay: 0s !important;
-}
-
-html[data-portal-profile="fold-open"] .lane-trace-orb-intake.lane-trace-orb-secondary,
-html[data-portal-profile="fold-open"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
-  animation-delay: -7s !important;
-}
+/* Fold keeps the same per-orb phase offsets and slightly different lap
+   durations as every other profile; only the Fold-safe keyframe differs. */
 
 html[data-portal-profile="fold-open"] .lane-trace-orb::before {
   animation: none !important;

@@ -11,6 +11,13 @@
   --footer-height: clamp(74px, 10.5vh, 98px);
   --pointer-x: 50%;
   --pointer-y: 45%;
+
+  /* UNIVERSAL ORB SPEED CONTROL
+     Increase this duration to slow every perimeter orb down; decrease it
+     to speed every orb up. 12.65s is 10% slower than the former 11.5s
+     desktop baseline. Platform and per-orb variation are added below. */
+  --orb-master-duration: 12.65s;
+  --orb-platform-adjust: 0s;
 }
 
 * { box-sizing: border-box; }
@@ -1707,8 +1714,9 @@ body.portal-page {
   offset-path: inset(10px round 18px);
   offset-distance: 0%;
   offset-rotate: 0deg;
+  --orb-duration-offset: 0s;
   will-change: offset-distance, transform, opacity;
-  animation: laneTraceOrbit 11.5s linear infinite;
+  animation: laneTraceOrbit calc(var(--orb-master-duration) + var(--orb-platform-adjust) + var(--orb-duration-offset)) linear infinite;
 }
 
 .lane-trace-orb::before,
@@ -1752,26 +1760,32 @@ body.portal-page {
     0 0 30px rgba(255, 79, 184, .62);
 }
 
-/* Two perimeter tracers per destination. The paired orbs travel the same
-   border in opposite directions and start half a circuit apart. */
+/* Two perimeter tracers per destination. Each orb has a slightly different
+   lap duration and starting phase. Motion remains deterministic and smooth,
+   but the paired orbs continually drift relative to one another so their
+   crossing points do not stay locked to the same locations. */
 .lane-trace-orb-intake.lane-trace-orb-primary {
+  --orb-duration-offset: 0s;
   animation-direction: normal;
   animation-delay: 0s;
 }
 
 .lane-trace-orb-intake.lane-trace-orb-secondary {
+  --orb-duration-offset: .60s;
   animation-direction: reverse;
-  animation-delay: -5.75s;
+  animation-delay: -4.70s;
 }
 
 .lane-trace-orb-showcase.lane-trace-orb-primary {
+  --orb-duration-offset: .30s;
   animation-direction: reverse;
-  animation-delay: 0s;
+  animation-delay: -1.90s;
 }
 
 .lane-trace-orb-showcase.lane-trace-orb-secondary {
+  --orb-duration-offset: 1.10s;
   animation-direction: normal;
-  animation-delay: -5.75s;
+  animation-delay: -7.15s;
 }
 
 @keyframes laneTraceOrbit {
@@ -1838,19 +1852,12 @@ body.portal-page {
     width: 12px;
     height: 12px;
     offset-path: inset(7px round 13px);
-    animation-duration: 10.5s;
+    /* Keeps mobile about 1.1s quicker than the desktop baseline. */
+    --orb-platform-adjust: -1.10s;
   }
 
-  /* Mobile phase spacing keeps both opposite-direction orbs clearly visible. */
-  .lane-trace-orb-intake.lane-trace-orb-primary,
-  .lane-trace-orb-showcase.lane-trace-orb-primary {
-    animation-delay: 0s;
-  }
-
-  .lane-trace-orb-intake.lane-trace-orb-secondary,
-  .lane-trace-orb-showcase.lane-trace-orb-secondary {
-    animation-delay: -5.25s;
-  }
+  /* Per-orb phase spacing and drift are inherited from the universal
+     orb controls above so mobile does not lock crossings to one spot. */
 
   .showcase-status-sticker {
     padding-inline: 21px;
@@ -2210,7 +2217,8 @@ body.portal-page {
   width: 12px;
   height: 12px;
   offset-path: inset(7px round 14px);
-  animation-duration: 14s;
+  /* Wide-touch baseline remains slower for compositor stability. */
+  --orb-platform-adjust: 2.75s;
   will-change: auto;
 }
 

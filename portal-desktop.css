@@ -26,5 +26,5 @@ html[data-portal-profile="desktop"] .portal-shell[data-active="showcase"] .porta
 
 /* Desktop keeps both perimeter orbs active in opposite directions. */
 html[data-portal-profile="desktop"] .lane-trace-orb {
-  animation-duration: 11.5s;
+  --orb-platform-adjust: 0s;
 }

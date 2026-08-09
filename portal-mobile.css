@@ -7,19 +7,10 @@ html[data-portal-profile="mobile"] .lane-trace-orb {
   width: 12px;
   height: 12px;
   offset-path: inset(7px round 13px);
-  animation-duration: 10.5s;
+  --orb-platform-adjust: -1.10s;
 }
 
-/* Two visible mobile tracers per destination, traveling opposite ways. */
-html[data-portal-profile="mobile"] .lane-trace-orb-intake.lane-trace-orb-primary,
-html[data-portal-profile="mobile"] .lane-trace-orb-showcase.lane-trace-orb-primary {
-  animation-delay: 0s;
-}
-
-html[data-portal-profile="mobile"] .lane-trace-orb-intake.lane-trace-orb-secondary,
-html[data-portal-profile="mobile"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
-  animation-delay: -5.25s;
-}
+/* Direction, unique lap variation, and phase spacing come from portal.css. */
 
 /* Touch devices should never inherit desktop hover expansion. */
 html[data-portal-profile="mobile"] .portal-shell[data-active="property_intake"] .portal-stage,
