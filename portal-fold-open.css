@@ -1,29 +1,22 @@
 /* ================================================================
    OROVIAN OASIS — UNFOLDED FOLD / WIDE-TOUCH OVERRIDES
-   Edit ONLY this file for unfolded-fold animation stability.
-   Closed foldables use portal-mobile.css automatically.
+   Fold-only compositor stability profile.
+
+   Replace ONLY this file when tuning the unfolded Fold.
+   Desktop, tablet, normal mobile, and closed-fold behavior remain in
+   their own files and are intentionally untouched here.
    ================================================================ */
 
-/* Keep the unfolded profile visually active but compositor-friendly. */
-html[data-portal-profile="fold-open"] .cinema-grain {
-  animation: none !important;
-  mix-blend-mode: normal !important;
-}
-
-html[data-portal-profile="fold-open"] .portal-header,
-html[data-portal-profile="fold-open"] .portal-footer {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html[data-portal-profile="fold-open"] .cinema-beam,
-html[data-portal-profile="fold-open"] .cinema-ribbon,
-html[data-portal-profile="fold-open"] .cinema-curtain,
-html[data-portal-profile="fold-open"] .cinema-prism,
-html[data-portal-profile="fold-open"] .choice-scene svg,
-html[data-portal-profile="fold-open"] .smoke-puff,
-html[data-portal-profile="fold-open"] .floating-media {
-  filter: none !important;
+/* ---------------------------------------------------------------
+   1) REMOVE PAINT CONTAINMENT ON THE LARGE SPLIT PANELS
+   Chrome/Android can expose rectangular repaint boundaries when large,
+   animated descendants sit inside paint-contained regions on a high-DPR
+   unfolded display. Keep clipping from overflow, but do not create
+   separate paint-containment boxes for the stage/cards.
+   --------------------------------------------------------------- */
+html[data-portal-profile="fold-open"] .portal-stage,
+html[data-portal-profile="fold-open"] .portal-choice {
+  contain: none !important;
 }
 
 /* No hover-resize on the unfolded touch display. */
@@ -34,34 +27,162 @@ html[data-portal-profile="fold-open"] .portal-shell[data-active="showcase"] .por
   transition: none !important;
 }
 
-/* Keep both opposite-direction orbs, but make them cheaper to composite. */
+/* ---------------------------------------------------------------
+   2) KEEP THE LARGE CARD ARTWORK STATIC
+   The artwork remains visible, but the full choice-scene canvases no
+   longer drift across the Fold's large raster surface. Smaller internal
+   SVG effects can continue to animate where they are inexpensive.
+   --------------------------------------------------------------- */
+html[data-portal-profile="fold-open"] .choice-scene,
+html[data-portal-profile="fold-open"] .portal-choice-intake .choice-scene,
+html[data-portal-profile="fold-open"] .portal-choice-showcase .choice-scene {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto !important;
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
+}
+
+html[data-portal-profile="fold-open"] .choice-scene svg,
+html[data-portal-profile="fold-open"] .portal-choice-intake .scene-house,
+html[data-portal-profile="fold-open"] .portal-choice-showcase .scene-showcase {
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+/* The full-card moving facet texture is another large continuously
+   repainted surface. Keep the texture, but freeze its motion. */
+html[data-portal-profile="fold-open"] .portal-choice::before {
+  animation: none !important;
+  background-position: 36% 0 !important;
+}
+
+/* ---------------------------------------------------------------
+   3) FREEZE LARGE CINEMATIC BACKGROUND SURFACES
+   Preserve their visual presence while removing continuous translation,
+   rotation, blur, and blend-mode work on the unfolded inner display.
+   --------------------------------------------------------------- */
+html[data-portal-profile="fold-open"] .cinema-grain,
+html[data-portal-profile="fold-open"] .cinema-beam,
+html[data-portal-profile="fold-open"] .cinema-ribbon,
+html[data-portal-profile="fold-open"] .cinema-curtain,
+html[data-portal-profile="fold-open"] .cinema-prism {
+  animation: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+html[data-portal-profile="fold-open"] .cinema-grain {
+  mix-blend-mode: normal !important;
+}
+
+html[data-portal-profile="fold-open"] .cinema-beam {
+  mix-blend-mode: normal !important;
+}
+
+/* Fixed Fold-only beam poses retain the theatrical lighting without
+   continuously moving a viewport-sized layer. */
+html[data-portal-profile="fold-open"] .beam-one {
+  transform: translateX(-62%) rotate(-18deg) !important;
+}
+
+html[data-portal-profile="fold-open"] .beam-two {
+  transform: translateX(-38%) rotate(16deg) !important;
+}
+
+html[data-portal-profile="fold-open"] .beam-three {
+  transform: translateX(-50%) rotate(2deg) !important;
+}
+
+/* Prisms stay visible at their generated positions instead of drifting. */
+html[data-portal-profile="fold-open"] .cinema-prism {
+  transform: rotate(var(--rotate, 0deg)) scale(.95) !important;
+}
+
+/* Keep expensive filters off smaller Fold descendants too. */
+html[data-portal-profile="fold-open"] .smoke-puff,
+html[data-portal-profile="fold-open"] .floating-media,
+html[data-portal-profile="fold-open"] .house-halo,
+html[data-portal-profile="fold-open"] .film-halo,
+html[data-portal-profile="fold-open"] .door-light {
+  filter: none !important;
+}
+
+/* Header/footer glass is unnecessary on the high-DPR inner display. */
+html[data-portal-profile="fold-open"] .portal-header,
+html[data-portal-profile="fold-open"] .portal-footer {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ---------------------------------------------------------------
+   4) KEEP ALL FOUR ORBS MOVING, BUT REMOVE THEIR EXTRA PULSE WORK
+   Two orbs remain on each destination and still travel in opposite
+   directions. Fold motion-path animation changes only offset-distance;
+   orb scale/opacity and the expanding halo no longer animate.
+   --------------------------------------------------------------- */
 html[data-portal-profile="fold-open"] .lane-trace-orb {
   width: 12px;
   height: 12px;
   offset-path: inset(7px round 14px);
-  animation-duration: 14s;
-  will-change: auto;
+  animation-name: laneTraceOrbitFoldStable !important;
+  animation-duration: 14s !important;
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+  opacity: .9;
+  transform: none !important;
+  will-change: auto !important;
 }
 
 html[data-portal-profile="fold-open"] .lane-trace-orb-intake.lane-trace-orb-primary,
 html[data-portal-profile="fold-open"] .lane-trace-orb-showcase.lane-trace-orb-primary {
-  animation-delay: 0s;
+  animation-delay: 0s !important;
 }
 
 html[data-portal-profile="fold-open"] .lane-trace-orb-intake.lane-trace-orb-secondary,
 html[data-portal-profile="fold-open"] .lane-trace-orb-showcase.lane-trace-orb-secondary {
-  animation-delay: -7s;
+  animation-delay: -7s !important;
 }
 
-html[data-portal-profile="fold-open"] .lane-trace-orb::before,
-html[data-portal-profile="fold-open"] .lane-trace-orb::after {
+html[data-portal-profile="fold-open"] .lane-trace-orb::before {
+  animation: none !important;
+  transform: scale(1) !important;
   filter: none !important;
+  opacity: .24 !important;
 }
 
-/* OR stays centered because Fold touch mode intentionally does not expand cards. */
+html[data-portal-profile="fold-open"] .lane-trace-orb::after {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  opacity: .18 !important;
+}
+
+@keyframes laneTraceOrbitFoldStable {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+
+/* ---------------------------------------------------------------
+   5) OR BADGE
+   Fold touch mode intentionally does not expand either card, so the OR
+   badge remains at the true 50/50 divider. Do not draw a separate line
+   through it.
+   --------------------------------------------------------------- */
 html[data-portal-profile="fold-open"] .portal-center-mark {
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   transition: none !important;
+}
+
+html[data-portal-profile="fold-open"] .portal-center-mark i {
+  display: none !important;
+}
+
+html[data-portal-profile="fold-open"] .portal-stage::before {
+  content: none !important;
+  display: none !important;
 }
