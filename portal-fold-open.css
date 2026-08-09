@@ -180,3 +180,46 @@ html[data-portal-profile="fold-open"] .portal-stage::before {
   content: none !important;
   display: none !important;
 }
+
+/* ================================================================
+   FOLD-OPEN SCENE TRAVEL TEST — 2026-08-09
+   Re-enable ONLY the two large artwork canvases using transform-only
+   motion. All other Fold stability reductions above remain in force.
+   Timing stays deliberately slow; only the roaming area is increased.
+   ================================================================ */
+html[data-portal-profile="fold-open"] .portal-choice-intake .choice-scene {
+  animation: intakeSceneDriftFoldExpanded 18s ease-in-out infinite alternate !important;
+  transform: translate3d(0, 0, 0);
+  will-change: transform !important;
+}
+
+html[data-portal-profile="fold-open"] .portal-choice-showcase .choice-scene {
+  animation: showcaseSceneDriftFoldExpanded 19s ease-in-out infinite alternate !important;
+  transform: translate3d(0, 0, 0);
+  will-change: transform !important;
+}
+
+/* Keep the SVG artwork itself static/filter-free. Only its lightweight
+   parent canvas moves, avoiding the heavier filtered-SVG animation path. */
+html[data-portal-profile="fold-open"] .portal-choice-intake .scene-house,
+html[data-portal-profile="fold-open"] .portal-choice-showcase .scene-showcase,
+html[data-portal-profile="fold-open"] .choice-scene svg {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+@keyframes intakeSceneDriftFoldExpanded {
+  0%   { transform: translate3d(-5.5%, 5%, 0); }
+  36%  { transform: translate3d(6.5%, -4%, 0); }
+  72%  { transform: translate3d(-3.5%, -6.5%, 0); }
+  100% { transform: translate3d(7%, 3%, 0); }
+}
+
+@keyframes showcaseSceneDriftFoldExpanded {
+  0%   { transform: translate3d(5.5%, -5%, 0); }
+  36%  { transform: translate3d(-6.5%, 4%, 0); }
+  72%  { transform: translate3d(3.5%, 6.5%, 0); }
+  100% { transform: translate3d(-7%, -3%, 0); }
+}

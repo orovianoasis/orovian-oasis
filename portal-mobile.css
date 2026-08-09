@@ -17,3 +17,38 @@ html[data-portal-profile="mobile"] .portal-shell[data-active="property_intake"] 
 html[data-portal-profile="mobile"] .portal-shell[data-active="showcase"] .portal-stage {
   grid-template-columns: 1fr;
 }
+
+/* ================================================================
+   MOBILE SCENE TRAVEL RANGE — 2026-08-09
+   Keep the existing slow timing, but let the house and showcase scene
+   roam farther across each card. Size and animation speed are unchanged.
+   ================================================================ */
+html[data-portal-profile="mobile"] .portal-choice-intake .choice-scene {
+  animation-name: intakeSceneDriftMobileExpanded !important;
+  animation-duration: 15s !important;
+  animation-timing-function: ease-in-out !important;
+  animation-iteration-count: infinite !important;
+  animation-direction: alternate !important;
+}
+
+html[data-portal-profile="mobile"] .portal-choice-showcase .choice-scene {
+  animation-name: showcaseSceneDriftMobileExpanded !important;
+  animation-duration: 16s !important;
+  animation-timing-function: ease-in-out !important;
+  animation-iteration-count: infinite !important;
+  animation-direction: alternate !important;
+}
+
+@keyframes intakeSceneDriftMobileExpanded {
+  0%   { transform: translate3d(-7.5%, 7%, 0); }
+  35%  { transform: translate3d(8.5%, -5.5%, 0); }
+  70%  { transform: translate3d(-4%, -9%, 0); }
+  100% { transform: translate3d(10%, 4.5%, 0); }
+}
+
+@keyframes showcaseSceneDriftMobileExpanded {
+  0%   { transform: translate3d(7.5%, -7%, 0); }
+  35%  { transform: translate3d(-8.5%, 5.5%, 0); }
+  70%  { transform: translate3d(4%, 9%, 0); }
+  100% { transform: translate3d(-10%, -4.5%, 0); }
+}
